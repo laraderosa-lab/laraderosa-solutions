@@ -64,7 +64,7 @@ pass.
 
 ## The seven solutions
 
-Seven total. Six are unwritten.
+Seven total. Five are unwritten.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
@@ -73,7 +73,7 @@ Seven total. Six are unwritten.
 | `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
 | `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
 | `liability-dispute-agent` | Lara's own words | TBD | Not started |
-| `medical-provider-agent` | Lara's own words | TBD | Not started |
+| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | Drafted from three handover docs plus Lara's verbal account |
 | `document-generation` | Lara's own words | TBD | Not started |
 
 **Do not infer what a project is from its slug.** The three marked *Guess* are placeholders
@@ -90,11 +90,25 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   department is ~30 people** (~1,200 hrs/wk capacity, the denominator that makes the
   125–200 hrs/wk finding land). **Four of the seven projects (`fnol-voice-agent`,
   `liability-dispute-agent`, `medical-provider-agent`, `document-generation`) plausibly come
-  from the same ~10-solution engagement** at that firm. `medical-provider-agent` is
+  from the same ~10-solution engagement** at that firm. `medical-provider-selection` is
   **confirmed** by Lara as part of that engagement (2026-08-13); the other two are still
-  assumptions. The root README should say so once enough of them are written, because one
-  audit producing ten solutions is a stronger story than four unrelated builds, and the
-  shared diagnosis stops being repeated four times.
+  assumptions. The root README now states this for the two written projects.
+- **The engagement covered two departments**: the **claims department** (~30 people, FNOL) and
+  the **treaters / treatment team**, who track a client's post-accident care and book the
+  appointments doctors recommend. Ask which department a new project belongs to, since the
+  before-state economics differ per department.
+- **Shared platform conventions across the engagement's solutions**: Dataverse as the data
+  layer, Power Automate flows for orchestration, Retell for voice, Copilot Studio agents for
+  notification and composition, access by Entra group membership, and **one shared 8-value
+  run-status choice set** reused by every solution. Two solutions also share a batch-ID +
+  one-row-per-call pattern with a fan-in completion gate. Name the pattern once and
+  cross-reference it rather than re-explaining it per case study.
+- **The case management system is a named commercial product and must never be committed.** The
+  handover docs name it constantly. Same for the client firm name, the real Dataverse column
+  prefix, the real flow-name convention, the internal repo name, Entra group names and the raw
+  option-set integers. None of those appear in this file either, deliberately. Redact by
+  substitution, the way the two drafted case studies do: descriptive table names, flows
+  described by function, and "the case management system" for the vendor product.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
@@ -108,9 +122,23 @@ One line per session, newest last.
   one person can hold one phone line). Prose passed through `no-ai-slop`. Still open on FNOL:
   Lara's role, timeline, measured after-state, alternatives ruled out, how much to say about
   the CMS API workaround.
+- **2026-08-13 (second session).** `medical-provider-agent` renamed to
+  `medical-provider-selection` and drafted as the second flagship, from three handover docs
+  (user guide, maintenance runbook, architecture) plus Lara's verbal account. Confirmed it is
+  the **treaters** department, same engagement as FNOL. Diagnosis method was **shadowing**,
+  which contrasts usefully with FNOL's interview ladder. Strongest findings: the ~18k-provider
+  directory had no coordinates so staff copy-pasted addresses into Google Maps per candidate;
+  the "do not use" checkbox existed but ticking it had no consequence, so nobody ticked it, and
+  the fix was to make the existing field consequential rather than add a new one. Root README
+  now states that the first two case studies come from one engagement. Still open: the
+  treatment team's size and appointment volume (the missing denominator, the equivalent of
+  FNOL's 125-200 hrs/wk), how long one selection took, Lara's role, timeline, status, measured
+  after-state, what was ruled out.
 
 ## Conventions
-- **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two
+- **Branch:** one per project. `claude/portfolio-repo-setup-hxm78l` (scaffold + FNOL),
+  `claude/medical-provider-selection-50ri5j` (provider selection). Commit and push as work
+  completes. If two
   sessions run at once, the second will hit push conflicts, so `git pull --rebase` before
   pushing, or work on a per-project branch.
 - Per-project assets in `<slug>/assets/`.
