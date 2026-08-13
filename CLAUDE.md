@@ -64,14 +64,14 @@ pass.
 
 ## The seven solutions
 
-Seven total. Six are unwritten.
+Seven total. Five are unwritten.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted. Refinement continues in its own dedicated session |
 | `marketing-engine` | **Guess.** Invented from the single word "marketing" | TBD | Not started |
 | `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
-| `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
+| `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
 | `liability-dispute-agent` | Lara's own words | TBD | Not started |
 | `medical-provider-agent` | Lara's own words | TBD | Not started |
 | `document-generation` | Lara's own words | TBD | Not started |
@@ -93,6 +93,14 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   from the same ~10-solution engagement** at that firm. Confirm with Lara. If so, the root
   README should say so, because one audit producing ten solutions is a stronger story than
   four unrelated builds, and the shared diagnosis stops being repeated four times.
+- **Naming Clio needs a ruling.** The standing decision bans "vendor case-management-system
+  names", but Lara named Clio Manage and Clio Grow throughout the dashboard session and named
+  the branch after it. The draft names Clio. Either narrow the rule to the FNOL client's CMS,
+  or scrub Clio from `firm-ops-dashboard` and call it "the firm's case management system".
+- **"Pre-anonymized" client exports still need a full check.** The five dashboard PDFs Lara
+  supplied as already-modified still carried client emails and phone numbers, legible client
+  names under partial blur, a staff name in a slicer, and referral-partner lists that read as
+  real firms. Blur in an export is not redaction. Substitute at source or crop to aggregates.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
@@ -106,6 +114,12 @@ One line per session, newest last.
   one person can hold one phone line). Prose passed through `no-ai-slop`. Still open on FNOL:
   Lara's role, timeline, measured after-state, alternatives ruled out, how much to say about
   the CMS API workaround.
+- **2026-08-13 (second session).** `firm-ops-dashboard` drafted from Lara's verbal account plus
+  five dashboard PDF exports. Clio Manage/Grow to Skyvia to Azure SQL to Power BI, hourly at
+  both hops, five reports on one semantic model, team goals fed from a management spreadsheet.
+  Open on this one: client identity and size, whether it is the same firm as the FNOL work,
+  Lara's role and timeline, any measured impact, her own "what I'd do differently".
+  **Screenshots deliberately not committed**, see below.
 
 ## Conventions
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two
