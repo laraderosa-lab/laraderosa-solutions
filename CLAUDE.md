@@ -136,11 +136,12 @@ One line per session, newest last.
   after-state, what was ruled out.
 
 ## Conventions
-- **Branch:** one per project. `claude/portfolio-repo-setup-hxm78l` (scaffold + FNOL),
-  `claude/medical-provider-selection-50ri5j` (provider selection). Commit and push as work
-  completes. If two
-  sessions run at once, the second will hit push conflicts, so `git pull --rebase` before
-  pushing, or work on a per-project branch.
+- **Branches.** `main` is the default branch and holds the current state of the portfolio.
+  Branch per project off `main` (`claude/<slug>-<id>`), commit and push as work completes, then
+  merge into `main` so the repo's landing page always shows the real portfolio. Before
+  2026-08-13 the default branch was a session-scoped feature branch, which meant pushed work
+  was invisible on the landing page. If two sessions run at once the second will hit push
+  conflicts, so `git pull --rebase` first.
 - Per-project assets in `<slug>/assets/`.
 - Never commit a screenshot without checking for firm or party names, claim or policy numbers,
   dollar figures tied to a real matter, adjuster names, dates of loss, or PHI.
