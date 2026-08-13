@@ -8,9 +8,9 @@
 
 | | |
 |---|---|
-| **Client** | Anonymized descriptor — size, sector, region |
+| **Client** | Anonymized descriptor: size, sector, region |
 | **Domain** | e.g. Personal injury claims intake |
-| **My role** | e.g. Sole engineer — discovery through deployment |
+| **My role** | e.g. Sole engineer, discovery through deployment |
 | **Timeline** | e.g. 6 weeks, Q1 2026 |
 | **Stack** | e.g. Claude API, Supabase, Retool, Twilio |
 | **Status** | In production / piloted / delivered and handed off |
@@ -19,29 +19,30 @@
 
 ## 1. Context
 
-Two or three sentences on the business. What the organisation does, where this workflow
-sits, who touches it. Enough that a reader outside the industry follows the rest.
+Two or three sentences on the business. What the organisation does, where this workflow sits,
+who touches it. Enough that a reader outside the industry follows the rest.
 
-## 2. Diagnosis — how I knew this was the problem to solve
+## 2. Diagnosis: how I knew this was the problem to solve
 
-**The most important section for forward-deployed roles.** The brief was rarely the real
-problem. Show the work:
+The brief was rarely the real problem. Show the work:
 
 - **What I was originally asked for** vs. what turned out to matter.
-- **How I found out** — process mapping, shadowing, ticket/log analysis, stakeholder
+- **How I found out**: process mapping, shadowing, ticket or log analysis, stakeholder
   interviews, timing a workflow by hand, querying their own data back at them.
-- **What the evidence said** — the number or observation that reframed the problem.
-- **What I ruled out** and why — the obvious fix that wouldn't have worked.
+- **What the evidence said**: the number or observation that reframed the problem.
+- **What I ruled out**, and why. The obvious fix that wouldn't have worked.
+
+For forward-deployed roles this section carries more weight than the architecture.
 
 ## 3. Problem
 
 The problem in three or four lines, stated crisply. Then quantify the cost of leaving it
-alone: hours/week, cycle time, error rate, revenue leakage, headcount pressure.
+alone: hours per week, cycle time, error rate, revenue leakage, headcount pressure.
 
 ## 4. Solution
 
-What was built, in plain language first. Then the mechanics — the steps the system runs,
-what's automated vs. human-in-the-loop, and where the judgment calls live.
+What was built, in plain language first. Then the mechanics: the steps the system runs, what's
+automated vs. human-in-the-loop, and where the judgment calls live.
 
 ## 5. Architecture
 
@@ -51,20 +52,19 @@ flowchart LR
     B --> C[Output]
 ```
 
-**Key decisions and tradeoffs** — three or four, each with the reasoning:
+**Key decisions and tradeoffs**, three or four, each with the reasoning:
 
 | Decision | Why | What I gave up |
 |---|---|---|
 | | | |
 
-**Constraints I built inside** — the client-environment realities that shaped the design:
-no infra access, a legacy system of record, compliance limits, non-technical end users,
-a hard budget. Naming these is a strong signal; systems built in a vacuum aren't
-interesting.
+**Constraints I built inside.** The client-environment realities that shaped the design: no
+infra access, a legacy system of record, compliance limits, non-technical end users, a hard
+budget. Systems built in a vacuum aren't interesting, so name the real ones.
 
 ### Illustrative excerpt
 
-The one piece of the implementation that's genuinely interesting — a prompt, a schema, a
+The one piece of the implementation that's genuinely interesting: a prompt, a schema, a
 scoring rule, a validation gate. Redacted. One block, not a code dump.
 
 ```
@@ -72,8 +72,8 @@ scoring rule, a validation gate. Redacted. One block, not a code dump.
 
 ## 6. My involvement
 
-Explicit and honest. What I owned end to end, what I shared, what someone else did.
-Include the unglamorous parts — stakeholder wrangling, training the users, the handoff.
+Explicit and honest. What I owned end to end, what I shared, what someone else did. Include
+the unglamorous parts: stakeholder wrangling, training the users, the handoff.
 
 ## 7. Impact
 
@@ -81,20 +81,19 @@ Include the unglamorous parts — stakeholder wrangling, training the users, the
 |---|---|---|
 | | | |
 
-If a number isn't measured, say so and give the qualitative outcome instead. Never invent
-a metric — an unverifiable stat is worse than none.
+If a number isn't measured, say so and give the qualitative outcome instead. Never invent a
+metric. An unverifiable stat is worse than none.
 
 ## 8. What I'd do differently
 
-Two or three honest reflections. What broke, what I over-built, what I'd cut. This
-section reads as senior; skipping it reads as junior.
+Two or three honest reflections. What broke, what I over-built, what I'd cut.
 
 ---
 
 <details>
 <summary>Evidence</summary>
 
-Sanitized screenshots, sample input/output, redacted artifacts. Check every image for
+Sanitized screenshots, sample input and output, redacted artifacts. Check every image for
 client names, party names, real dollar figures, and PHI before committing.
 
 </details>
