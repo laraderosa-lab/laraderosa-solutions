@@ -64,19 +64,26 @@ pass.
 
 ## The seven solutions
 
-| Slug | Tier | Status |
-|---|---|---|
-| `fnol-voice-agent` | **Flagship** | Drafted. Refinement continues in its own dedicated session |
-| `marketing-engine` | TBD | Not started |
-| `medical-lien-calculator` | TBD | Not started |
-| `liability-dispute-agent` | TBD | Not started |
-| `medical-provider-agent` | TBD | Not started |
-| `firm-ops-dashboard` | TBD | Not started |
-| `document-generation` | TBD | Not started |
+Seven total. Six are unwritten.
 
-Slugs are provisional except `fnol-voice-agent`. Rename once each project is understood. The
-original slug `fnol-intake-agent` was wrong, because "intake" means client signup in personal
-injury, not claim opening.
+| Slug | Where the slug came from | Tier | Status |
+|---|---|---|---|
+| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted. Refinement continues in its own dedicated session |
+| `marketing-engine` | **Guess.** Invented from the single word "marketing" | TBD | Not started |
+| `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
+| `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
+| `liability-dispute-agent` | Lara's own words | TBD | Not started |
+| `medical-provider-agent` | Lara's own words | TBD | Not started |
+| `document-generation` | Lara's own words | TBD | Not started |
+
+**Do not infer what a project is from its slug.** The three marked *Guess* are placeholders
+Claude invented in the first session with no knowledge of the work, and they will read as
+established fact if you let them. Ask Lara what each project actually was, then rename the
+folder. `fnol-intake-agent` was renamed to `fnol-voice-agent` for exactly this reason, because
+"intake" means client signup in personal injury, not claim opening.
+
+Lara refers to these projects by client name, which is not recorded here (public repo). Expect
+shorthand that matches no slug, and ask which one she means rather than guessing.
 
 ## Reusable findings
 - The FNOL client is a **~400-person, ~$50M-revenue** plaintiff-side PI firm; its **claims
