@@ -90,9 +90,11 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   department is ~30 people** (~1,200 hrs/wk capacity, the denominator that makes the
   125–200 hrs/wk finding land). **Four of the seven projects (`fnol-voice-agent`,
   `liability-dispute-agent`, `medical-provider-agent`, `document-generation`) plausibly come
-  from the same ~10-solution engagement** at that firm. Confirm with Lara. If so, the root
-  README should say so, because one audit producing ten solutions is a stronger story than
-  four unrelated builds, and the shared diagnosis stops being repeated four times.
+  from the same ~10-solution engagement** at that firm. `medical-provider-agent` is
+  **confirmed** by Lara as part of that engagement (2026-08-13); the other two are still
+  assumptions. The root README should say so once enough of them are written, because one
+  audit producing ten solutions is a stronger story than four unrelated builds, and the
+  shared diagnosis stops being repeated four times.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
