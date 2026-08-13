@@ -62,6 +62,15 @@ the start of any session that will commit prose**, hold it in session only, and 
 before committing. Do not run a scan with placeholder terms and treat a clean result as a
 pass.
 
+> **Not yet done.** As of 2026-08-13 the blocklist has been requested twice and never supplied,
+> so **neither written case study has been scanned against Lara's real list.** What was run
+> instead: a scan for identifiers lifted from the handover documents themselves (the CMS vendor
+> product, the client firm name embedded in the batch-ID convention, the internal repo name, the
+> Dataverse column prefix, the security group names, the flow-name convention, the raw
+> option-set integers). All clean. That is stronger than placeholders and still not the
+> authoritative check. **Get the list and re-scan both case studies before treating the repo as
+> publication-ready.**
+
 ## The seven solutions
 
 Seven total. Five are unwritten.
@@ -73,7 +82,7 @@ Seven total. Five are unwritten.
 | `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
 | `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
 | `liability-dispute-agent` | Lara's own words | TBD | Not started |
-| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | Drafted from three handover docs plus Lara's verbal account |
+| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Materially complete.** All eight sections written, before-state quantified, role and outcome filled in. Outstanding: timeline, status/in-production-since, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words | TBD | Not started |
 
 **Do not infer what a project is from its slug.** The three marked *Guess* are placeholders
@@ -169,7 +178,14 @@ One line per session, newest last.
   wrote the three handover docs, and one technical "what I'd rebuild".**
 
 ## Conventions
-- **Branches.** `main` is the default branch and holds the current state of the portfolio.
+- **Branches.** `main` holds the current state of the portfolio and is where work belongs.
+  **Check whether `main` is actually the repo default before trusting the landing page.** As of
+  2026-08-13 it was not: the default was still `claude/portfolio-repo-setup-hxm78l`, and only
+  Lara can change it, because repo-settings writes are blocked by the sandbox proxy. If it is
+  still wrong, the landing page shows session-one work and *nothing is broken*, so do not
+  "fix" it by re-pushing or re-branching. Ask Lara to flip it at
+  <https://github.com/laraderosa-lab/laraderosa-solutions/settings>. Once flipped, the two
+  `claude/*` branches are redundant and can be deleted.
   Branch per project off `main` (`claude/<slug>-<id>`), commit and push as work completes, then
   merge into `main` so the repo's landing page always shows the real portfolio. Before
   2026-08-13 the default branch was a session-scoped feature branch, which meant pushed work
