@@ -10,7 +10,7 @@ thing worth fixing**, what I built, and what changed as a result.
 
 | Solution | What it does | Problem it solved | Stack |
 |---|---|---|---|
-| ★ **[FNOL voice agent](./fnol-voice-agent)** | Voice AI agent phones insurance carriers to open claims — navigating IVRs, holding, answering the carrier's interview — with a human approval gate and post-call accuracy verification | A 100-person PI firm was spending **~125–200 staff-hours a week** opening claims by phone, one call at a time. Calls now run concurrently. | Retell AI, Copilot Studio, Power Automate, Dataverse, React/TS |
+| ★ **[FNOL voice agent](./fnol-voice-agent)** | Voice AI agent phones insurance carriers to open claims — navigating IVRs, holding, answering the carrier's interview — with a human approval gate and post-call accuracy verification | A 400-person PI firm was spending **~125–200 staff-hours a week** opening claims by phone — a tenth to a sixth of the claims department's whole capacity — one call at a time. Calls now run concurrently. | Retell AI, Copilot Studio, Power Automate, Dataverse, React/TS |
 | [Marketing engine](./marketing-engine) | — | — | — |
 | [Medical lien calculator](./medical-lien-calculator) | — | — | — |
 | [Liability dispute agent](./liability-dispute-agent) | — | — | — |

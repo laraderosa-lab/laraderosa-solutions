@@ -12,7 +12,7 @@ redacted code excerpts where they prove something.
 ## Standing decisions (do not re-litigate)
 - **Clients are anonymized.** No client names, firm names, people, product codenames,
   vendor case-management-system names, or identifiable case data in **any committed file —
-  including this one.** Use role descriptors ("a 100-person plaintiff-side PI firm").
+  including this one.** Use role descriptors ("a 400-person plaintiff-side PI firm").
   Specificity comes from detail, not names. Third-party tech vendors (Retell, Microsoft,
   Power Platform) are fine to name.
 - **This repo is public.** Assume every commit is world-readable immediately. Run the
@@ -60,7 +60,9 @@ Drafting before all answers are in works well: draft what's known, mark gaps as 
 comments, commit so progress survives the session.
 
 ## Reusable findings
-- The FNOL client is a ~100-person, ~$50M-revenue plaintiff-side PI firm. **Four of the
+- The FNOL client is a **~400-person, ~$50M-revenue** plaintiff-side PI firm; its **claims
+  department is ~30 people** (~1,200 hrs/wk capacity — the denominator that makes the
+  125–200 hrs/wk finding land). **Four of the
   seven projects (`fnol-voice-agent`, `liability-dispute-agent`, `medical-provider-agent`,
   `document-generation`) plausibly come from the same ~10-solution engagement** at that
   firm — confirm with Lara. If so, the root README should say so: one audit producing ten

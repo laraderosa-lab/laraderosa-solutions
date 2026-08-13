@@ -1,7 +1,7 @@
 # FNOL Voice Agent — opening insurance claims in parallel
 
 > A voice AI agent that phones insurance carriers to open first-notice-of-loss claims for a
-> 100-person personal injury firm — navigating the IVR, sitting on hold, answering the
+> 400-person personal injury firm — navigating the IVR, sitting on hold, answering the
 > carrier's interview, and writing the claim number back into the case file. Because
 > software can hold five phone lines at once and a person can't, a case that took **2.5
 > hours of sequential calling now takes one ~30-minute step.**
@@ -10,8 +10,8 @@
 
 | | |
 |---|---|
-| **Client** | Plaintiff-side personal injury firm, ~100 staff, ~$50M annual revenue (US) |
-| **Domain** | Claims operations — opening FNOL claims with insurance carriers |
+| **Client** | Plaintiff-side personal injury firm, ~400 staff, ~$50M annual revenue (US) |
+| **Domain** | Claims operations (~30-person department) — opening FNOL claims with carriers |
 | **My role** | <!-- OPEN: solo vs team; which parts were yours --> |
 | **Timeline** | <!-- OPEN: dates + duration --> |
 | **Stack** | Retell AI (voice), Microsoft Copilot Studio, Power Automate, Dataverse, AI Builder, React/TypeScript Code App, Teams, Chromium extension |
@@ -21,8 +21,9 @@
 
 ## 1. Context
 
-The firm runs plaintiff-side personal injury cases. When a new case arrives, the claims
-department has to open a claim with **every insurance carrier attached to the accident** —
+The firm runs plaintiff-side personal injury cases across a ~400-person operation, of which
+the claims department is about **30 people**. When a new case arrives, that department has
+to open a claim with **every insurance carrier attached to the accident** —
 the client's own insurer (first-party) and each defendant's insurer (third-party) — before
 any of the substantive work on the file can begin. Nothing moves until those claim numbers
 exist.
@@ -68,7 +69,14 @@ down a phone line for half an hour.
 | Duration each | 30–40 min |
 | **Weekly staff time** | **~125–200 hours** |
 
-That is **three to five full-time people whose job is largely being on hold.**
+The department has about 30 people, so its total weekly capacity is roughly 1,200 hours.
+Claim-opening calls were consuming **125–200 of them — between a tenth and a sixth of the
+entire department's capacity**, or the equivalent of three to five people doing nothing but
+navigating IVR menus, waiting on hold, and reading a screen down a phone line.
+
+That is also why the audit landed here rather than on a more interesting workflow. This
+wasn't the department's hardest problem; it was its largest, and it was the one made
+entirely of work nobody needed a person for.
 
 **The reframe that mattered.** The obvious framing is "these calls take too long — make
 them shorter." That framing caps out fast; you can't compress a carrier's interview much
@@ -91,7 +99,8 @@ single repetitive workflow — the ideal first target when you need a program to
 
 ## 3. Problem
 
-Opening claims consumed **125–200 staff-hours a week** of unskilled telephone time, and
+Opening claims consumed **125–200 staff-hours a week** — a tenth to a sixth of the claims
+department's entire capacity — in unskilled telephone time, and
 because calls could only run one at a time, each new case sat for hours before substantive
 work could start. The cost scaled linearly with caseload, so growth made it worse. The
 work was too repetitive to justify skilled staff and too consequential to do carelessly —
@@ -263,7 +272,7 @@ Give it to me plainly, including anything that was someone else's. -->
 |---|---|
 | Carrier calls per week | ~250–310 |
 | Duration per call | 30–40 min (IVR + hold + interview) |
-| Weekly staff time on claim opening | **~125–200 hours** (≈3–5 FTE) |
+| Weekly staff time on claim opening | **~125–200 hours** — 10–17% of the 30-person department's capacity |
 | A five-carrier case | ~2.5 hours of sequential calling |
 | Staff time per case (avg 2.5 carriers) | ~90 minutes |
 
