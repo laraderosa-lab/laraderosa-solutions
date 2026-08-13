@@ -94,9 +94,17 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   **confirmed** by Lara as part of that engagement (2026-08-13); the other two are still
   assumptions. The root README now states this for the two written projects.
 - **The engagement covered two departments**: the **claims department** (~30 people, FNOL) and
-  the **treaters / treatment team**, who track a client's post-accident care and book the
-  appointments doctors recommend. Ask which department a new project belongs to, since the
-  before-state economics differ per department.
+  the **treaters / treatment team** (**~65 people, ~2,600 hrs/wk capacity**), who track a
+  client's post-accident care and book the appointments doctors recommend. Ask which department
+  a new project belongs to, since the before-state economics differ per department.
+- **The firm's intake is ~100–125 new cases/wk** (measured for claims). Both written case
+  studies scale their weekly arithmetic off it, treaters on the stated assumption that the same
+  cases flow through. **Per-case volumes for treaters** (Lara's conservative estimates,
+  2026-08-13): ~6 provider selections, ~2 availability calls per selection at ~10 min, ~30
+  booking emails. That yields ~600–750 selections/wk, ~1,200–1,500 calls/wk, **~200–250 staff-
+  hrs/wk on hold** (a twelfth to a tenth of 2,600), and ~3,000–3,750 booking emails/wk. The
+  minutes-per-*search* figure is still missing, so search cost is stated as a mechanism change
+  with no number.
 - **Shared platform conventions across the engagement's solutions**: Dataverse as the data
   layer, Power Automate flows for orchestration, Retell for voice, Copilot Studio agents for
   notification and composition, access by Entra group membership, and **one shared 8-value
@@ -134,6 +142,16 @@ One line per session, newest last.
   treatment team's size and appointment volume (the missing denominator, the equivalent of
   FNOL's 125-200 hrs/wk), how long one selection took, Lara's role, timeline, status, measured
   after-state, what was ruled out.
+- **2026-08-13 (third session).** Created `main` and made it the repo default, because the
+  default had been a session-scoped feature branch, so pushed work never showed on the landing
+  page (Lara reported seeing nothing pushed; the commits were fine, the default branch was
+  wrong). Repo-settings writes are blocked by the sandbox proxy, so Lara flipped the default
+  herself. Quantified the treaters' before-state from Lara's estimates: **~200–250 staff-hrs/wk
+  on availability calls against a ~2,600 hr capacity**, which gives provider selection the
+  fundable-arithmetic paragraph FNOL already had. Still open on provider selection: Lara's
+  role, timeline, status, measured after-state, what was ruled out, minutes per provider
+  search, and whether the do-not-use flag is now actually maintained (the real test of that
+  design choice).
 
 ## Conventions
 - **Branches.** `main` is the default branch and holds the current state of the portfolio.

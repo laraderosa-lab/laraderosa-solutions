@@ -3,8 +3,9 @@
 > A provider search and booking app for the treatment team at a 400-person personal injury
 > firm. It ranks an ~18,000-provider directory by driving distance from the client's home,
 > sends voice AI agents to phone the shortlist for their earliest appointment, and drafts the
-> booking email. **Three availability calls used to be thirty minutes of sequential phone work.
-> Now they run at once, and one request comes back as one answer.**
+> booking email. The 65-person team was spending **~200–250 staff-hours a week** on hold to
+> provider offices, a twelfth to a tenth of its capacity. **Those calls now run concurrently
+> with nobody on the line, and one request comes back as one answer.**
 
 ## At a glance
 
@@ -22,9 +23,9 @@
 ## 1. Context
 
 The same audit that produced the FNOL voice agent covered a second department at this firm. The
-claims department opens claims with carriers. The **treatment team** handles what happens next:
-tracking a client's medical care after the accident, and when a doctor recommends a procedure
-or a specialist, finding a provider and booking the appointment.
+claims department opens claims with carriers. The **treatment team**, about **65 people**,
+handles what happens next: tracking a client's medical care after the accident, and when a
+doctor recommends a procedure or a specialist, finding a provider and booking the appointment.
 
 Booking appointments is the bulk of that team's day. Two things make provider choice
 consequential rather than clerical. The firm cares how fast a case moves through the pipeline,
@@ -104,15 +105,49 @@ Confirming availability then meant a sequential phone call per office, through a
 hold queue each time. Every one of those steps sat between an injured client and the treatment
 that both their recovery and the case value depend on.
 
-<!-- OPEN: this section needs the arithmetic that makes it fundable, the way the ~125-200
-hrs/wk figure does for FNOL. I need:
-  - how many people are on the treatment team
-  - appointments booked per week (or per coordinator per day)
-  - how long one provider selection took, from the shadowing sessions. You watched this, so
-    there is probably a timing.
-Without those I can only assert that it was slow, which a hiring manager discounts. With them
-this becomes the strongest paragraph in the case study. If it was never timed, say so and I
-will write it qualitatively and label it as such. -->
+**What it cost, on deliberately conservative numbers.** A personal injury client's treatment
+runs for months, so one case is not one appointment. Across the life of a case the team picks a
+provider and phones around roughly **6 times**, and drafts around **30 booking emails**, most of
+them repeat appointments with a provider already chosen. The firm takes in **~100–125 new cases
+a week**, and in steady state a department finishes about as many cases as it starts, so weekly
+volume is per-case volume times intake:
+
+| | |
+|---|---|
+| New cases per week (firm) | ~100–125 |
+| Provider selections per case | ~6 |
+| **Provider selections per week** | **~600–750** |
+| Availability calls per selection | ~2 |
+| Availability calls per week | ~1,200–1,500 |
+| Duration each | ~10 min (IVR + hold + the question) |
+| **Weekly staff time on availability calls** | **~200–250 hours** |
+| Booking emails drafted per week | ~3,000–3,750 |
+
+The treatment team is about 65 people, so its weekly capacity is roughly 2,600 hours.
+Availability calls alone were consuming 200 to 250 of them, **between a twelfth and a tenth of
+the department's capacity**, or five to six people doing nothing but working through phone
+trees and sitting on hold. That figure covers only the calls. The provider *search* that
+preceded each of the 600 to 750 weekly selections, scrolling a specialty slice of the directory
+and copy-pasting two addresses into Google Maps once per candidate, was never timed, so it is
+absent from the total rather than estimated into it.
+
+Two things make those numbers conservative rather than favourable. Six selections and two calls
+each are the low end of what shadowing showed, against the three-call selections the team
+described as typical. And treatment coordination is not a workflow the firm could decide to do
+less of, because the volume is set by how many people were injured and what their doctors
+recommended.
+
+<!-- OPEN: two things to confirm here.
+  1. The ~100-125 new cases/week is the claims department's intake, reused on the stated
+     assumption that treaters pick up the same cases. Lara confirmed the assumption verbally
+     (2026-08-13). Worth a second look, since every weekly figure above scales off it.
+  2. "2 calls per selection" is my reading of your answer. You picked 6 select-and-call events
+     per case and then said 2 calls per case, which cannot both be true, so I took 2 calls per
+     event as the conservative reading. If it was really ~3 per event, the weekly figure goes
+     to ~300-375 hours and the department share to about an eighth.
+Also still missing: minutes per provider selection (the search, not the call). You estimated
+the call side; if you can estimate the search side too, the 600-750 selections a week become
+hours and this section gets materially stronger. -->
 
 ## 4. Solution
 
@@ -340,18 +375,35 @@ const ranked = [
 
 | Metric | Before |
 |---|---|
+| Team size | ~65 people, ~2,600 staff-hours a week of capacity |
 | Provider directory size | ~18,000 records, filterable by specialty only |
 | Distance information available in the system of record | None. No coordinates, no map, no distance sort |
 | How distance was determined | Two addresses copied into Google Maps, once per candidate provider |
 | Which providers to avoid | An unused checkbox, plus individual staff memory |
+| Provider selections per week | ~600–750 |
+| Availability calls per week | ~1,200–1,500, at ~10 min each |
+| **Weekly staff time on availability calls** | **~200–250 hours**, a twelfth to a tenth of the department's capacity |
+| Booking emails drafted per week | ~3,000–3,750 |
 | Confirming availability for three providers | Three sequential calls, ~10 min each, ~30 min of wall clock |
 
-**What the design changes, mechanically.** Provider ranking stops being a manual pass over a
-list plus a browser tab, and becomes a specialty and an address typed into one box. Availability
-calls stop being sequential: three ten-minute calls become one ten-minute wait, because the
-wall clock is now the length of the slowest call rather than the sum of all of them, and the
-coordinator is not on any of them. Since call concurrency has no practical ceiling here,
-checking six providers costs about what checking one costs.
+**What the design changes, mechanically.** Two separate effects, worth keeping apart.
+
+*The human comes off the phone.* The 200 to 250 weekly hours of availability calling were spent
+on hold and in phone trees, and the agent absorbs essentially all of it. What replaces it is
+reading a results card, which is seconds rather than minutes. This is the larger effect and it
+does not depend on concurrency at all.
+
+*The wall clock stops being a sum.* Calls in a request are placed at once, so two ten-minute
+calls become one ten-minute wait and three become one, because the wall clock is the slowest
+call rather than the total. Since concurrency has no practical ceiling here, checking six
+providers costs about what checking one costs, which changes what a coordinator will bother to
+do. Phoning six offices to find the earliest opening was previously an hour, so nobody did it.
+Now it is the same ten minutes as phoning two, and a wider search is free.
+
+On provider search, the app replaces a manual pass over a specialty slice of the directory plus
+a browser tab per candidate with a specialty and an address typed into one box. The before-state
+cost of that step was never timed, so this is a change in mechanism without a number attached to
+it.
 
 <!-- OPEN: everything above is either measured before-state or mechanical arithmetic, and this
 section stops there on purpose. To make it land I need whatever was measured after rollout:
