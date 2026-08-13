@@ -101,10 +101,11 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   studies scale their weekly arithmetic off it, treaters on the stated assumption that the same
   cases flow through. **Per-case volumes for treaters** (Lara's conservative estimates,
   2026-08-13): ~6 provider selections, ~2 availability calls per selection at ~10 min, ~30
-  booking emails. That yields ~600–750 selections/wk, ~1,200–1,500 calls/wk, **~200–250 staff-
-  hrs/wk on hold** (a twelfth to a tenth of 2,600), and ~3,000–3,750 booking emails/wk. The
-  minutes-per-*search* figure is still missing, so search cost is stated as a mechanism change
-  with no number.
+  booking emails, and ~15 min of directory searching per selection. That yields ~600–750
+  selections/wk at ~35 min each: ~150–190 hrs/wk searching plus ~200–250 hrs/wk on calls,
+  **~350–440 hrs/wk combined, 13–17% of the 2,600-hr capacity**, and ~3,000–3,750 booking
+  emails/wk. All of these are Lara's conservative estimates, not stopwatch figures, and the case
+  study says so.
 - **Watch the unit when Lara quotes per-case figures.** She sometimes says "per case" meaning
   "per provider selection", which made the calls figure ambiguous for two rounds. The units
   above were explicitly confirmed on 2026-08-13 and should not be re-derived. When a new
@@ -156,6 +157,16 @@ One line per session, newest last.
   role, timeline, status, measured after-state, what was ruled out, minutes per provider
   search, and whether the do-not-use flag is now actually maintained (the real test of that
   design choice).
+- **2026-08-13 (third session, later).** Provider selection is now materially complete. Filled
+  in: **Lara's role** (sole engineer, ideation through build; **change management was the
+  client's by agreement**), **~15 min per provider search** (giving the ~350–440 hrs/wk
+  headline), and **the do-not-use flag is now maintained**, trained on, and the single source of
+  truth, which is the payoff of the "make the existing field consequential" decision and the
+  only reportable after-state. **Nothing else was measured after rollout**, so §7 says so
+  plainly instead of estimating; §8 gained the honest reflection that instrumentation should
+  have gone in the build rather than the handover. Alternatives-ruled-out stays thin at Lara's
+  direction. **Still open on this project: timeline, status/in-production-since, whether Lara
+  wrote the three handover docs, and one technical "what I'd rebuild".**
 
 ## Conventions
 - **Branches.** `main` is the default branch and holds the current state of the portfolio.

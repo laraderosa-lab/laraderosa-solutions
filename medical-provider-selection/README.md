@@ -3,9 +3,9 @@
 > A provider search and booking app for the treatment team at a 400-person personal injury
 > firm. It ranks an ~18,000-provider directory by driving distance from the client's home,
 > sends voice AI agents to phone the shortlist for their earliest appointment, and drafts the
-> booking email. The 65-person team was spending **~200–250 staff-hours a week** on hold to
-> provider offices, a twelfth to a tenth of its capacity. **Those calls now run concurrently
-> with nobody on the line, and one request comes back as one answer.**
+> booking email. Choosing providers was costing the 65-person team **~350–440 staff-hours a
+> week**, around a seventh of its capacity, none of it needing clinical or legal judgment.
+> **Ranking is now one search, and the calls run concurrently with nobody on the line.**
 
 ## At a glance
 
@@ -13,7 +13,7 @@
 |---|---|
 | **Client** | Plaintiff-side personal injury firm, ~400 staff, ~$50M annual revenue (US). Same firm and same engagement as the [FNOL voice agent](../fnol-voice-agent), different department |
 | **Domain** | Treatment coordination. Following a client's post-accident care and booking the appointments a doctor recommends |
-| **My role** | <!-- OPEN: solo vs team; which parts were yours --> |
+| **My role** | Sole engineer. Ideation, diagnosis, design and build, end to end. Change management was the client's, by agreement |
 | **Timeline** | <!-- OPEN: dates + duration --> |
 | **Stack** | React/TypeScript Code App on Microsoft Power Platform, Dataverse, Power Automate, Azure Maps (custom connector), Retell AI (voice), Copilot Studio, Leaflet/MapLibre, Outlook, Teams |
 | **Status** | <!-- OPEN: in production since when? how many users? --> |
@@ -83,17 +83,16 @@ record was never built to do it.
 you have a shortlist you still have to phone every office, and a person holds one line at a
 time. Three ten-minute calls is thirty minutes of wall clock because they cannot overlap.
 
-**What I ruled out.** One I can state: **letting the voice agent book the appointment on the
-call.** Firm policy requires appointment requests in writing, so a phone booking would not have
-counted. The agent confirms availability and a human sends an email.
-<!-- OPEN: what else did you evaluate and reject? Candidates I'd guess but will not assert:
-  (a) fixing the directory inside the case management system, blocked by what the platform
-      allows;
-  (b) straight-line distance instead of driving distance, cheaper and wrong across a river or
-      a highway;
-  (c) a pre-computed distance matrix, 18k providers x every client address does not build;
-  (d) hiring or reassigning coordinators.
-Tell me which of these were real and why each lost. -->
+**What I ruled out.** The one worth recording: **letting the voice agent book the appointment on
+the call.** Firm policy requires appointment requests in writing, so a phone booking would not
+have counted. The agent confirms availability and a human sends the email, which is why the
+workflow ends in a draft rather than a sent message.
+
+The design alternatives I weighed inside the build are in §5 rather than here, since each one is
+easier to follow next to the decision it lost to.
+
+<!-- Asked Lara 2026-08-13 for other alternatives evaluated and rejected; nothing further to add
+for now. Leave this as-is rather than padding it with plausible-sounding options. -->
 
 ## 3. Problem
 
@@ -117,24 +116,29 @@ volume is per-case volume times intake:
 | New cases per week (firm) | ~100–125 |
 | Provider selections per case | ~6 |
 | **Provider selections per week** | **~600–750** |
-| Availability calls per selection | ~2 |
+| Searching the directory, per selection | ~15 min |
+| **Weekly staff time on provider search** | **~150–190 hours** |
+| Availability calls per selection | ~2, at ~10 min each |
 | Availability calls per week | ~1,200–1,500 |
-| Duration each | ~10 min (IVR + hold + the question) |
 | **Weekly staff time on availability calls** | **~200–250 hours** |
+| **Combined, search plus calls** | **~350–440 hours a week** |
 | Booking emails drafted per week | ~3,000–3,750 |
 
-The treatment team is about 65 people, so its weekly capacity is roughly 2,600 hours.
-Availability calls alone were consuming 200 to 250 of them, **between a twelfth and a tenth of
-the department's capacity**, or five to six people doing nothing but working through phone
-trees and sitting on hold. That figure covers only the calls. The provider *search* that
-preceded each of the 600 to 750 weekly selections, scrolling a specialty slice of the directory
-and copy-pasting two addresses into Google Maps once per candidate, was never timed, so it is
-absent from the total rather than estimated into it.
+One provider selection cost about **35 minutes**: a quarter of an hour finding candidates, then
+two ten-minute calls to find out when they could actually be seen. Six of those per case is
+around **3.5 hours per case** before a single appointment is booked.
 
-Two things make those numbers conservative rather than favourable. Six selections and two calls
-each are the low end of what shadowing showed, against the three-call selections the team
-described as typical. And treatment coordination is not a workflow the firm could decide to do
-less of, because the volume is set by how many people were injured and what their doctors
+The treatment team is about 65 people, so its weekly capacity is roughly 2,600 hours. Provider
+selection was consuming 350 to 440 of them, **13% to 17% of the department's capacity**, or the
+equivalent of nine to eleven people doing nothing but scrolling a directory, copy-pasting
+addresses into Google Maps, working through phone trees and sitting on hold. None of it required
+clinical or legal judgment.
+
+Three things make those numbers conservative rather than favourable. Six selections and two
+calls each are the low end of what shadowing showed, against the three-call selections the team
+described as typical. The 15 minutes is search only, and has to be, because two calls alone
+account for 20. And treatment coordination is not a workflow the firm could decide to do less
+of, because the volume is set by how many people were injured and what their doctors
 recommended.
 
 <!-- Units confirmed with Lara 2026-08-13: ~6 selection episodes per case, ~2 calls per
@@ -142,14 +146,12 @@ selection episode, ~30 booking emails per case. Her "per case" in conversation s
 "per provider selection", which is what made the calls figure ambiguous; it is settled now, so
 do not re-derive these.
 
-OPEN, still:
-  1. The ~100-125 new cases/week is the claims department's intake, reused on Lara's confirmed
-     assumption that treaters pick up the same cases. Every weekly figure above scales off it,
-     so it is the one to re-check if anything looks off.
-  2. Minutes per provider *search* (the directory scroll plus the Google Maps copy-paste, not
-     the call). Lara estimated the call side only, so search cost is deliberately absent from
-     the weekly total rather than estimated into it. With it, the 600-750 selections a week
-     become hours and this section gets materially stronger. -->
+The ~15 min per search is also Lara's estimate (2026-08-13), not a stopwatch figure, which is
+why the prose says "about".
+
+OPEN, still: the ~100-125 new cases/week is the claims department's measured intake, reused on
+Lara's confirmed assumption that treaters pick up the same cases. Every weekly figure above
+scales off it, so it is the one to re-check if anything ever looks off. -->
 
 ## 4. Solution
 
@@ -359,17 +361,32 @@ const ranked = [
 
 ## 6. My involvement
 
-<!-- OPEN: the section interviewers read closest, and the one I cannot write for you.
-  - Did you run the shadowing sessions yourself? Who else was there?
-  - Which parts did you personally build vs. review vs. delegate?
-    (the catalog sync / the geocoding and ranking / the React app and map / the voice agent
-    and its prompt / the batch completion gate / the email drafter / the data model)
-  - Did you write these three handover docs? The maintenance runbook in particular is better
-    than most internal docs and that is worth claiming.
-  - Who trained the coordinators, and did anyone resist giving up their own mental provider
-    list?
-  - Is it handed to the client's IT, or still yours?
--->
+**I owned this one end to end.** Nobody asked for it. It came out of shadowing a department to
+find out where its time went, and I took it from that observation through to a deployed app:
+
+- the diagnosis, including the shadowing sessions and the finding that an existing unused field
+  was the real fix for provider exclusion,
+- the data model, the two scheduled jobs that mirror and geocode the provider catalog, and the
+  ranking approach that shortlists on coordinates before paying for driving distance,
+- the React app, the map, and the search and comparison interface,
+- the voice agent and its prompt, the per-call row model, and the batch completion gate that
+  turns an unbounded number of calls into one answer,
+- the booking-email flow and the decision to stop at a draft rather than send.
+
+**What I did not own: change management.** Training the coordinators and driving adoption were
+the client's responsibility by agreement, not an oversight. That boundary matters more than it
+sounds, because the one design choice here that depended on human behaviour rather than code was
+the do-not-use flag, and making it work required staff to be trained to use it. That training was
+somebody else's to deliver, and it happened (see §7).
+
+It also explains the gap in §7. Adoption and measurement sit naturally with whoever runs change
+management, so no after-state numbers came back to me. I would negotiate that differently now
+(see §8).
+
+<!-- OPEN: minor, worth claiming if true. Did you write the three handover docs this case study
+was drawn from (user guide, maintenance runbook, architecture)? The runbook is better than most
+internal documentation and it belongs in the list above. I have not asserted it because I do not
+know. -->
 
 ## 7. Impact
 
@@ -382,9 +399,10 @@ const ranked = [
 | Distance information available in the system of record | None. No coordinates, no map, no distance sort |
 | How distance was determined | Two addresses copied into Google Maps, once per candidate provider |
 | Which providers to avoid | An unused checkbox, plus individual staff memory |
-| Provider selections per week | ~600–750 |
-| Availability calls per week | ~1,200–1,500, at ~10 min each |
-| **Weekly staff time on availability calls** | **~200–250 hours**, a twelfth to a tenth of the department's capacity |
+| Provider selections per week | ~600–750, at ~35 min each |
+| Weekly staff time on provider search | ~150–190 hours (~15 min per selection) |
+| Weekly staff time on availability calls | ~200–250 hours (~1,200–1,500 calls at ~10 min) |
+| **Combined weekly cost of choosing providers** | **~350–440 hours, 13% to 17% of the department's capacity** |
 | Booking emails drafted per week | ~3,000–3,750 |
 | Confirming availability for three providers | Three sequential calls, ~10 min each, ~30 min of wall clock |
 
@@ -402,22 +420,34 @@ providers costs about what checking one costs, which changes what a coordinator 
 do. Phoning six offices to find the earliest opening was previously an hour, so nobody did it.
 Now it is the same ten minutes as phoning two, and a wider search is free.
 
-On provider search, the app replaces a manual pass over a specialty slice of the directory plus
-a browser tab per candidate with a specialty and an address typed into one box. The before-state
-cost of that step was never timed, so this is a change in mechanism without a number attached to
-it.
+*Ranking replaces looking.* The 150 to 190 weekly hours of search were spent reading a list and
+operating a second browser tab to answer a question the data could answer directly. A specialty
+and an address now return the three closest providers by driving distance, with the rest on a
+map. Fifteen minutes becomes the time it takes to type an address.
 
-<!-- OPEN: everything above is either measured before-state or mechanical arithmetic, and this
-section stops there on purpose. To make it land I need whatever was measured after rollout:
-  - appointments booked through the app (count, over what period)
-  - availability calls placed, and how often the agent reached a human
-  - change in time-to-first-appointment, if anyone tracked it, since that is the metric the
-    firm actually cares about
-  - adoption: how many coordinators use it, is it the default path now
-  - whether the do-not-use flag is now being maintained, which is the real test of that design
-    choice and would be a genuinely satisfying number
-If none of it was measured, tell me and I will write it as an honest qualitative outcome. An
-unverifiable percentage in a public portfolio is worse than no percentage. -->
+**The one outcome I can report, and it is the one I care most about.** The do-not-use checkbox
+is now **the only way to mark a provider as do-not-use, staff were trained on it, and it has
+become the single source of truth.** Before, the field existed and was ignored, and which
+providers to avoid lived in individual coordinators' heads.
+
+That is the test of the design choice in §2. The tempting fix was a new exclusion flag inside
+the new app, which would have been faster to build and would have failed the same way, because
+the original field was not ignored for lack of a better field. It was ignored because ticking it
+changed nothing. Making it consequential, and leaving it where the team already managed provider
+records, is why it is now maintained. A design that depends on people doing something they were
+not doing before is a risk, and this is the version of that risk that paid off.
+
+**What was not measured, stated plainly.** Nothing was measured after rollout. There is no
+count of appointments booked through the app, no agent reach rate, no change in
+time-to-first-appointment, and no adoption figure. The before-state numbers above come from
+shadowing and from the estimates in §3; everything after that is mechanical, meaning it follows
+from how the system works rather than from an observation of it working. Adoption tracking sits
+with change management, which was the client's by agreement, so those numbers were never mine to
+collect.
+
+I would rather publish that gap than fill it. A portfolio with an invented percentage in it is
+worth less than one with an honest hole, because the reader cannot tell which of your numbers
+are real once they catch a single one that is not.
 
 ## 8. What I'd do differently
 
@@ -437,9 +467,16 @@ unverifiable percentage in a public portfolio is worse than no percentage. -->
 - **The specialty mapping refresh is manual.** It runs on demand rather than on a schedule,
   which means the lookup that gates all search depends on someone remembering. It should be on
   the same weekday recurrence as the other two jobs.
-- <!-- OPEN: yours. What actually frustrated you here, or what would you rebuild? The Azure
-  Maps cost model, the map component, the 25-provider cap, the six-hour expiry window, the
-  scheduled-mirror approach to the provider catalog? -->
+- **I built the thing and then could not tell you what it did.** Change management was the
+  client's by agreement, and I treated measurement as part of that, so no after-state numbers
+  came back. Quantifying the before state was the whole basis for building this, and I did not
+  arrange to quantify the after state. Next time the instrumentation goes in the build, not the
+  handover: log every search, call and draft with a timestamp, so the usage data exists whether
+  or not anyone is assigned to look at it. Owning the diagnosis and not the verification is
+  half a job.
+- <!-- OPEN: yours, on the technical side. Anything that actually frustrated you, or that you
+  would rebuild? The Azure Maps cost model, the map component, the 25-provider cap, the
+  six-hour expiry window, the scheduled-mirror approach to the provider catalog? -->
 
 ---
 

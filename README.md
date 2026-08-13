@@ -11,7 +11,7 @@ worth fixing**, what I built, and what changed as a result.
 | Solution | What it does | Problem it solved | Stack |
 |---|---|---|---|
 | ★ **[FNOL voice agent](./fnol-voice-agent)** | Voice AI agent phones insurance carriers to open claims, navigating IVRs, holding, and answering the carrier's interview, with a human approval gate and post-call accuracy verification | A 400-person PI firm was spending **~125–200 staff-hours a week** opening claims by phone, a tenth to a sixth of the claims department's whole capacity, one call at a time. Calls now run concurrently. | Retell AI, Copilot Studio, Power Automate, Dataverse, React/TS |
-| ★ **[Medical provider selection](./medical-provider-selection)** | Ranks an ~18,000-provider directory by driving distance from the client's home, sends voice AI agents to phone the shortlist for their earliest appointment, and drafts the booking email | The same firm's 65-person treatment team was spending **~200–250 staff-hours a week** on hold to provider offices, a twelfth to a tenth of its capacity, and picked providers by scrolling a specialty-filtered directory and copy-pasting two addresses into Google Maps once per candidate. Selection is now one search, and the calls run concurrently with nobody on the line. | Power Platform Code App (React/TS), Dataverse, Power Automate, Azure Maps, Retell AI, Copilot Studio |
+| ★ **[Medical provider selection](./medical-provider-selection)** | Ranks an ~18,000-provider directory by driving distance from the client's home, sends voice AI agents to phone the shortlist for their earliest appointment, and drafts the booking email | Choosing providers cost the same firm's 65-person treatment team **~350–440 staff-hours a week**, around a seventh of its capacity, split between scrolling a specialty-filtered directory with Google Maps open in a second tab and phoning offices one at a time. Ranking is now one search, and the calls run concurrently with nobody on the line. | Power Platform Code App (React/TS), Dataverse, Power Automate, Azure Maps, Retell AI, Copilot Studio |
 | [Marketing engine](./marketing-engine) | | | |
 | [Medical lien calculator](./medical-lien-calculator) | | | |
 | [Liability dispute agent](./liability-dispute-agent) | | | |
@@ -32,7 +32,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | | Discovery / audit | LLM agents | Data modelling | Integrations | Front-end / dashboards | Deployed & handed off |
 |---|---|---|---|---|---|---|
 | FNOL voice agent | ✅ | ✅ | ✅ | ✅ | ✅ | |
-| Medical provider selection | ✅ | ✅ | ✅ | ✅ | ✅ | |
+| Medical provider selection | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Marketing engine | | | | | | |
 | Medical lien calculator | | | | | | |
 | Liability dispute agent | | | | | | |
