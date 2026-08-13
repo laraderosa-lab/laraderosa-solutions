@@ -72,7 +72,7 @@ Seven total. Six are unwritten.
 | `marketing-engine` | **Guess.** Invented from the single word "marketing" | TBD | Not started |
 | `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
 | `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
-| `liability-dispute-agent` | Lara's own words | TBD | Not started |
+| `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 | `medical-provider-agent` | Lara's own words | TBD | Not started |
 | `document-generation` | Lara's own words | TBD | Not started |
 
@@ -93,6 +93,27 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   from the same ~10-solution engagement** at that firm. Confirm with Lara. If so, the root
   README should say so, because one audit producing ten solutions is a stronger story than
   four unrelated builds, and the shared diagnosis stops being repeated four times.
+- **The shared-engagement question is answered: yes.** The client's private documentation repo
+  contains one numbered set of ~10 solutions for one firm, covering FNOL, letter of
+  representation, loss of use, DMV filings, police report retrieval, policy limit search,
+  preservation of evidence, medical provider search and booking, liability dispute, and a
+  read-only operations console. `firm-ops-dashboard` is very likely that console, which would
+  make it **five** portfolio entries from one engagement, not four. Confirm with Lara.
+- **Private client repos are available in-session** on the same GitHub account: documentation
+  (three-doc handover set per solution, plus one-page overviews), the Power Platform React
+  apps, and the Azure functions. They are **by far the highest-value input** and they are
+  private, so read them freely and commit nothing from them verbatim. They are not in the
+  session by default, they have to be added and cloned.
+- **Identifiers seen in those repos**, all of which must stay out of this repo: the client's
+  name and initials, the case-management vendor's name, the Dataverse schema prefix, the
+  `fl-<id>-*` flow naming convention, solution package names, the environment host and id, bot
+  ids, SharePoint knowledge-folder names, pod names, and Entra group names.
+- **Headcount needs reconciling.** The committed FNOL page says ~400 staff and ~30 in claims.
+  The client's own ROI model says 99 heads firm-wide and 34 in claims, and their pod directory
+  lists 151 people. Those may be different populations (total staff vs. licensed users vs.
+  case-carrying pods), but the 400 is load-bearing in the FNOL headline. Ask Lara.
+- The firm's ROI model is the source of the modeled per-solution savings. Benchmark is ~125
+  new cases a week across 5 pods. Liability disputes arise on ~half of cases.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
@@ -106,6 +127,15 @@ One line per session, newest last.
   one person can hold one phone line). Prose passed through `no-ai-slop`. Still open on FNOL:
   Lara's role, timeline, measured after-state, alternatives ruled out, how much to say about
   the CMS API workaround.
+- **2026-08-13 (second session).** `liability-dispute-agent` drafted on its own branch, from the
+  client's private handover docs plus Lara's account. The reframe that makes this one work: it
+  is a **knowledge-retention** project that happens to draft emails. High churn was taking the
+  firm's liability expertise out of the building, and juniors were filling the gap with public
+  consumer AI (confidentiality exposure, hallucinated Vehicle Code citations, arguments with no
+  relationship to the firm's own positions). The first deliverable was consolidating scattered
+  expert knowledge into one reviewed 15-file set, and only then the agent. Still open: Lara's
+  role, timeline, status, ruled-out alternatives, and any measured impact. Modeled impact is in
+  the draft and labelled as such.
 
 ## Conventions
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two

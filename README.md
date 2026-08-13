@@ -13,12 +13,22 @@ worth fixing**, what I built, and what changed as a result.
 | ★ **[FNOL voice agent](./fnol-voice-agent)** | Voice AI agent phones insurance carriers to open claims, navigating IVRs, holding, and answering the carrier's interview, with a human approval gate and post-call accuracy verification | A 400-person PI firm was spending **~125–200 staff-hours a week** opening claims by phone, a tenth to a sixth of the claims department's whole capacity, one call at a time. Calls now run concurrently. | Retell AI, Copilot Studio, Power Automate, Dataverse, React/TS |
 | [Marketing engine](./marketing-engine) | | | |
 | [Medical lien calculator](./medical-lien-calculator) | | | |
-| [Liability dispute agent](./liability-dispute-agent) | | | |
+| ★ **[Liability dispute agent](./liability-dispute-agent)** | A chat agent that helps claims staff answer an insurance carrier's liability denial and drafts the reply into the adjuster's email thread, reasoning only from the firm's own reviewed playbooks and verified Vehicle Code sections | The firm's ability to dispute liability lived undocumented in a few experienced heads, and **left when they left**. Junior staff were filling the gap with public consumer AI, putting client data outside the firm and citing law nobody had checked. | Copilot Studio, Claude Opus 4.1, SharePoint knowledge set, Power Automate, MS Graph, MCP |
 | [Medical provider agent](./medical-provider-agent) | | | |
 | [Firm operations dashboard](./firm-ops-dashboard) | | | |
 | [Document generation](./document-generation) | | | |
 
 ★ = flagship deep dive.
+
+Four of these came out of a **single engagement at the same firm**, where one audit produced
+roughly ten solutions and I delivered them as a program rather than as separate briefs. The
+diagnosis that found them is described once, in the FNOL case study.
+
+<!-- OPEN: confirm the exact list of four and that "roughly ten" is the number you want to
+     use publicly. Evidence says: FNOL, liability dispute, medical provider, document
+     generation. Also confirm whether the firm-ops dashboard is the same client's operations
+     console, which would make it five. -->
+
 
 ## Capabilities, by project
 
@@ -29,7 +39,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | FNOL voice agent | ✅ | ✅ | ✅ | ✅ | ✅ | |
 | Marketing engine | | | | | | |
 | Medical lien calculator | | | | | | |
-| Liability dispute agent | | | | | | |
+| Liability dispute agent | ✅ | ✅ | | ✅ | | |
 | Medical provider agent | | | | | | |
 | Firm operations dashboard | | | | | | |
 | Document generation | | | | | | |
