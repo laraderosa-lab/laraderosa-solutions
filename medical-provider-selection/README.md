@@ -137,17 +137,19 @@ described as typical. And treatment coordination is not a workflow the firm coul
 less of, because the volume is set by how many people were injured and what their doctors
 recommended.
 
-<!-- OPEN: two things to confirm here.
-  1. The ~100-125 new cases/week is the claims department's intake, reused on the stated
-     assumption that treaters pick up the same cases. Lara confirmed the assumption verbally
-     (2026-08-13). Worth a second look, since every weekly figure above scales off it.
-  2. "2 calls per selection" is my reading of your answer. You picked 6 select-and-call events
-     per case and then said 2 calls per case, which cannot both be true, so I took 2 calls per
-     event as the conservative reading. If it was really ~3 per event, the weekly figure goes
-     to ~300-375 hours and the department share to about an eighth.
-Also still missing: minutes per provider selection (the search, not the call). You estimated
-the call side; if you can estimate the search side too, the 600-750 selections a week become
-hours and this section gets materially stronger. -->
+<!-- Units confirmed with Lara 2026-08-13: ~6 selection episodes per case, ~2 calls per
+selection episode, ~30 booking emails per case. Her "per case" in conversation sometimes meant
+"per provider selection", which is what made the calls figure ambiguous; it is settled now, so
+do not re-derive these.
+
+OPEN, still:
+  1. The ~100-125 new cases/week is the claims department's intake, reused on Lara's confirmed
+     assumption that treaters pick up the same cases. Every weekly figure above scales off it,
+     so it is the one to re-check if anything looks off.
+  2. Minutes per provider *search* (the directory scroll plus the Google Maps copy-paste, not
+     the call). Lara estimated the call side only, so search cost is deliberately absent from
+     the weekly total rather than estimated into it. With it, the 600-750 selections a week
+     become hours and this section gets materially stronger. -->
 
 ## 4. Solution
 

@@ -105,6 +105,10 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   hrs/wk on hold** (a twelfth to a tenth of 2,600), and ~3,000–3,750 booking emails/wk. The
   minutes-per-*search* figure is still missing, so search cost is stated as a mechanism change
   with no number.
+- **Watch the unit when Lara quotes per-case figures.** She sometimes says "per case" meaning
+  "per provider selection", which made the calls figure ambiguous for two rounds. The units
+  above were explicitly confirmed on 2026-08-13 and should not be re-derived. When a new
+  project needs volume arithmetic, ask which unit each number is in before computing.
 - **Shared platform conventions across the engagement's solutions**: Dataverse as the data
   layer, Power Automate flows for orchestration, Retell for voice, Copilot Studio agents for
   notification and composition, access by Entra group membership, and **one shared 8-value
