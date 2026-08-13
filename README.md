@@ -10,15 +10,15 @@ thing worth fixing**, what I built, and what changed as a result.
 
 | Solution | What it does | Problem it solved | Stack |
 |---|---|---|---|
+| ★ **[FNOL voice agent](./fnol-voice-agent)** | Voice AI agent phones insurance carriers to open claims — navigating IVRs, holding, answering the carrier's interview — with a human approval gate and post-call accuracy verification | A 100-person PI firm was spending **~125–200 staff-hours a week** opening claims by phone, one call at a time. Calls now run concurrently. | Retell AI, Copilot Studio, Power Automate, Dataverse, React/TS |
 | [Marketing engine](./marketing-engine) | — | — | — |
 | [Medical lien calculator](./medical-lien-calculator) | — | — | — |
-| [FNOL intake agent](./fnol-intake-agent) | — | — | — |
 | [Liability dispute agent](./liability-dispute-agent) | — | — | — |
 | [Medical provider agent](./medical-provider-agent) | — | — | — |
 | [Firm operations dashboard](./firm-ops-dashboard) | — | — | — |
 | [Document generation](./document-generation) | — | — | — |
 
-<!-- Flagship deep dives will be marked ★ once tiers are assigned. -->
+★ = flagship deep dive.
 
 ## Capabilities, by project
 
@@ -28,7 +28,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 |---|---|---|---|---|---|---|
 | Marketing engine | | | | | | |
 | Medical lien calculator | | | | | | |
-| FNOL intake agent | | | | | | |
+| FNOL voice agent | ✅ | ✅ | ✅ | ✅ | ✅ | |
 | Liability dispute agent | | | | | | |
 | Medical provider agent | | | | | | |
 | Firm operations dashboard | | | | | | |
