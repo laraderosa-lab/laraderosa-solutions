@@ -1,10 +1,10 @@
 # Project context for Claude
 
 ## What this repo is
-A **public portfolio of AI/automation solutions Lara De Rosa has delivered**, built as
-personal advertisement, aimed at forward-deployed engineer / solutions architect / AI engineer
-roles that look for **end-to-end ownership**: finding the problem, not just building the
-ticket.
+A **public portfolio of AI/automation solutions Lara De Rosa has delivered**, as personal
+advertisement. Target readers are hiring managers for forward-deployed engineer / solutions
+architect / AI engineer roles, who look for **end-to-end ownership**: finding the problem, not
+just building the ticket.
 
 A **case-study portfolio, not a code repo**. Prose, diagrams and sanitized evidence, with
 redacted code excerpts where they prove something.
@@ -15,32 +15,58 @@ redacted code excerpts where they prove something.
   this one.** Use role descriptors ("a 400-person plaintiff-side PI firm"). Specificity comes
   from detail, not names. Third-party tech vendors (Retell, Microsoft, Power Platform) are
   fine to name.
-- **This repo is public.** Assume every commit is world-readable immediately. Run the
-  identifier scan below before every commit.
+- **This repo is public.** Assume every commit is world-readable the moment it lands.
 - **Code: illustrative excerpts only.** Redacted snippets of the interesting parts (a prompt,
   a schema, a scoring rule). No client source, no credentials, no PHI/PII, no real schema
-  prefixes or table names.
+  prefixes, table names or flow names.
 - **Depth is tiered.** 3 flagship deep dives, 4 short entries.
 - Every case study follows `_template/README.md` section for section.
 - **Diagnosis is a first-class section.** How the problem was found (audit, process mapping,
   interviews, data) is the differentiator for forward-deployed roles.
-- Diagrams are **Mermaid**. Open questions are `<!-- OPEN: ... -->` HTML comments so they
+- Diagrams are **Mermaid**. Open questions are `<!-- OPEN: ... -->` HTML comments, so they
   don't render publicly but stay greppable.
-- **No em dashes**, and keep the prose free of AI-slop patterns (colon reveals, "not X but Y"
-  contrasts, asides telling the reader what matters). The `no-ai-slop` skill is the reference.
+- **No em dashes**, and no AI-slop patterns (colon reveals, "not X but Y" contrasts, asides
+  telling the reader what matters). Use the `no-ai-slop` skill, and write this way in the
+  first draft rather than fixing it afterwards.
+
+## Per-project workflow
+One project at a time. Lara's method:
+1. Claude states what it already knows. **Claude has no cross-session memory.** The only
+   knowledge is this file and the committed case studies. Read them, don't guess. Say plainly
+   when the answer is nothing.
+2. Lara gives a raw description. **Ask whether handover, architecture or user docs exist.**
+   For `fnol-voice-agent` those docs were by far the highest-value input.
+3. Claude asks the questions still needed for a solid case study.
+4. Claude drafts, Lara corrects, commit.
+
+Drafting before all answers are in works well: draft what's known, mark gaps as `OPEN`
+comments, commit so progress survives the session.
+
+### Definition of done, per project
+- [ ] `<slug>/README.md` follows all eight template sections
+- [ ] Root `README.md`: the project's row filled in, plus its row in the capability matrix
+- [ ] `★` added to the row if it's a flagship
+- [ ] Identifier scan passed (below), and every image checked
+- [ ] No em dashes; slop pass done
+- [ ] `CLAUDE.md` progress log and solutions table updated
+- [ ] Committed and pushed
 
 ### Pre-commit scan
 ```bash
-grep -rniE "<client names>|<cms vendor>|<employer prefix>" --include="*.md" .
-grep -rn "—" --include="*.md" .
+grep -rn "—" --include="*.md" .          # em dashes, expect 0
+grep -rn "OPEN:" --include="*.md" .      # outstanding questions
 ```
-Lara knows the actual terms to substitute; do not write them into this file.
+**The identifier blocklist is deliberately not in this file**, because this file is public.
+**Ask Lara for the current list of client names, firm names, people and vendor system names at
+the start of any session that will commit prose**, hold it in session only, and grep for it
+before committing. Do not run a scan with placeholder terms and treat a clean result as a
+pass.
 
 ## The seven solutions
 
 | Slug | Tier | Status |
 |---|---|---|
-| `fnol-voice-agent` | **Flagship** | **Drafted**, awaiting Lara on the `OPEN` items |
+| `fnol-voice-agent` | **Flagship** | Drafted. Refinement continues in its own dedicated session |
 | `marketing-engine` | TBD | Not started |
 | `medical-lien-calculator` | TBD | Not started |
 | `liability-dispute-agent` | TBD | Not started |
@@ -52,16 +78,6 @@ Slugs are provisional except `fnol-voice-agent`. Rename once each project is und
 original slug `fnol-intake-agent` was wrong, because "intake" means client signup in personal
 injury, not claim opening.
 
-## Working method (per project, one at a time)
-1. Claude states what it already knows. **Claude has no cross-session memory.** The only
-   knowledge is this file and the committed case studies. Read them, don't guess.
-2. Lara gives a raw description plus documentation.
-3. Claude asks the remaining questions needed for a solid case study.
-4. Claude drafts, Lara corrects, commit.
-
-Drafting before all answers are in works well: draft what's known, mark gaps as `OPEN`
-comments, commit so progress survives the session.
-
 ## Reusable findings
 - The FNOL client is a **~400-person, ~$50M-revenue** plaintiff-side PI firm; its **claims
   department is ~30 people** (~1,200 hrs/wk capacity, the denominator that makes the
@@ -69,21 +85,25 @@ comments, commit so progress survives the session.
   `liability-dispute-agent`, `medical-provider-agent`, `document-generation`) plausibly come
   from the same ~10-solution engagement** at that firm. Confirm with Lara. If so, the root
   README should say so, because one audit producing ten solutions is a stronger story than
-  four unrelated builds.
+  four unrelated builds, and the shared diagnosis stops being repeated four times.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
-  `add_repo` and may not be authorized.
+  `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
 
 ## Progress log
 One line per session, newest last.
 - **2026-08-13.** Repo scaffolded (root README, `_template/`, 7 folders). Decisions locked:
   anonymized, illustrative excerpts, tiered depth. `fnol-voice-agent` deep dive drafted from
   three handover docs and Lara's verbal account; before-state economics quantified (~250–310
-  calls/wk, ~125–200 staff-hrs/wk). Prose passed through `no-ai-slop`, em dashes removed.
-  Open: her role, timeline, measured after-state, what was ruled out.
+  calls/wk, ~125–200 staff-hrs/wk; the reframe is that the bottleneck was serialization, since
+  one person can hold one phone line). Prose passed through `no-ai-slop`. Still open on FNOL:
+  Lara's role, timeline, measured after-state, alternatives ruled out, how much to say about
+  the CMS API workaround.
 
 ## Conventions
-- Branch: `claude/portfolio-repo-setup-hxm78l`. Commit as work completes.
+- **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two
+  sessions run at once, the second will hit push conflicts, so `git pull --rebase` before
+  pushing, or work on a per-project branch.
 - Per-project assets in `<slug>/assets/`.
 - Never commit a screenshot without checking for firm or party names, claim or policy numbers,
   dollar figures tied to a real matter, adjuster names, dates of loss, or PHI.
