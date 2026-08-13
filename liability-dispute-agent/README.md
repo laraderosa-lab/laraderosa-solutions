@@ -2,9 +2,10 @@
 
 > A chat agent that helps claims staff answer an insurance carrier's liability denial, grounded
 > only in the firm's own reviewed playbooks and the California Vehicle Code, and drafts the
-> reply into the adjuster's email thread. The firm's best liability arguments used to live in a
-> handful of experienced heads and walk out of the building when those people left. **Now a
-> first-year claims rep drafts from them.**
+> reply into the adjuster's email thread. Getting liability accepted is the single biggest
+> performance metric for a claims rep, and the firm's ability to do it well was scattered across
+> unreviewed documents and experienced people who kept leaving. **Now a first-year rep argues
+> from the same material a senior would have used.**
 
 ## At a glance
 
@@ -12,7 +13,7 @@
 |---|---|
 | **Client** | Plaintiff-side personal injury firm, ~400 staff (US, California auto caseload) |
 | **Domain** | Claims operations, disputing liability with carriers |
-| **My role** | <!-- OPEN: what you owned vs. shared vs. someone else --> |
+| **My role** | Sole delivery. I built the knowledge base and the agent <!-- OPEN: confirm this covers the whole build, see §6 --> |
 | **Timeline** | <!-- OPEN: dates + duration --> |
 | **Stack** | Microsoft Copilot Studio (generative agent), Claude Opus 4.1, SharePoint knowledge set, Power Automate, Microsoft Graph, MCP mail action, Teams / M365 Copilot, Dataverse (usage reporting only) |
 | **Status** | <!-- OPEN: in production since when? --> |
@@ -37,55 +38,59 @@ The firm grows by hiring. It also has high churn.
 ## 2. Diagnosis: how I knew this was the problem to solve
 
 This came out of the same firm-wide audit that produced the FNOL voice agent, and like that
-one it was not a feature request.
+one it started with management rather than with a feature request.
 
-**Finding one. The expertise was real, and it was undocumented.** A small number of
-experienced people could dispute liability well. What they knew existed in scattered form
-across the company, in personal notes, old emails, folders, and habit. Nobody owned it and
-nobody was reviewing it. Two people could take opposite positions on the same collision type
-and neither would be checked.
+**Where it started. Management named the metric themselves.** Asked how they judge a claims
+rep, they said the biggest single measure of performance is **how often that rep gets liability
+accepted**. Then they said they wished the team were better at it. That is an unusual thing to
+be handed, because it is a department volunteering that its most important number is one it
+cannot reliably move. Everything after that was working out why.
 
-**Finding two. It left when people left.** In a business with high churn and a hiring plan,
-knowledge held in individual heads is a depreciating asset. Every senior departure took a
-share of the firm's ability to dispute liability with it, and every new hire started from
-zero and spent years rebuilding it. The firm was paying for the same expertise repeatedly and
-never keeping it.
+**Finding one. The knowledge existed. It was scattered and nobody owned it.** The firm had
+material on how to argue liability, spread across documents in different places around the
+company. No single set, no owner, no review. Two documents could take opposite positions on
+the same collision type and neither would be checked, so what a rep ended up arguing depended
+on which document they happened to find.
 
-**Finding three. Staff had already automated this themselves, badly.** Junior claims reps were
-pasting case details into public consumer AI tools and using whatever came back. Three separate
-problems in one habit:
+**Finding two. It left when people left.** The reps who could do this well had assembled their
+own working knowledge over years. In a business with high churn and a hiring plan, that is a
+depreciating asset. Every senior departure took a share of the firm's ability to dispute
+liability with it, and every new hire started again. The firm kept paying for the same
+expertise and never kept it.
+
+**Finding three. The failures were expensive and nobody caught them.** Mistakes went out
+uncorrected because there was no standard to check a response against. In one case a rep sent
+the carrier a police report that **hurt the client's position rather than helped it**, which is
+the kind of error that costs real money on a file and is invisible until it is too late to take
+back. This is why the case for the project was never about hours. The cost of getting liability
+wrong is measured in case value.
+
+**Finding four. Staff had already automated this themselves, badly.** Junior reps were pasting
+case details into public consumer AI tools and using whatever came back. Three separate problems
+in one habit:
 
 - **Confidentiality.** Client case detail was going into a public model, outside the firm's
   environment, on terms nobody at the firm had read.
 - **Accuracy.** A general model asked for a California Vehicle Code section will produce one
   that sounds right. Cite a code that does not say what you claimed to an adjuster and you
   have damaged the file and your credibility on it.
-- **Provenance.** Even when the output was correct, it was the internet's argument, not the
-  firm's. It had no relationship to the positions the firm had decided to take.
+- **Provenance.** Even when the output was correct, it was the internet's argument rather than
+  the firm's, with no relationship to the positions the firm had decided to take.
 
-That third finding is why the shape of the answer was already fixed. The demand for this was
-proven, because people were doing it anyway. The job was to give them a version that was
-safe, accurate, and made of the firm's own reasoning.
+That last finding fixed the shape of the answer. Demand was already proven, because people were
+doing it anyway. The job was to give them a version that was safe, accurate, and made of the
+firm's own reasoning.
 
 **The reframe.** Treated as a drafting problem, this gets solved with a better prompt. The
-drafting was the easy half. What the firm had was an institutional-memory problem, and no
-agent would be worth anything until the knowledge it reasoned from existed in one reviewed,
-current place. The first deliverable was therefore editorial: consolidating what was scattered
-across the company into a single reviewed knowledge base, with the experienced people signing
-off on it. The agent came second, and made that knowledge reachable at the moment somebody
+drafting was the easy half. What the firm had was an institutional-memory problem, and no agent
+would be worth anything until the knowledge it reasoned from existed in one reviewed, current
+place. The first deliverable was therefore editorial: gathering the scattered documents,
+reconciling where they contradicted each other, and writing them into a single structured
+knowledge set. The agent came second, and made that knowledge reachable at the moment somebody
 needed it.
 
-The consequence is that this system is a **knowledge-retention** system that happens to draft
-emails. Once the playbooks exist and are maintained, the firm keeps the expertise whether or
-not the expert stays.
-
-<!-- OPEN: two things would sharpen this section a lot.
-  (a) How did you actually catch the shadow AI use? Someone admitted it in an interview, you
-      saw it over a shoulder, IT had logs? The concrete moment is what makes this land.
-  (b) Any before-state number at all: how long a senior took to write a dispute response, how
-      long a junior took, how many disputes a week, or how often disputes simply went
-      unanswered. Even a range from the team is enough. If nothing was measured, say so and
-      I'll write it qualitatively. -->
+The result is a **knowledge-retention** system that happens to draft emails. Once the playbooks
+exist and are maintained, the firm keeps the expertise whether or not the expert stays.
 
 <!-- OPEN: §2 needs "what I ruled out" to match the template and the FNOL page. You said come
      back to it. Candidates to react to: an enterprise ChatGPT/Copilot licence with no
@@ -95,13 +100,15 @@ not the expert stays.
 
 ## 3. Problem
 
-The firm's ability to dispute liability sat in a few experienced people, undocumented,
-unreviewed, and inconsistent between them. Churn removed it and hiring did not replace it,
-because a new claims rep needed years to rebuild it. In the meantime staff were filling the
-gap with public consumer AI, which put client data outside the firm and produced legal
-citations that nobody had verified. Leaving it alone cost the firm weaker positions on files
-worth more than the positions being taken on them, and left client data sitting outside the
-firm's control. The cost was never counted in hours.
+Getting liability accepted is the biggest single measure of a claims rep's performance, and the
+firm had no reliable way to make reps better at it. The material was scattered across unreviewed
+documents that contradicted each other, the people who could apply it well kept leaving, and
+there was no standard against which to check a response before it went out, so expensive
+mistakes went uncorrected. Staff were filling the gap with public consumer AI, which put client
+data outside the firm and produced legal citations nobody had verified.
+
+The cost was never counted in hours. It was liability accepted less often than it should have
+been, on files worth more than the positions being taken on them.
 
 ## 4. Solution
 
@@ -123,8 +130,9 @@ documents:
 - a **style guide** fixing the format, tone, and prohibitions of the outgoing email,
 - a **Vehicle Code master reference** used as the verification anchor for every citation.
 
-Reconciling those was the substantive work. Where two experienced people disagreed, the
-disagreement had to be resolved and written down rather than averaged.
+Reconciling those was the substantive work, and it was done from the firm's documents rather
+than by interviewing people. Where two sources contradicted each other on the same collision
+type, the contradiction had to be resolved and written down as one position.
 
 **Second, the agent.** Staff open it in Teams or M365 Copilot and talk to it. A typical
 session:
@@ -276,47 +284,61 @@ Never as an instruction to follow.
 
 ## 6. My involvement
 
-<!-- OPEN: the section interviewers read closest, and I can't write it for you.
-  - Did you run the knowledge consolidation yourself? Interviewing the experienced people,
-    reconciling contradictions, writing the 15 files? That is the hardest and most
-    transferable part of this project and it needs a clear claim one way or the other.
-  - Who adjudicated when two seniors disagreed on a position, you or the firm?
-  - Which did you build: the agent instructions, the two tool flows, the mail integration,
-    the usage-sync and its reporting?
-  - Did you write the handover docs for this one?
-  - Training and rollout, especially getting people off the public AI tools. Any resistance?
-  - Handed to the client's IT, or still yours? -->
+I built the knowledge base and the agent.
+
+The knowledge base was the larger job and the one that mattered. I gathered the firm's scattered
+liability material, worked out where it contradicted itself, resolved those contradictions into
+a single position per collision type, and wrote the result into the structured, numbered set the
+agent reads: the classifier, the ten mechanism playbooks, the rebuttals, the negotiation
+patterns, the style guide, and the code reference. That work was done from the firm's own
+documents rather than from interviews, so the reconciliation was mine to do and mine to defend.
+
+On the build I owned the agent's instructions and hard rules, the tools it calls, the case-system
+and mailbox integrations, and the usage reporting that lets the firm see whether anyone is
+using it.
+
+<!-- OPEN: a few things I've left out rather than assume.
+  - Does "all of it" also cover the handover docs for this solution? They're good and worth
+    claiming if they're yours.
+  - Training and rollout, especially getting people off the public AI tools. Any resistance
+    worth describing? That's a good forward-deployed detail.
+  - Is it handed to the client's IT now, or still yours? -->
 
 ## 7. Impact
 
-**What was modeled.** The firm's ROI model values this at roughly **30 minutes of specialist
-liability analysis per engaged session**, with a liability dispute arising on about **half of
-new cases**. At the firm's benchmark case volume that is about **34 hours a week**, or **0.85
-full-time equivalents**.
+**The outcome this was built for is not a time saving.** It is how often the firm gets liability
+accepted, which is the metric management named as the biggest measure of a claims rep's
+performance. Three things changed in the mechanism behind that number:
 
-Those are modeled figures agreed with the client, not measured outcomes, and the time saving
-is the smaller half of the story. The case for this system was **consistency and quality**.
-A junior's response is now built from the same playbooks, the same code sections, and the same
-negotiating positions a senior would have used, and every citation in it has been verified
-against a source.
+| | Before | After |
+|---|---|---|
+| Where the argument comes from | Whichever document a rep found, or a public AI tool | One reviewed knowledge set, the same for everyone |
+| Legal citations | Unverified, including some produced by a general-purpose model | Every code resolved against the firm's reference or the published legislature site, or dropped |
+| Client case data | Pasted into public consumer AI | Stays inside the firm's own environment |
+| A junior's response | Built from whatever experience they had yet to acquire | Built from the same playbooks, codes and negotiating positions a senior would have used |
 
-**What is measured.** Because the agent has no per-case run record, usage is captured from the
-chat sessions themselves. A background job copies each session into the firm's reporting table
-and splits **engaged** sessions, meaning real back-and-forth that produced work, from sessions
-that were opened and abandoned. Only engaged sessions count toward value. That feeds the
-firm-wide operations console alongside every other solution in the program.
+**What was modeled.** The firm's ROI model values the solution at roughly **30 minutes of
+specialist liability analysis per engaged session**, with a liability dispute arising on about
+**half of new cases**. At the firm's benchmark case volume that is about **34 hours a week**, or
+**0.85 full-time equivalents**. Those are modeled figures agreed with the client rather than
+measured outcomes, and they are the smaller half of the case for doing this.
 
-<!-- OPEN: I have the model's assumptions but not the actuals. To finish this section:
+**What is measured.** The agent has no per-case run record, so usage is captured from the chat
+sessions themselves. A background job copies each session into the firm's reporting table and
+separates **engaged** sessions, meaning a real back-and-forth that produced work, from sessions
+opened and abandoned. Only engaged sessions count toward value. That feeds the firm-wide
+operations console alongside every other solution in the program.
+
+What was not instrumented is the number that started the project. Nobody set up a measurement of
+whether liability acceptance rates moved, which is the honest gap in this case study and the
+first thing I would fix (see §8).
+
+<!-- OPEN: if any of these exist, they'd go here and would be worth a lot:
   - engaged sessions to date, over what period
   - adoption: how many of the claims team use it, is it the default path now
-  - has anyone compared a junior's drafted response before and after
   - did the public-AI usage actually stop
-  - any outcome signal at all, carriers reversing or reducing a fault allocation
-If none of it was measured, tell me and I'll say so plainly. An unverifiable number here is
-worse than no number. -->
-
-<!-- OPEN: also worth stating outright if true: the confidentiality exposure was closed. That
-     is a real, checkable outcome even with no metrics behind it. -->
+  - any outcome signal at all, a carrier reversing or reducing a fault allocation
+Otherwise the section stands as written, which is honest. -->
 
 ## 8. What I'd do differently
 
@@ -330,9 +352,14 @@ worse than no number. -->
   package, so a solution export does not back it up. It runs on a schedule with a short
   look-back window, so a gap longer than that window drops sessions permanently rather than
   catching up. Recovering them takes a script.
-- **"Engaged session" is a thin proxy for value.** It measures that a conversation happened,
-  not that a good dispute went out. The honest measure is whether the drafted position was
-  sent and what the carrier did next, and neither was instrumented.
+- **I never instrumented the number the project was justified on.** Management told me at the
+  start that liability acceptance rate is the biggest measure of a claims rep's performance, and
+  the whole case for building this rested on moving it. What gets counted instead is engaged
+  sessions, which shows that a conversation happened rather than that a better dispute went out.
+  Capturing the outcome on each dispute the agent touched, whether the carrier accepted,
+  reduced, or held its allocation of fault, would have needed a field and a follow-up, and it
+  would have turned the strongest claim in this case study into a measured one. This is the
+  thing I would go back and change first.
 - **The case-reading tool is named for a job smaller than the one it does.** It was scoped to
   fetch the facts of loss and grew into fetching whatever the agent needs from the case,
   including the carrier, the claim number, the adjuster, and notes. The name stayed. It is

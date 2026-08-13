@@ -133,9 +133,15 @@ One line per session, newest last.
   firm's liability expertise out of the building, and juniors were filling the gap with public
   consumer AI (confidentiality exposure, hallucinated Vehicle Code citations, arguments with no
   relationship to the firm's own positions). The first deliverable was consolidating scattered
-  expert knowledge into one reviewed 15-file set, and only then the agent. Still open: Lara's
-  role, timeline, status, ruled-out alternatives, and any measured impact. Modeled impact is in
-  the draft and labelled as such.
+  expert knowledge into one reviewed 15-file set, and only then the agent. Two things sharpened
+  it after Lara's answers: the diagnosis **starts with management naming the KPI** (how often a
+  rep gets liability accepted is the biggest measure of their performance, and they said they
+  wished the team were better at it), and the before-state is a **quality** story, not a time
+  one, anchored on a rep sending the carrier a police report that hurt the client's own case.
+  The knowledge consolidation was done **from documents, not interviews**, and Lara did all of
+  it. Still open: timeline, status, ruled-out alternatives, whether the handover docs are hers.
+  Modeled impact is in the draft and labelled as such; the KPI itself was never instrumented,
+  which is now §8's first entry.
 
 ## Conventions
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two
