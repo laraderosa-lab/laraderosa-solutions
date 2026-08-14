@@ -150,13 +150,14 @@ and becomes a property of the structure. The numbers are dynamic tracking number
 per visitor, so this had to be one number pool per page rather than one static number.
 
 **Attribute the forms.** The agency's forms live in ClickFunnels, not Lawmatics, so the clean
-path (embed a Lawmatics form, let it read the UTM parameters) was closed. Two moves instead.
-First, I rebuilt Lawmatics' own forms so each one carries preset hidden fields for source,
-campaign and a custom ad group field. Second, I negotiated the agency's webhook away from
-Lawmatics and into a Make scenario, which reads the landing page off the payload, routes on
-it, and submits the matching prefilled form. Source is always paid search on this path. The
-landing page tells you which campaign, because the campaign's ad groups each have exactly one
-page, and it tells you which ad group, because that mapping is now one to one.
+path (embed a Lawmatics form and let it read the UTM parameters) was closed. Two moves
+instead. First, I rebuilt the Lawmatics intake form so attribution could be supplied at
+submission time, through a hidden source field, a campaign field and a custom field for ad
+group. Second, I negotiated the agency's webhook away from Lawmatics and into a Make scenario,
+which reads the landing page off the payload and routes on it. Every route posts to the same
+form endpoint. What differs is the body: source is a constant, campaign is the ad group's
+parent, and the ad group goes into the custom field. Submitting a real form rather than
+writing a record sideways means the CRM runs its normal intake handling, workflows and all.
 
 **Get the real revenue in.** Criminal defense value is already correct at intake. Personal
 injury value is only final when Clio says so, so a daily job carries the settled value across,
@@ -189,21 +190,29 @@ thirteen objects, with auth, paging, throttling, retry and incremental-sync rule
 hourly into BigQuery. That definition is the most interesting artifact on the project and it is
 the excerpt below.
 
-The dashboard has two halves, because the firm has two questions:
+It runs to five pages, because once the warehouse exists the marginal cost of the next question
+is a query rather than a project:
 
-- **Marketing**, from Lawmatics. ROI and conversion by source, campaign and ad group. Total
-  leads, hired, not hired, and the reason each rejected lead was rejected. This is the half the
-  attribution work exists to make true.
-- **Operations**, from Clio Manage. Cases by stage, and task tracking across the caseload.
-  Once the pipeline into the warehouse exists, the marginal cost of the second half is a
-  second connector, which is a good argument for building the plumbing properly the first
-  time.
+- **Intake overview**, from Lawmatics. The funnel from total leads through qualified to hired,
+  with conversion and qualification rates, split by practice area, plus lead volume by month
+  and by day of week.
+- **Source performance**, the page the attribution work exists to make true. Leads, hires,
+  conversion rate and case value by source, by campaign and by ad group, with referral
+  partners broken out individually.
+- **Intake detail.** Consultations booked, attended, missed and paid, and a full breakdown of
+  **why** rejected leads were rejected, separating leads the firm turned down from leads that
+  turned the firm down.
+- **Matters overview**, from Clio. Open cases by practice area, pipeline funnels per practice
+  area, median days to close, and an aging list of the oldest open files, each deep-linking
+  back into Clio so the dashboard is a way into the work rather than a read-only artifact.
+- **Financials.** Estimated against actual case value, accrued and cash positions by month,
+  and average settlement value by lead source, which is the join that turns attribution into a
+  buying decision.
 
-<!-- OPEN: still needed on the reporting layer:
-  - Which measures and visuals specifically, and are they sliced by practice area?
+<!-- OPEN:
   - Do the costs reach it from the values keyed into Lawmatics monthly, or from the Sheet?
   - Who opens it, how often, and did it fully replace the V1 Lawmatics-native dashboard?
-  - The Clio operations half: was that connector also custom, or does Skyvia have a Clio one?
+  - The Clio half: custom connector too, or does Skyvia ship one for Clio?
 -->
 
 ## 5. Architecture
@@ -300,31 +309,36 @@ flowchart TB
 *Redacted and simplified. The decision worth showing is deriving attribution from the one
 field a hostile-ish upstream cannot quietly change, and making the unmatched case loud.*
 
-The lead is not written through a generic create call. Each route submits a **prefilled
-Lawmatics form**, one per ad group, whose hidden source, campaign and ad group fields are set
-in advance. The attribution is carried by which form gets submitted, so the CRM applies its own
-normal intake handling rather than being written to sideways.
+In production this is a router tree, one branch per landing page, each with an equality filter
+on the page URL. Expressed as a table it reads like this:
 
-```js
+```jsonc
 // The agency owns the landing pages and sets no UTM parameters, so the page the form was
 // submitted on IS the attribution key. Sound only because one page maps to one ad group.
-const ROUTES = {
-  '<lp-slug-1>': { form: '<prefilled-form-id-1>', campaign: '<campaign-a>', adGroup: '<ad-group-1>' },
-  '<lp-slug-2>': { form: '<prefilled-form-id-2>', campaign: '<campaign-a>', adGroup: '<ad-group-2>' },
-  // ... one entry per ad group, across every live campaign. Source is always paid search here.
-};
+POST /v1/forms/<intake-form-id>/submit          // one form for every route
+{
+  "first_name": "…", "last_name": "…", "email": "…", "phone": "…",
+  "case_blurb": "…",
 
-const route = ROUTES[normalise(payload.landing_page)];
-
-if (!route) {
-  // Do not guess, and do not drop it. An unrecognised page means the upstream changed
-  // something, and every lead through it is mis-attributed until someone maps it.
-  notify(`Unmapped landing page: ${payload.landing_page}`);
-  return submitForm(FALLBACK_FORM, payload);
+  "source":   <paid-search-id>,                 // constant on this path, by construction
+  "campaign": <campaign-id>,                    // the ad group's parent campaign
+  "custom_field_<id>": "<ad group name>"        // the granularity the client actually buys on
 }
-
-return submitForm(route.form, payload);   // source, campaign and ad group ride on the form
 ```
+
+```js
+// The fallback branch is the whole reason this survives contact with a vendor that
+// changes things without telling anyone.
+if (isUnmappedLandingPage(payload.landing_page)) {
+  submitForm({ ...payload, source: PAID_SEARCH });   // partial attribution beats none
+  notify('Unassigned landing page, review');          // and somebody gets told
+}
+```
+
+Two things about the fallback. It still creates the lead, because dropping a paying client's
+enquiry to protect a reporting field would be the wrong trade by a wide margin. And it
+attributes what it can rather than nothing, since the traffic being paid search is known from
+the channel even when the campaign is not.
 
 **The part that made this work was not the code.** None of the above is possible while one
 landing page serves several ad groups, because then the page identifies nothing. The agency
@@ -489,6 +503,39 @@ The row that matters is the first one. The firm went from being unable to attrib
 search lead at all to attributing it down to the ad group, which is the level at which spend
 decisions actually get made.
 
+**What it surfaced in the first pass.** A reporting layer earns its keep by changing someone's
+mind, and joining case value onto lead source put three questions in front of the owner that
+he could not previously have asked:
+
+- **The pre-signed case vendor looks inverted.** Its leads convert well, which is what you
+  would expect from cases that arrive already signed, but the average settlement value on that
+  source came out roughly an order of magnitude below the roughly $3,000 the firm pays per
+  lead. That number needs a caveat before anyone acts on it, because personal injury cases take
+  a long time to close and this cohort is young, so recent sources are structurally
+  understated. The point is not that the dashboard produced a verdict. It produced the first
+  version of the question that had ever been answerable, on a line item costing tens of
+  thousands a month.
+- **The largest single reason for rejecting a lead is that the firm does not offer the
+  service.** It accounts for over 40% of rejections. That is not an intake problem, it is a
+  media buying problem, and it is invisible until rejection reasons are counted against the
+  source that produced them.
+- **Around one lead in ten is invalid**, spam, a wrong number or an internal test. Worth
+  knowing before quoting a cost per lead to anyone.
+
+<!-- OPEN: the three findings above are read off the dashboard, not off a decision. If any of
+them actually changed the spend, that is the sentence this section wants. -->
+
+<!-- OPEN: the firm's absolute financials (total case value, open matter counts, lead volumes)
+are all on the dashboard and I have deliberately kept them out, using ratios instead. Say if
+you are comfortable publishing any of the absolutes and I will put the strongest ones back. -->
+
+**A finding outside the brief.** The Clio half of the dashboard showed the case-management task
+backlog running at roughly four fifths overdue. That is nothing to do with marketing
+attribution and I was not asked to look at it. It is the kind of thing a reporting layer hands
+you for free once the data is in one place, and it is worth saying out loud to a client even
+when it is not billable, because it is a bigger operational risk than anything on the marketing
+page.
+
 <!-- OPEN: the table above is a capability change, which is real and defensible. What would
 make this section land is a business outcome on top of it:
   - Did it change a spend decision? A campaign or ad group cut or scaled on these numbers, the
@@ -508,6 +555,22 @@ If none of it was measured, say so and I will write one honest qualitative line 
   tripwire, and it is still only a tripwire. I would push much harder and much earlier for the
   firm to own the landing page platform under its own account, which is the dependency the
   firm later had to start unwinding anyway.
+- **A hand-maintained routing table drifts, and mine did.** Reviewing it later turned up a
+  landing page used as the filter on two different branches, so submissions from it create two
+  leads under two different ad groups; two branches carrying an ad group label copied from the
+  branch above and never changed, so a personal injury page reports as a criminal defense ad
+  group; and one entry whose subdomain does not match the same page in the catch-all's
+  exclusion list, so that page both matches its branch and falls through to the fallback,
+  producing a duplicate lead and a false alert. None of these announce themselves, because
+  every one of them still creates a lead. The lesson is that a routing table assembled by hand,
+  branch by branch, needs a test that asserts the obvious invariants: every filter value
+  appears exactly once, every branch's label matches its route, and the catch-all's exclusion
+  list is exactly the set of mapped pages. That check is a few lines and I never wrote it.
+- **Debug instrumentation outlived its purpose.** The scenario emails the full payload of every
+  lead to me, which was right while I was verifying the routing and wrong the day after. It is
+  still on, so a copy of every enquirer's name, phone, email and case description accumulates
+  in an inbox that is not the system of record and is not covered by the client's retention
+  rules. Temporary monitoring needs an expiry date attached at the moment it is added.
 - **I over-engineered the cost ingestion.** Parsing the agency's monthly report out of email,
   finding the right month's column and writing two cells into a copied sheet is a lot of
   machinery to save someone copying two numbers. It has more ways to break than the manual
