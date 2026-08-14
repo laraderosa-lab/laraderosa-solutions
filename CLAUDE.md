@@ -70,7 +70,7 @@ Seven total. Five are unwritten.
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted. Refinement continues in its own dedicated session |
 | `marketing-engine` | **Guess.** Invented from the single word "marketing" | TBD | Not started |
-| `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted from one handover doc; `OPEN`s on diagnosis, involvement, impact |
+| `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
 | `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
 | `liability-dispute-agent` | Lara's own words | TBD | Not started |
 | `medical-provider-agent` | Lara's own words | TBD | Not started |
@@ -102,6 +102,14 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   engagement produced all seven. Confirm the split with Lara.
 - **Handover docs for these projects may be authored by colleagues.** The lien one was, and
   it says "we" throughout. Never write §6 (My involvement) from a doc Lara did not write; ask.
+  On the lien project the answer was **co-built**: a colleague wrote the first version, Lara
+  reworked it substantially. She asked that the write-up not characterise the earlier version
+  as weak, so it says whose it was and stops there. Expect this shape again.
+- **Not every project has a diagnosis story or measured impact.** The lien one arrived as a
+  defined request and nothing was measured before or after. Lara said so plainly. The right
+  move is a short §2 explaining the scoping judgment that was actually made, and a §7 that
+  states up front that nothing was measured. Do not pad either section, and never manufacture
+  a discovery narrative to fill the template.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
@@ -120,8 +128,10 @@ One line per session, newest last.
   solid: the statutory net-recovery split, the pro-rata pool, and why a per-lienholder letter
   set has to reconcile against a shared derivation. Scrubbed from the source before drafting:
   client firm name, doc author's name, case management vendor name, and a client wiki URL
-  containing the firm name. Three `OPEN` blocks carry the weight, on diagnosis, involvement
-  and measured impact, and involvement is genuinely blocking.
+  containing the firm name. Lara then confirmed: co-built with a colleague, no diagnosis
+  story, no metrics. Rewritten to say all three plainly instead of carrying `OPEN` blocks, so
+  the entry reads as finished. Left open: timeline, current status, and which parts her
+  rework covered.
 
 ## Conventions
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two
