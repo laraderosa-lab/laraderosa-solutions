@@ -1,11 +1,12 @@
 # Marketing Attribution
 
 > A small criminal-defense and personal-injury firm was spending well over half a million
-> dollars a year on marketing and could not say which of it produced cases. I rebuilt
-> attribution end to end, from a thousand junk source records to a clean taxonomy with lead
-> capture, ad spend and settled case value all landing on the same rows, then put a Power BI
-> dashboard on top of it. **ROI per marketing source became a number the owner could act on**
-> rather than a slide produced by the vendor being evaluated.
+> dollars a year on marketing and could not say which of it produced cases. The fix was not a
+> dashboard. It was forcing the firm's own agency to restructure its ad account so that leads
+> became attributable at all, then rebuilding the taxonomy, the capture, the cost model and the
+> revenue backflow underneath. Paid search went from **no attribution to ad-group-level
+> attribution on both the call and the form channel**, with ROI per source in Power BI that the
+> owner could act on instead of a slide written by the vendor being evaluated.
 
 ## At a glance
 
@@ -13,9 +14,9 @@
 |---|---|
 | **Client** | US law firm, criminal defense and personal injury, single office <!-- OPEN: headcount? I only know ~6 people by role (owner, ops/marketing manager, intake specialist, Clio admin, accountant). Small enough that the owner sees every invoice. --> |
 | **Domain** | Marketing operations and intake attribution |
-| **My role** | Sole engineer, from pitching the work unasked through to handover |
+| **My role** | Sole engineer, from diagnosis and pitch through to handover |
 | **Timeline** | Delivered in workstreams over many months. The ROI attribution piece alone was scoped at 20 to 30 hours across 2 to 3 weeks <!-- OPEN: when did you pick the client up, and what were the start and end dates overall? --> |
-| **Stack** | Lawmatics, Clio Manage, Make, Skyvia, BigQuery, Power BI, CallRail, Google Ads, Google LSA, ClickFunnels, QuickBooks Online, Google Sheets, Google Workspace admin rules |
+| **Stack** | Lawmatics, Clio Manage, Make, Skyvia, BigQuery, Power BI, CallRail, Google Ads, Google LSA, Meta Ads, ClickFunnels, QuickBooks Online, Google Sheets, Google Workspace admin rules |
 | **Status** | In production, handed off to a colleague |
 
 ---
@@ -40,18 +41,18 @@ want them confirmed before they sit in a public repo. -->
 
 ## 2. Diagnosis: how I knew this was the problem to solve
 
-Nobody asked for this. There was no ticket, no brief, and no budget line. I pitched it, and it
-took months to land.
+The firm named the symptom itself. It was spending heavily across a lot of marketing sources
+and could not see which of them worked. What it did not have was a cause, a route to fixing
+one, or any sense of how far down the problem went. There was no ticket and no budget line for
+this, and it took months of pitching before it became a funded project, because the symptom
+sounds like a reporting request and the fix is four layers underneath the reports.
 
-**Where it started.** The firm kept telling me it wanted to grow. Growth for a firm that buys
-its cases means spending more on marketing, and they had no basis for deciding where the next
-dollar should go. So the question I kept putting in front of them was not "what should we
-automate", it was "you are about to spend more, and you cannot tell me what the last spend
-bought you."
-
-That is a slower sell than a broken workflow, because nothing is visibly on fire. It only
-became fundable once growth came up as an explicit goal, and a diagnosis with no proposal
-attached gets nodded at and forgotten. I had one ready.
+**Why it had stayed unfixed.** A firm that buys its cases and wants to grow has to spend more,
+and the question I kept putting in front of them was not "what should we automate", it was
+"you are about to spend more, and you cannot tell me what the last spend bought you." That is
+a slower sell than a broken workflow, because nothing is visibly on fire. It became fundable
+once growth came up as an explicit goal, and a diagnosis with no proposal attached gets nodded
+at and forgotten. I had one ready.
 
 **What the evidence said.** Four things, each of which independently broke ROI reporting:
 
@@ -59,10 +60,15 @@ attached gets nodded at and forgotten. I had one ready.
    Lawmatics, because someone had created one source per individual referral partner. Add
    duplicates on top, including three separate sources that all meant paid search. No
    grouping, so no denominator, so no rate of anything.
-2. **Half the leads arrived with no attribution at all.** Form submissions came in from the
-   agency's landing pages through an integration that created the matter but carried no source
-   or campaign, because the agency did not set UTM parameters. Those leads sat in Lawmatics
-   with the marketing origin blank.
+2. **The ad account had no one-to-one structure, so neither channel could be attributed.**
+   This is the root cause, and it sat in the agency's Google Ads setup rather than anywhere in
+   the firm's systems. The same landing page was serving several campaigns and ad groups at
+   once, so a personal injury ad and a criminal defense ad could deliver a visitor to the same
+   page. That page carries one call-tracking number and one form, so both routes into the firm
+   arrive identical no matter which ad was paid for. Tracking numbers were reused across
+   campaigns on top of that. There was no signal left to attribute on, and the form path made
+   it worse by pushing submissions into Lawmatics through an integration that set no UTM
+   parameters, so those leads landed with the marketing origin blank.
 3. **The revenue side only counted half the firm.** Case value is recorded in Clio Manage and
    never flowed back to Lawmatics, so Lawmatics reported revenue for criminal defense (priced
    at intake) and effectively zero for personal injury. Every PI source looked like it
@@ -104,10 +110,11 @@ So the work went into the source data, and the reporting layer stayed thin.
 ## 3. Problem
 
 The firm was spending well over half a million dollars a year to acquire cases and had no
-reliable read on which sources produced them. The source taxonomy could not be grouped, a
-whole capture channel arrived unattributed, personal injury revenue never reached the system
-doing the reporting, and the conversion rates that did exist were biased upward by cases that
-had been dropped or rejected without being marked as such.
+reliable read on which sources produced them. The ad account had no one-to-one structure, so
+paid search leads could not be attributed on either the call or the form channel. The source
+taxonomy could not be grouped. Personal injury revenue never reached the system doing the
+reporting. And the conversion rates that did exist were biased upward by cases that had been
+dropped or rejected without being marked as such.
 
 The cost of leaving it alone is not staff hours. It is capital allocation. Every month the
 firm renewed a roughly $20,000 paid search budget, a retainer with an agency it suspected was
@@ -129,15 +136,27 @@ reimported so history stayed comparable. I did that remapping by hand rather tha
 to a model, because a silent mis-map in the historical data poisons every rate the system
 later reports and there is no way to notice it happened.
 
-**Attribute the calls.** A CallRail tracking number per source and campaign, wired through the
-native Lawmatics integration, so an inbound call creates a matter already carrying its origin.
+**Restructure the ad account first, because everything else depends on it.** No amount of
+integration work fixes a setup where two different ads land on the same page. So the enabling
+move was a structural rule imposed on the agency: **one landing page per ad group**, and a
+campaign carries several ad groups, which is what buys the granularity. Then **one
+call-tracking number per landing page**, which I set up. That single change makes the page
+itself the attribution key, and it fixes both channels at once, because on a landing page the
+phone number and the form are two doors into the same room.
 
-**Attribute the forms.** The hard one, and mostly not a technical problem (see §5). The agency
-owned the ClickFunnels landing pages, pushed submissions into Lawmatics without source or
-campaign, and told us there was nothing they could do. I had the webhook redirected to a Make
-scenario instead, and derive campaign and ad group from the **landing page the form was
-submitted on**, which is the only signal in the payload the agency cannot quietly change
-without our routing failing loudly.
+**Attribute the calls.** Once each landing page has its own tracking number, the only way to
+reach that number is to have come through that ad group. Attribution stops being an inference
+and becomes a property of the structure. The numbers are dynamic tracking numbers that swap
+per visitor, so this had to be one number pool per page rather than one static number.
+
+**Attribute the forms.** The agency's forms live in ClickFunnels, not Lawmatics, so the clean
+path (embed a Lawmatics form, let it read the UTM parameters) was closed. Two moves instead.
+First, I rebuilt Lawmatics' own forms so each one carries preset hidden fields for source,
+campaign and a custom ad group field. Second, I negotiated the agency's webhook away from
+Lawmatics and into a Make scenario, which reads the landing page off the payload, routes on
+it, and submits the matching prefilled form. Source is always paid search on this path. The
+landing page tells you which campaign, because the campaign's ad groups each have exactly one
+page, and it tells you which ad group, because that mapping is now one to one.
 
 **Get the real revenue in.** Criminal defense value is already correct at intake. Personal
 injury value is only final when Clio says so, so a daily job carries the settled value across,
@@ -148,43 +167,55 @@ closure.
 lost, did-not-hire leads get their status corrected, and junk matters created by the firm's
 main phone line get archived and deleted.
 
-**Get the costs in.** This turned out to be its own workstream, because "what does this source
-cost" has a different answer for every source. Daily ad spend arrives through the Google Ads
-integration. Agency fees and ad spend the firm cannot see directly are parsed out of the
-agency's own monthly report by email. Referral fees and anything that shows up as a bill are
-mapped from the accounting system. Organic channels are costed honestly rather than counted as
-free, so the social channel carries the posting time it consumes plus its design subscription,
-which I worked out by sitting down with the person who does the posting and going through her
-week. Everything lands in a monthly cost sheet that gets keyed into Lawmatics. That last mile
-is manual, and §5 explains why it has to be.
+**Get the costs in, because attribution alone is not ROI.** Knowing a campaign produced eleven
+signed cases says nothing until you know what it cost. This turned out to be its own
+workstream, because "what does this source cost" has a different answer for every source.
+Paid search spend arrives through the native Google Ads integration, which is the one thing
+that integration is good for. Agency fees and the ad spend the firm cannot see directly are
+parsed out of the agency's monthly report by email. Referral fees and anything that arrives as
+a bill come out of the accounting system, by report and by API. Organic channels are costed
+rather than counted as free, so the social channel carries the posting time it consumes plus
+its design subscription, which I worked out by sitting down with the person who does the
+posting and going through her week. Everything lands in a monthly cost sheet that gets keyed
+into Lawmatics. That last mile is manual, and §5 explains why it has to be.
 
-**Put a dashboard on it.** Lawmatics' native reporting is the floor. It cannot join Lawmatics
-to Clio or to the cost sheet, and ROI per source is a joined question, so the reporting layer
-is Power BI reading a BigQuery warehouse.
+**Put a dashboard on it.** Lawmatics' native reporting is the floor. It can only see its own
+system, and the questions worth asking span two, so the reporting layer is Power BI over a
+BigQuery warehouse fed from both.
 
-Nothing existed to get Lawmatics into that warehouse. Skyvia does the replication and has no
-Lawmatics connector, so I wrote one: a declarative REST connector definition covering thirteen
-objects, with auth, paging, throttling, retry and incremental-sync rules, replicating into a
-BigQuery dataset that Power BI sits on top of. That definition is the most interesting artifact
-on the project and it is the excerpt in §5.
+Nothing existed to get either system into that warehouse. Skyvia does the replication and had
+no connector for Lawmatics, so I wrote one: a declarative REST connector definition covering
+thirteen objects, with auth, paging, throttling, retry and incremental-sync rules, replicating
+hourly into BigQuery. That definition is the most interesting artifact on the project and it is
+the excerpt below.
+
+The dashboard has two halves, because the firm has two questions:
+
+- **Marketing**, from Lawmatics. ROI and conversion by source, campaign and ad group. Total
+  leads, hired, not hired, and the reason each rejected lead was rejected. This is the half the
+  attribution work exists to make true.
+- **Operations**, from Clio Manage. Cases by stage, and task tracking across the caseload.
+  Once the pipeline into the warehouse exists, the marginal cost of the second half is a
+  second connector, which is a good argument for building the plumbing properly the first
+  time.
 
 <!-- OPEN: still needed on the reporting layer:
-  - What is actually on the dashboard? Which views, which measures, sliced how?
-  - Does it read Clio directly too, or only Lawmatics via BigQuery?
+  - Which measures and visuals specifically, and are they sliced by practice area?
   - Do the costs reach it from the values keyed into Lawmatics monthly, or from the Sheet?
   - Who opens it, how often, and did it fully replace the V1 Lawmatics-native dashboard?
+  - The Clio operations half: was that connector also custom, or does Skyvia have a Clio one?
 -->
 
 ## 5. Architecture
 
 ```mermaid
 flowchart TB
-  subgraph capture["Lead capture, two channels, one taxonomy"]
-    calls(["Inbound calls"])
-    forms(["Landing page forms"])
-    cr["CallRail<br/>one tracking number per source + campaign"]
-    cf["ClickFunnels landing pages<br/>(agency-owned)"]
-    resolver["Attribution resolver (Make)<br/>landing page → campaign → ad group"]
+  subgraph capture["Lead capture: one ad group, one landing page, two doors"]
+    ag(["Google Ads<br/>campaign → ad group"])
+    lp["Landing page<br/>exactly one per ad group<br/>(rule imposed on the agency)"]
+    cr["CallRail number pool<br/>one per landing page"]
+    form(["ClickFunnels form"])
+    resolver["Attribution resolver (Make)<br/>landing page → campaign + ad group<br/>→ submit prefilled Lawmatics form"]
   end
 
   lm[("Lawmatics<br/>matter · source · campaign · ad group")]
@@ -204,16 +235,16 @@ flowchart TB
   end
 
   subgraph bi["Reporting"]
-    api["Lawmatics REST API"]
-    sky["Skyvia replication<br/>custom REST connector, 13 objects<br/>incremental, throttled, retrying"]
+    sky["Skyvia replication, hourly<br/>custom REST connector, 13 objects<br/>incremental, throttled, retrying"]
     bq[("BigQuery<br/>one table per object")]
-    pbi["Power BI<br/>ROI per source"]
+    pbi["Power BI<br/>marketing: ROI by source · campaign · ad group<br/>operations: cases by stage, tasks"]
   end
 
   alert(["Alert to me"])
 
-  calls --> cr --> lm
-  forms --> cf -->|webhook| resolver --> lm
+  ag --> lp
+  lp --> cr -->|"native integration"| lm
+  lp --> form -->|webhook| resolver --> lm
   resolver -.->|"unrecognised landing page"| alert
   ads --> lm
   report --> sheet -->|"manual, monthly"| lm
@@ -221,7 +252,9 @@ flowchart TB
   clio --> h2 --> lm
   h3 --> lm
   h4 --> lm
-  lm --> api --> sky --> bq --> pbi
+  lm --> sky
+  clio --> sky
+  sky --> bq --> pbi
 ```
 
 ### Key decisions and tradeoffs
@@ -267,36 +300,45 @@ flowchart TB
 *Redacted and simplified. The decision worth showing is deriving attribution from the one
 field a hostile-ish upstream cannot quietly change, and making the unmatched case loud.*
 
+The lead is not written through a generic create call. Each route submits a **prefilled
+Lawmatics form**, one per ad group, whose hidden source, campaign and ad group fields are set
+in advance. The attribution is carried by which form gets submitted, so the CRM applies its own
+normal intake handling rather than being written to sideways.
+
 ```js
-// The agency owns the landing pages and does not set UTM parameters, so source, campaign
-// and ad group are derived from the page the form was submitted on. This is only sound
-// because I got a one-page-per-ad-group rule agreed first (see below).
+// The agency owns the landing pages and sets no UTM parameters, so the page the form was
+// submitted on IS the attribution key. Sound only because one page maps to one ad group.
 const ROUTES = {
-  '<campaign-a>/<ad-group-1>': { source: PAID_SEARCH, campaign: '<campaign-a>', adGroup: '<ad-group-1>' },
-  '<campaign-a>/<ad-group-2>': { source: PAID_SEARCH, campaign: '<campaign-a>', adGroup: '<ad-group-2>' },
-  // ... one entry per ad group, across every live campaign
+  '<lp-slug-1>': { form: '<prefilled-form-id-1>', campaign: '<campaign-a>', adGroup: '<ad-group-1>' },
+  '<lp-slug-2>': { form: '<prefilled-form-id-2>', campaign: '<campaign-a>', adGroup: '<ad-group-2>' },
+  // ... one entry per ad group, across every live campaign. Source is always paid search here.
 };
 
 const route = ROUTES[normalise(payload.landing_page)];
 
 if (!route) {
   // Do not guess, and do not drop it. An unrecognised page means the upstream changed
-  // something, and every lead through that page is mis-attributed until it is mapped.
+  // something, and every lead through it is mis-attributed until someone maps it.
   notify(`Unmapped landing page: ${payload.landing_page}`);
-  return createMatter({ ...payload, source: UNATTRIBUTED });
+  return submitForm(FALLBACK_FORM, payload);
 }
 
-return createMatter({ ...payload, ...route });
+return submitForm(route.form, payload);   // source, campaign and ad group ride on the form
 ```
 
-**The part that made this work was not the code.** The agency had been running the same
-landing page across several campaigns and ad groups, and reusing one tracking number across
-different campaigns, which makes attribution impossible from any signal in the payload. Their
-position was that they could produce the statistics from their own platforms, which is true
-and useless, because those numbers cannot reach Lawmatics where the signed cases are. So I
-took it to the firm's owner, who has commercial leverage I do not, and got **one landing page
-per ad group per campaign** agreed as a standing rule. The routing table above is only correct
-because that negotiation happened first.
+**The part that made this work was not the code.** None of the above is possible while one
+landing page serves several ad groups, because then the page identifies nothing. The agency
+was doing exactly that, and reusing tracking numbers across campaigns on top of it. Its
+position was that it could produce the statistics from its own platforms, which is true and
+useless, because those numbers cannot reach Lawmatics where the signed cases are. I had no
+commercial leverage over a vendor the firm was paying, so I took it to the firm's owner, who
+did, and got **one landing page per ad group** agreed as a standing rule. The routing table
+above is a consequence of that negotiation, not a substitute for it.
+
+That rule is also what fixed the phone channel, which is the part worth noticing. Each landing
+page carries its own call-tracking number pool, so once pages map one to one onto ad groups,
+the number a caller dials identifies the ad group by construction. One structural change
+attributed both channels, and neither could have been fixed downstream.
 
 *Second excerpt: the daily value sync, and why it is safe to re-run.*
 
@@ -432,29 +474,32 @@ is for. And it was months of pitching a project nobody had asked for.
 
 ## 7. Impact
 
-**The before state, measured while scoping:**
+| | Before | After |
+|---|---|---|
+| **Attribution granularity** | None on paid search. Two different ads could deliver a visitor to the same page, the same number and the same form | **Source, campaign and ad group**, on both the call and the form channel |
+| Marketing sources in Lawmatics | ~1,000, one per referral partner, plus duplicates | A grouped taxonomy, deduplicated, with historical matters remapped onto it |
+| Form-submitted leads carrying source and campaign | None | Every one, carried by which prefilled form the router submits |
+| Personal injury revenue visible to ROI reporting | None. Only criminal defense, priced at intake | Settled PI value synced back from Clio daily on an explicit final-value gate |
+| Conversion rates | Overstated, since dropped and rejected cases kept their prior status | Corrected daily by the hygiene jobs |
+| Cost per source | Known only for paid search | Every source carries a cost, including organic ones costed at the time they consume |
+| Reporting | The agency's monthly report, on impressions and clicks | Power BI over an hourly warehouse: ROI and conversion by source, campaign and ad group, plus rejection reasons |
+| Basis for evaluating the agency and the lead vendor | The vendors' own reports | The firm's own data |
 
-| | Before |
-|---|---|
-| Marketing sources in Lawmatics | ~1,000, one per referral partner, plus duplicates |
-| Form-submitted leads carrying source and campaign | None |
-| Personal injury revenue visible to ROI reporting | None |
-| Conversion rates | Overstated, since dropped and rejected cases kept their prior status |
-| Junk matters from the main phone line | ~9 in 10 tracked main-line calls created one |
-| Basis for evaluating the agency and the lead vendor | The vendors' own reports |
+The row that matters is the first one. The firm went from being unable to attribute a paid
+search lead at all to attributing it down to the ad group, which is the level at which spend
+decisions actually get made.
 
-<!-- OPEN: this section decides whether the case study lands, and I do not have the after
-numbers. Whatever you have:
-  - ROI per source now populated: for how many sources, and is the owner actually using it?
-  - Did it change a spend decision? The lead vendor evaluation at month six or nine, the
-    agency contract non-renewal, a budget reallocation. One decision made on these numbers is
-    worth more than any percentage.
-  - Conversion rate before vs after the hygiene jobs, if you can see both.
+<!-- OPEN: the table above is a capability change, which is real and defensible. What would
+make this section land is a business outcome on top of it:
+  - Did it change a spend decision? A campaign or ad group cut or scaled on these numbers, the
+    lead vendor evaluated at month six or nine, the agency contract not renewed. One decision
+    made on this data beats any percentage.
+  - Conversion rate before vs after the hygiene jobs, if both are visible.
   - Junk matters deleted per week.
   - Lead-dispute recovery: did the seven-day task automation actually save chargebacks, and
-    roughly how much? At $3,000 a lead this could be the single best number in the study.
+    roughly how much? At $3,000 a lead that could be the single best number in the study.
   - Dashboard adoption: who opens it, how often.
-If none of it was measured, say so and I will write it as an honest qualitative outcome. -->
+If none of it was measured, say so and I will write one honest qualitative line instead. -->
 
 ## 8. What I'd do differently
 
@@ -478,11 +523,6 @@ If none of it was measured, say so and I will write it as an honest qualitative 
 - **I should have built the dashboard first.** Two of the four data-quality problems were only
   visible in aggregate, and I found them late because I treated reporting as the last step
   rather than as the instrument that shows you what is wrong.
-- **The replication runs manually.** Everything else on this project is automated and the last
-  step is someone remembering to press a button, which means the dashboard is silently as old
-  as the last time anyone thought about it. Scheduling it is a five-minute change I did not
-  make, and stale numbers presented confidently are worse than no dashboard, because nobody
-  doubts them.
 - **The connector pulls fields the warehouse has no business holding.** The field list on the
   main object was written to be exhaustive, so it includes social security number, driver
   licence and date of birth, which are replicated into the warehouse and are not used by a
