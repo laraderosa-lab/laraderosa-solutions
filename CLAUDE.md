@@ -64,23 +64,27 @@ pass.
 
 ## The seven solutions
 
-Seven total. Six are unwritten.
+Seven total. Five are unwritten.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted. Refinement continues in its own dedicated session |
-| `marketing-engine` | **Guess.** Invented from the single word "marketing" | TBD | Not started |
+| `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | Drafted. OPEN on the Skyvia/Power BI layer, timeline, and every after-state number |
 | `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
 | `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
 | `liability-dispute-agent` | Lara's own words | TBD | Not started |
 | `medical-provider-agent` | Lara's own words | TBD | Not started |
 | `document-generation` | Lara's own words | TBD | Not started |
 
-**Do not infer what a project is from its slug.** The three marked *Guess* are placeholders
+**Do not infer what a project is from its slug.** The two still marked *Guess* are placeholders
 Claude invented in the first session with no knowledge of the work, and they will read as
 established fact if you let them. Ask Lara what each project actually was, then rename the
-folder. `fnol-intake-agent` was renamed to `fnol-voice-agent` for exactly this reason, because
-"intake" means client signup in personal injury, not claim opening.
+folder. `fnol-intake-agent` became `fnol-voice-agent` and `marketing-engine` became
+`marketing-attribution` for exactly this reason: "intake" means client signup in personal
+injury rather than claim opening, and the marketing work produces no marketing, it measures it.
+
+`firm-ops-dashboard` is **confirmed by Lara as a different client** from the Power BI dashboard
+inside `marketing-attribution`. Two dashboards, two engagements. Do not merge them.
 
 Lara refers to these projects by client name, which is not recorded here (public repo). Expect
 shorthand that matches no slug, and ask which one she means rather than guessing.
@@ -93,9 +97,17 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   from the same ~10-solution engagement** at that firm. Confirm with Lara. If so, the root
   README should say so, because one audit producing ten solutions is a stronger story than
   four unrelated builds, and the shared diagnosis stops being repeated four times.
+- The `marketing-attribution` client is a **different, much smaller firm**: single office, US,
+  criminal defense (the larger book) plus personal injury (the growth bet), roughly six people
+  known by role. It runs **Lawmatics** for intake and **Clio Manage** for case management, and
+  Lara has confirmed both may be named. Do not conflate it with the FNOL firm.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
+- **Google Docs cannot be read in this environment.** `docs.google.com` is blocked by the
+  network egress proxy, and the Google Drive connector exposes only `share_file`, `trash_file`
+  and `update_file`, with no content fetch. Ask Lara to paste or upload doc contents instead of
+  sharing a link, and do not burn a turn discovering this again.
 
 ## Progress log
 One line per session, newest last.
@@ -106,6 +118,16 @@ One line per session, newest last.
   one person can hold one phone line). Prose passed through `no-ai-slop`. Still open on FNOL:
   Lara's role, timeline, measured after-state, alternatives ruled out, how much to say about
   the CMS API workaround.
+- **2026-08-14.** `marketing-engine` renamed to `marketing-attribution` and drafted as the
+  second flagship, from a 90-minute client-handover transcript (the walkthrough Google Doc was
+  unreadable, see above). Different, much smaller client than FNOL. The story is a project Lara
+  pitched unasked for months: ~1,000 junk marketing sources, a whole capture channel arriving
+  with no attribution because the agency set no UTM parameters, PI revenue never reaching the
+  reporting system, and conversion rates inflated by dropped cases that stayed marked hired.
+  The strongest beat is non-technical, forcing a hostile vendor onto one-landing-page-per-ad-
+  group by escalating to the firm's owner. Lawmatics and Clio Manage cleared for naming. Still
+  open: the Skyvia-to-Power BI layer (Lara built a custom Lawmatics connector, vibe coded, and
+  the transcript predates it), the timeline, Lara's role split, and every after-state number.
 
 ## Conventions
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two

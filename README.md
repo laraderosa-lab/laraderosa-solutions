@@ -11,7 +11,7 @@ worth fixing**, what I built, and what changed as a result.
 | Solution | What it does | Problem it solved | Stack |
 |---|---|---|---|
 | ★ **[FNOL voice agent](./fnol-voice-agent)** | Voice AI agent phones insurance carriers to open claims, navigating IVRs, holding, and answering the carrier's interview, with a human approval gate and post-call accuracy verification | A 400-person PI firm was spending **~125–200 staff-hours a week** opening claims by phone, a tenth to a sixth of the claims department's whole capacity, one call at a time. Calls now run concurrently. | Retell AI, Copilot Studio, Power Automate, Dataverse, React/TS |
-| [Marketing engine](./marketing-engine) | | | |
+| ★ **[Marketing attribution](./marketing-attribution)** | Rebuilds a law firm's marketing attribution from lead capture through to settled case value, so ROI per marketing source is a number the owner can act on | A small criminal-defense and PI firm was spending **well over $500k a year** buying cases with no reliable read on which sources produced them. Its only ROI reporting came from the agency being evaluated. | Lawmatics, Clio Manage, Make, Skyvia, Power BI, CallRail, Google Ads |
 | [Medical lien calculator](./medical-lien-calculator) | | | |
 | [Liability dispute agent](./liability-dispute-agent) | | | |
 | [Medical provider agent](./medical-provider-agent) | | | |
@@ -27,7 +27,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | | Discovery / audit | LLM agents | Data modelling | Integrations | Front-end / dashboards | Deployed & handed off |
 |---|---|---|---|---|---|---|
 | FNOL voice agent | ✅ | ✅ | ✅ | ✅ | ✅ | |
-| Marketing engine | | | | | | |
+| Marketing attribution | ✅ | | ✅ | ✅ | ✅ | ✅ |
 | Medical lien calculator | | | | | | |
 | Liability dispute agent | | | | | | |
 | Medical provider agent | | | | | | |
