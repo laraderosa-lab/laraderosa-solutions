@@ -14,8 +14,8 @@
 | **Client** | US law firm, criminal defense and personal injury, single office <!-- OPEN: headcount? I only know ~6 people by role (owner, ops/marketing manager, intake specialist, Clio admin, accountant). Small enough that the owner sees every invoice. --> |
 | **Domain** | Marketing operations and intake attribution |
 | **My role** | Sole engineer, from pitching the work unasked through to handover |
-| **Timeline** | <!-- OPEN: when did you pick this client up, and over what period did the attribution work run? The walkthrough implies many months. --> |
-| **Stack** | Lawmatics, Clio Manage, Make, Skyvia, Power BI, CallRail, Google Ads, Google LSA, ClickFunnels, Google Sheets, Google Workspace admin rules |
+| **Timeline** | Delivered in workstreams over many months. The ROI attribution piece alone was scoped at 20 to 30 hours across 2 to 3 weeks <!-- OPEN: when did you pick the client up, and what were the start and end dates overall? --> |
+| **Stack** | Lawmatics, Clio Manage, Make, Skyvia, Power BI, CallRail, Google Ads, Google LSA, ClickFunnels, QuickBooks Online, Google Sheets, Google Workspace admin rules |
 | **Status** | In production, handed off to a colleague |
 
 ---
@@ -148,18 +148,25 @@ closure.
 lost, did-not-hire leads get their status corrected, and junk matters created by the firm's
 main phone line get archived and deleted.
 
-**Get the costs in.** Daily ad spend arrives through the Google Ads integration. Everything
-else, including organic channels costed honestly at the staff time and tooling they consume,
-comes from a monthly cost sheet, partly populated by parsing the agency's own monthly report
-out of email. That last mile is manual, and §5 explains why it has to be.
+**Get the costs in.** This turned out to be its own workstream, because "what does this source
+cost" has a different answer for every source. Daily ad spend arrives through the Google Ads
+integration. Agency fees and ad spend the firm cannot see directly are parsed out of the
+agency's own monthly report by email. Referral fees and anything that shows up as a bill are
+mapped from the accounting system. Organic channels are costed honestly rather than counted as
+free, so the social channel carries the posting time it consumes plus its design subscription,
+which I worked out by sitting down with the person who does the posting and going through her
+week. Everything lands in a monthly cost sheet that gets keyed into Lawmatics. That last mile
+is manual, and §5 explains why it has to be.
 
 **Put a dashboard on it.** Lawmatics' native reporting is the floor, not the ceiling, so the
 reporting layer is Power BI. Getting Lawmatics data into it needed a connector that did not
 exist, which I built.
 
-<!-- OPEN: the dashboard and the Skyvia connector are the part I have almost nothing on. The
-walkthrough call predates them. Here is my current understanding, written out so you only have
-to correct the deltas rather than explain it from scratch:
+<!-- OPEN: the dashboard and the Skyvia connector are still the part I have almost nothing on.
+Both sources predate them: the walkthrough call describes the dashboard as the thing about to
+be launched, and the walkthrough doc lists "Dashboard in Power BI" as in progress with no
+detail under it. Neither mentions Skyvia at all. Here is my current understanding, written out
+so you only have to correct the deltas rather than explain it from scratch:
 
   - Skyvia has no off-the-shelf Lawmatics connector, so you authored a custom REST connector
     definition against the Lawmatics API to make Lawmatics a source Skyvia can replicate from.
@@ -325,13 +332,21 @@ Sole engineer on this client, and the work was mine end to end. <!-- OPEN: confi
 below and correct anything I have wrong. -->
 
 **Mine.** Pitching the project and getting it funded. The source taxonomy analysis and target
-model. The historical data remap, done by hand. The custom field cleanup and the Lawmatics to
-Clio field mapping. The lead vendor integration, including its field mapping, workflow
-carve-outs, and the task automation around the seven-day window for disputing leads the firm
-is charged for. The attribution resolver and every Make scenario. The cost model, including
-costing organic channels by sitting down with the person who posts and working out her hours.
-The daily sync and hygiene jobs. The Skyvia connector and the Power BI dashboard. The client
-relationship, weekly updates, and the handover.
+model. The historical data remap, done by hand. The custom field cleanup on both sides and the
+Lawmatics to Clio field mapping, including reworking the intake forms so the conditional logic
+collected the new fields at intake instead of leaving staff to chase half of them later. The
+lead vendor integration, including its field mapping, workflow carve-outs, and the task
+automation around the seven-day window for disputing leads the firm is charged for. The
+attribution resolver and every Make scenario. The cost model, including the interviews that
+established how each source is actually paid for. The daily sync and hygiene jobs. The Skyvia
+connector and the Power BI dashboard. The client relationship, weekly updates, and the
+handover.
+
+**How the design work was communicated.** Each workstream was mapped in Figma and walked
+through with the client before it was built, which for a non-technical audience is the
+difference between approving a change and approving a description of a change. The source
+taxonomy rework in particular is impossible to review as a list, and readable as a diagram of
+a thousand sources collapsing into a dozen.
 
 **Not mine.** A colleague set Clio Manage up before I took the client over, including its
 document templates and task lists, and built the inbound document routing. I worked on top of

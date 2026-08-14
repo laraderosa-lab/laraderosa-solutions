@@ -128,8 +128,17 @@ One line per session, newest last.
   group by escalating to the firm's owner. Lawmatics and Clio Manage cleared for naming. Still
   open: the Skyvia-to-Power BI layer (Lara built a custom Lawmatics connector, vibe coded, and
   the transcript predates it), the timeline, Lara's role split, and every after-state number.
+  The client walkthrough doc arrived later as a PDF and confirmed the workstream structure,
+  added the accounting-system and referral-fee cost mapping, and showed that each workstream was
+  designed in Figma and walked through with the client before being built. It does not mention
+  Skyvia either. Extract PDFs with `pip install pypdf` then repair the broken backend with
+  `pip install --force-reinstall cffi cryptography`; `pdftotext` and `pdftoppm` are unavailable
+  and poppler-utils will not install.
 
 ## Conventions
+- **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
+  client, in a branch name. If a session is handed one that does, say so before pushing and ask
+  to move the work.
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two
   sessions run at once, the second will hit push conflicts, so `git pull --rebase` before
   pushing, or work on a per-project branch.
