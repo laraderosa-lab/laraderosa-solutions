@@ -64,7 +64,7 @@ pass.
 
 ## The seven solutions
 
-Seven total. Six are unwritten.
+Seven total. Five are unwritten.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
@@ -74,7 +74,7 @@ Seven total. Six are unwritten.
 | `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
 | `liability-dispute-agent` | Lara's own words | TBD | Not started |
 | `medical-provider-agent` | Lara's own words | TBD | Not started |
-| `document-generation` | Lara's own words | TBD | Not started |
+| `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 
 **Do not infer what a project is from its slug.** The three marked *Guess* are placeholders
 Claude invented in the first session with no knowledge of the work, and they will read as
@@ -88,11 +88,22 @@ shorthand that matches no slug, and ask which one she means rather than guessing
 ## Reusable findings
 - The FNOL client is a **~400-person, ~$50M-revenue** plaintiff-side PI firm; its **claims
   department is ~30 people** (~1,200 hrs/wk capacity, the denominator that makes the
-  125–200 hrs/wk finding land). **Four of the seven projects (`fnol-voice-agent`,
-  `liability-dispute-agent`, `medical-provider-agent`, `document-generation`) plausibly come
-  from the same ~10-solution engagement** at that firm. Confirm with Lara. If so, the root
-  README should say so, because one audit producing ten solutions is a stronger story than
-  four unrelated builds, and the shared diagnosis stops being repeated four times.
+  125–200 hrs/wk finding land). **Three of the seven projects (`fnol-voice-agent`,
+  `liability-dispute-agent`, `medical-provider-agent`) plausibly come from the same
+  ~10-solution engagement** at that firm. Confirm with Lara. If so, the root README should say
+  so, because one audit producing ten solutions is a stronger story than three unrelated
+  builds, and the shared diagnosis stops being repeated three times.
+- **`document-generation` is not a project, it is the house method** for any solution that has
+  to emit a document, used across a big chunk of them. Confirmed 2026-08-14: the five-level
+  framework (boilerplate → merge fields → conditional logic → AI classification → AI narrative)
+  was **co-developed by Lara in a group session and written up by someone else**, so do not
+  claim sole authorship. Applied at **~a dozen** US plaintiff-side PI firms practice-wide,
+  **four by Lara directly**, several documents each. Design rule: lowest level that will do the
+  job. Level 4 classifies only, and the prose it selects was written by a human. Template
+  assessment is still **manual**.
+- All document work is **US plaintiff-side PI firms**. The walkthrough video Lara uses is an
+  **Ontario** statement of claim, so any reference to it must say the sample is Ontario while
+  the clients were US.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
@@ -106,6 +117,17 @@ One line per session, newest last.
   one person can hold one phone line). Prose passed through `no-ai-slop`. Still open on FNOL:
   Lara's role, timeline, measured after-state, alternatives ruled out, how much to say about
   the CMS API workaround.
+- **2026-08-14.** `document-generation` drafted on branch
+  `claude/document-generation-automation-67eozm`, framed as a **method entry** rather than a
+  single build, since Lara confirmed it is the approach used inside other solutions. Root
+  README row and capability matrix filled. Content came from Lara's verbal account in one
+  session: the five levels, the three deployment shapes (in-CMS with Word field formulas /
+  hybrid export to a flow / flow-only), and the two Level 5 wiring patterns (node per section
+  vs prompts bracketed inside the template). Still open: measured impact (none quoted yet, the
+  weakest part of the entry), Lara's per-client role split, flagship or not, whether the
+  walkthrough video link is public and its sample document clean, and confirmation that the
+  node-vs-in-template tradeoff is written the right way round. Lara will build the demand-letter
+  demo later; the entry deliberately does not describe it as existing.
 
 ## Conventions
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two

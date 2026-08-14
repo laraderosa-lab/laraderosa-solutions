@@ -16,9 +16,15 @@ worth fixing**, what I built, and what changed as a result.
 | [Liability dispute agent](./liability-dispute-agent) | | | |
 | [Medical provider agent](./medical-provider-agent) | | | |
 | [Firm operations dashboard](./firm-ops-dashboard) | | | |
-| [Document generation](./document-generation) | | | |
+| **[Document generation](./document-generation)** | Assesses each section of a legal template for the least powerful technique that will fill it, then assembles the document from five levels: boilerplate, merge fields, conditional logic, AI classification, AI narrative | Firms want long documents drafted automatically. Merge-field tooling cannot finish the document, and whole-document AI generation costs more, breaks Word formatting, and puts a review burden on every line. Deciding **per section** is what lets a reviewer know which parts of the page could not have come out wrong. Applied at ~a dozen US PI firms, four directly. | Power Automate, Make.com, SharePoint / Drive, Word field logic, CMS APIs, LLM nodes |
 
 ★ = flagship deep dive.
+<!-- OPEN: is document generation a flagship? It has the strongest reusable idea of the seven
+and the weakest measured impact. Add ★ and bold the row if yes. -->
+
+**Document generation is a method, not a build.** It is the approach used whenever one of the
+other solutions has to produce a document, so it appears inside several of the entries above.
+It has its own page because the reusable part is the assessment.
 
 ## Capabilities, by project
 
@@ -32,7 +38,15 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | Liability dispute agent | | | | | | |
 | Medical provider agent | | | | | | |
 | Firm operations dashboard | | | | | | |
-| Document generation | | | | | | |
+| Document generation | ✅ | ✅ | | ✅ | | ✅ |
+
+<!-- OPEN: two things to check on the document generation row.
+  (a) "LLM agents" is the wrong column name for it. That work is prompt orchestration
+      (classification nodes, scoped drafting nodes), not agents. Consider renaming the column
+      to "LLM systems" so the row is honest, or tell me to blank the tick.
+  (b) "Deployed & handed off" is ticked on the strength of "a lot of things were shipped".
+      Confirm the client owns and maintains them now, or I will split deployed from handed off. -->
+
 
 ## How to read these
 
