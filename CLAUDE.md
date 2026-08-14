@@ -133,7 +133,10 @@ One line per session, newest last.
   designed in Figma and walked through with the client before being built. It does not mention
   Skyvia either. Extract PDFs with `pip install pypdf` then repair the broken backend with
   `pip install --force-reinstall cffi cryptography`; `pdftotext` and `pdftoppm` are unavailable
-  and poppler-utils will not install.
+  and poppler-utils will not install. The reporting layer was then filled in from the connector
+  definition and replication config Lara pasted: custom REST connector against the Lawmatics
+  API, replicated into BigQuery, read by Power BI. Blocklist confirmed as **any names of people
+  or clients**. Branch moved off the client-named one it was handed.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

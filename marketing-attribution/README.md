@@ -15,7 +15,7 @@
 | **Domain** | Marketing operations and intake attribution |
 | **My role** | Sole engineer, from pitching the work unasked through to handover |
 | **Timeline** | Delivered in workstreams over many months. The ROI attribution piece alone was scoped at 20 to 30 hours across 2 to 3 weeks <!-- OPEN: when did you pick the client up, and what were the start and end dates overall? --> |
-| **Stack** | Lawmatics, Clio Manage, Make, Skyvia, Power BI, CallRail, Google Ads, Google LSA, ClickFunnels, QuickBooks Online, Google Sheets, Google Workspace admin rules |
+| **Stack** | Lawmatics, Clio Manage, Make, Skyvia, BigQuery, Power BI, CallRail, Google Ads, Google LSA, ClickFunnels, QuickBooks Online, Google Sheets, Google Workspace admin rules |
 | **Status** | In production, handed off to a colleague |
 
 ---
@@ -158,34 +158,21 @@ which I worked out by sitting down with the person who does the posting and goin
 week. Everything lands in a monthly cost sheet that gets keyed into Lawmatics. That last mile
 is manual, and §5 explains why it has to be.
 
-**Put a dashboard on it.** Lawmatics' native reporting is the floor, not the ceiling, so the
-reporting layer is Power BI. Getting Lawmatics data into it needed a connector that did not
-exist, which I built.
+**Put a dashboard on it.** Lawmatics' native reporting is the floor. It cannot join Lawmatics
+to Clio or to the cost sheet, and ROI per source is a joined question, so the reporting layer
+is Power BI reading a BigQuery warehouse.
 
-<!-- OPEN: the dashboard and the Skyvia connector are still the part I have almost nothing on.
-Both sources predate them: the walkthrough call describes the dashboard as the thing about to
-be launched, and the walkthrough doc lists "Dashboard in Power BI" as in progress with no
-detail under it. Neither mentions Skyvia at all. Here is my current understanding, written out
-so you only have to correct the deltas rather than explain it from scratch:
+Nothing existed to get Lawmatics into that warehouse. Skyvia does the replication and has no
+Lawmatics connector, so I wrote one: a declarative REST connector definition covering thirteen
+objects, with auth, paging, throttling, retry and incremental-sync rules, replicating into a
+BigQuery dataset that Power BI sits on top of. That definition is the most interesting artifact
+on the project and it is the excerpt in §5.
 
-  - Skyvia has no off-the-shelf Lawmatics connector, so you authored a custom REST connector
-    definition against the Lawmatics API to make Lawmatics a source Skyvia can replicate from.
-    Is that right, or did you build something that pushes into Skyvia from the other side?
-  - Skyvia then replicates into a relational target and/or exposes an OData endpoint, and
-    Power BI reads that. Which is it, and what is the target store?
-  - Refresh cadence? Scheduled replication, and how often?
-  - Why Skyvia at all, rather than Power BI hitting the Lawmatics API directly, or a Make
-    scenario writing to a database? That tradeoff is the interesting part for a reader.
-  - Does the dashboard read Clio too, or only Lawmatics?
-  - Where do the costs come from in the dashboard: the values keyed into Lawmatics monthly,
-    or the Google Sheet directly?
-  - What the connector actually had to handle: auth, pagination, rate limits, incremental
-    sync. This is where a custom connector gets genuinely hard and it is worth showing.
-  - What is on the dashboard? Which views, which metrics, sliced how?
-  - Who uses it, how often, and did it replace the V1 Lawmatics-native dashboard entirely?
-  - You said you vibe coded the connector. I think that is worth saying plainly in §6, it
-    reads as current and honest rather than sloppy, but it is your call and I have not put it
-    in yet.
+<!-- OPEN: still needed on the reporting layer:
+  - What is actually on the dashboard? Which views, which measures, sliced how?
+  - Does it read Clio directly too, or only Lawmatics via BigQuery?
+  - Do the costs reach it from the values keyed into Lawmatics monthly, or from the Sheet?
+  - Who opens it, how often, and did it fully replace the V1 Lawmatics-native dashboard?
 -->
 
 ## 5. Architecture
@@ -217,7 +204,9 @@ flowchart TB
   end
 
   subgraph bi["Reporting"]
-    sky["Skyvia<br/>custom Lawmatics connector"]
+    api["Lawmatics REST API"]
+    sky["Skyvia replication<br/>custom REST connector, 13 objects<br/>incremental, throttled, retrying"]
+    bq[("BigQuery<br/>one table per object")]
     pbi["Power BI<br/>ROI per source"]
   end
 
@@ -232,11 +221,8 @@ flowchart TB
   clio --> h2 --> lm
   h3 --> lm
   h4 --> lm
-  lm --> sky --> pbi
+  lm --> api --> sky --> bq --> pbi
 ```
-
-<!-- OPEN: the Skyvia and Power BI edges are drawn from my best guess at the shape. Correct
-the arrows once you have told me how the connector actually works. -->
 
 ### Key decisions and tradeoffs
 
@@ -248,8 +234,10 @@ the arrows once you have told me how the connector actually works. -->
 | **Write a "migrated" flag back into Clio** | The syncs are daily sweeps over recently-updated records rather than event-driven, so they must be safe to re-run. Flipping a flag on the source record makes the query filter itself the idempotency guard. | A write back into Clio on every sync, and one more field for staff to see and wonder about. |
 | **Archive junk matters to a sheet before deleting them** | The firm was nervous about an automation that deletes. The archive costs one step and made the deletion approvable. | Nobody has ever read the archive. It is a trust artifact, and it earns its cost anyway. |
 | **Costs entered by hand each month** | Lawmatics has no API for marketing-source costs, and its only alternative is per-campaign daily entry, which for a fixed monthly agency fee means asking a person to divide by thirty and type it in thirty times. | About fifteen minutes of manual work a month, and a dependency on someone remembering. I filed a feature request for the cost endpoint. |
-| **Power BI over Lawmatics' native dashboards** | <!-- OPEN: your reasoning. Mine would be that native reporting cannot join Lawmatics to Clio or to the cost sheet, and cannot express ROI per source the way the owner needs to read it. Confirm or replace. --> | <!-- OPEN --> |
-| **A custom Skyvia connector rather than a direct API pull** | <!-- OPEN: this is the decision a technical reader will care about most, and I do not want to invent the reasoning. --> | <!-- OPEN --> |
+| **Power BI over Lawmatics' native dashboards** | ROI per source is a joined question, and native reporting can only see its own system. It cannot reach Clio for settled case value or the sheet for costs. | A whole extra pipeline to own, for a client with no data team. |
+| **Replicate into a warehouse rather than point the BI tool at the API** | The API is paginated at 100 records a page and rate limited to ten requests a second. A BI tool refreshing against that is slow, fragile, and re-fetches everything to answer anything. A warehouse gives SQL, joins against the cost data, and history the API does not keep. | Latency between the CRM and the dashboard, and a second copy of the data to secure. |
+| **Custom fields land as a single JSON column** | Users add custom fields in the CRM whenever they like. Flattening them into typed columns means the warehouse schema changes underneath the dashboard every time someone adds a checkbox. Keeping them as JSON makes the schema stable and pushes the unnesting into queries that can be updated deliberately. | Anything inside custom fields costs a JSON extraction to query, and the warehouse cannot type-check it. |
+| **Incremental windows overlap on purpose** | The sync filters on updated-since, and the greater-than-or-equals variant carries a one-unit negative delta, so each run re-reads a sliver of the previous window. A duplicate is cheap and detectable downstream. A record that falls in the gap between two windows is invisible forever. | Duplicate rows to handle, which the API produces on its own anyway. |
 
 ### Constraints I built inside
 
@@ -264,8 +252,12 @@ the arrows once you have told me how the connector actually works. -->
 - **The CallRail integration cannot filter by number.** Every call to the tracked main line
   creates a matter, and roughly nine in ten of those are junk, because the firm routed its
   general telephony through it.
-- **No off-the-shelf path from Lawmatics into Power BI.** <!-- OPEN: expand once you have
-  described the connector. -->
+- **No off-the-shelf path from Lawmatics into Power BI.** The replication platform has
+  connectors for the usual SaaS estate and none for Lawmatics, so the connector had to be
+  written before any reporting could start. The API also returns a thin payload by default, so
+  the main object has to name all seventy-odd fields it wants explicitly on every request.
+- **The API returns occasional duplicate records** for the same primary key. That is upstream
+  and not fixable from here, so the warehouse has to tolerate it.
 - **Non-technical users throughout.** The people whose behaviour the data quality depends on
   are an intake specialist and an operations manager, so anything that needed doing had to be
   a checkbox on a screen they were already looking at.
@@ -326,6 +318,79 @@ for (const m of candidates) {
 The flag is written to the source system rather than held in the job, so the guard survives
 the job being re-run, re-deployed, or run twice in a day after a failed reauthentication.
 
+### Illustrative excerpt: the connector that did not exist
+
+*Redacted and trimmed from thirteen object definitions to one. No credentials appear in the
+definition itself, since auth is supplied by the platform at runtime.*
+
+The replication platform had no Lawmatics connector, so the source is described declaratively
+and the platform does the fetching. Most of the value is in four rules that have nothing to do
+with the data model:
+
+```jsonc
+{
+  "ProviderConfiguration": {
+    "BaseUrl": "https://api.lawmatics.com/v1",
+    "AuthorizationType": "AuthorizationToken",
+    "AuthorizationToken": { "TokenType": "Header", "TokenName": "Bearer", "HeaderName": "Authorization" },
+
+    // 1. Stay under the API's ceiling rather than discovering it in production.
+    "RateLimitThrottling": { "RequestsLimit": 10, "TimeInterval": 1000 },
+
+    // 2. Page by number, and trust the API's own page count rather than
+    //    walking until an empty response, which cannot distinguish "done" from "failed".
+    "PagingStrategy": {
+      "Type": "PageNo", "PageNoParameterName": "page", "PageSizeParameterName": "per_page",
+      "PageSize": 100, "StartIndex": 1, "TotalPageCountJPath": "meta.total_pages"
+    },
+
+    // 3. Throttling is a guess, so treat 429 as expected rather than exceptional.
+    "ErrorHandling": {
+      "Failover": {
+        "FailoverErrors": ["Too Many Requests", "429", "rate limit"],
+        "MaxRetries": 5, "MinDelay": 1000
+      }
+    }
+  },
+
+  "Metadata": { "Objects": [{
+    "Name": "Prospects",
+    "Url": "/prospects",
+    // The API returns a thin payload unless asked otherwise, so every field is named.
+    "ConstantParameters": [{ "ParameterName": "fields", "Value": "<70+ fields>" }],
+    "Columns": [
+      { "Name": "id",              "APIPath": "id",                            "Primary": true },
+      { "Name": "source_id",       "APIPath": "relationships.source.data.id"                   },
+      { "Name": "campaign_id",     "APIPath": "relationships.campaign.data.id"                 },
+      { "Name": "actual_value_cents", "APIPath": "attributes.actual_value_cents", "DbType": "Int64" },
+
+      // Unbounded and user-editable, so it stays JSON. Flattening it would mean the
+      // warehouse schema changes every time someone adds a field in the CRM.
+      { "Name": "custom_fields",   "APIPath": "attributes.custom_fields",      "DbType": "JsonArray" },
+
+      // 4. Incremental sync, with a deliberate overlap. The >= variant carries a negative
+      //    delta so each run re-reads the edge of the last window. Duplicates are cheap and
+      //    detectable. A record lost in the gap between two windows is invisible forever.
+      { "Name": "UpdatedDate", "APIPath": "attributes.updated_at", "DbType": "DateTime",
+        "FilterOperations": [
+          { "Operation": "GreaterThan",         "ParameterName": "updatedFrom" },
+          { "Operation": "GreaterThanOrEquals", "ParameterName": "updatedFrom", "Delta": -1 }
+        ] }
+    ]
+  }]}
+}
+```
+
+The lookup objects, sources, campaigns, stages and practice areas, are small enough to declare
+as unpaged, which removes a round trip each and a class of paging bug that only shows up when
+a list crosses one hundred entries.
+
+That overlap rule in (4) is the decision I would defend hardest. It guarantees duplicates, and
+the API produces duplicates of its own regardless, so the warehouse has to tolerate them
+either way. Choosing to create more of a problem you already have, in exchange for closing a
+silent one, is usually the right trade in a reporting pipeline, because a number that is
+slightly double-counted gets questioned and a number that is quietly missing rows does not.
+
 ## 6. My involvement
 
 Sole engineer on this client, and the work was mine end to end. <!-- OPEN: confirm the split
@@ -338,9 +403,16 @@ collected the new fields at intake instead of leaving staff to chase half of the
 lead vendor integration, including its field mapping, workflow carve-outs, and the task
 automation around the seven-day window for disputing leads the firm is charged for. The
 attribution resolver and every Make scenario. The cost model, including the interviews that
-established how each source is actually paid for. The daily sync and hygiene jobs. The Skyvia
-connector and the Power BI dashboard. The client relationship, weekly updates, and the
-handover.
+established how each source is actually paid for. The daily sync and hygiene jobs. The
+replication connector, the warehouse and the Power BI dashboard. The client relationship,
+weekly updates, and the handover.
+
+**On the connector, plainly.** I wrote it by iterating against the live API with a model rather
+than from a specification, because there was no specification. Vibe coded, and I would say so
+in an interview. It is a declarative definition rather than a program, which is exactly the
+shape of problem where that approach holds up: the failure modes are visible on the first run,
+the platform validates the schema, and being wrong costs a re-run rather than a bad write. I
+would not have built the deletion automation that way.
 
 **How the design work was communicated.** Each workstream was mapped in Figma and walked
 through with the client before it was built, which for a non-technical audience is the
@@ -406,6 +478,17 @@ If none of it was measured, say so and I will write it as an honest qualitative 
 - **I should have built the dashboard first.** Two of the four data-quality problems were only
   visible in aggregate, and I found them late because I treated reporting as the last step
   rather than as the instrument that shows you what is wrong.
+- **The replication runs manually.** Everything else on this project is automated and the last
+  step is someone remembering to press a button, which means the dashboard is silently as old
+  as the last time anyone thought about it. Scheduling it is a five-minute change I did not
+  make, and stale numbers presented confidently are worse than no dashboard, because nobody
+  doubts them.
+- **The connector pulls fields the warehouse has no business holding.** The field list on the
+  main object was written to be exhaustive, so it includes social security number, driver
+  licence and date of birth, which are replicated into the warehouse and are not used by a
+  single measure on the dashboard. Exhaustive is the wrong default when the destination is a
+  copy of the data outside the system of record. The field list should name what the reporting
+  needs and nothing else.
 
 ---
 
