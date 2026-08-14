@@ -12,7 +12,7 @@ worth fixing**, what I built, and what changed as a result.
 |---|---|---|---|
 | ★ **[FNOL voice agent](./fnol-voice-agent)** | Voice AI agent phones insurance carriers to open claims, navigating IVRs, holding, and answering the carrier's interview, with a human approval gate and post-call accuracy verification | A 400-person PI firm was spending **~125–200 staff-hours a week** opening claims by phone, a tenth to a sixth of the claims department's whole capacity, one call at a time. Calls now run concurrently. | Retell AI, Copilot Studio, Power Automate, Dataverse, React/TS |
 | [Marketing engine](./marketing-engine) | | | |
-| [Medical lien calculator](./medical-lien-calculator) | | | |
+| [Lien reduction letters](./lien-reduction-letters) | Turns one settlement form submission into a per-lienholder reduction letter, running the statutory 50/50 pro-rata split once so every letter on the matter reconciles | A Missouri PI firm's case management system couldn't compute the lien split, so settlement figures lived in Excel, the pro-rata math was done on a calculator, and totals were hand-typed into a Word template **once per medical provider** | Fillout, Make, Microsoft 365 Word merge, OneDrive |
 | [Liability dispute agent](./liability-dispute-agent) | | | |
 | [Medical provider agent](./medical-provider-agent) | | | |
 | [Firm operations dashboard](./firm-ops-dashboard) | | | |
@@ -28,7 +28,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 |---|---|---|---|---|---|---|
 | FNOL voice agent | ✅ | ✅ | ✅ | ✅ | ✅ | |
 | Marketing engine | | | | | | |
-| Medical lien calculator | | | | | | |
+| Lien reduction letters | | | | ✅ | | ✅ |
 | Liability dispute agent | | | | | | |
 | Medical provider agent | | | | | | |
 | Firm operations dashboard | | | | | | |

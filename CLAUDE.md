@@ -64,23 +64,25 @@ pass.
 
 ## The seven solutions
 
-Seven total. Six are unwritten.
+Seven total. Five are unwritten.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted. Refinement continues in its own dedicated session |
 | `marketing-engine` | **Guess.** Invented from the single word "marketing" | TBD | Not started |
-| `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
+| `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted from one handover doc; `OPEN`s on diagnosis, involvement, impact |
 | `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
 | `liability-dispute-agent` | Lara's own words | TBD | Not started |
 | `medical-provider-agent` | Lara's own words | TBD | Not started |
 | `document-generation` | Lara's own words | TBD | Not started |
 
-**Do not infer what a project is from its slug.** The three marked *Guess* are placeholders
+**Do not infer what a project is from its slug.** The remaining *Guess* rows are placeholders
 Claude invented in the first session with no knowledge of the work, and they will read as
 established fact if you let them. Ask Lara what each project actually was, then rename the
 folder. `fnol-intake-agent` was renamed to `fnol-voice-agent` for exactly this reason, because
-"intake" means client signup in personal injury, not claim opening.
+"intake" means client signup in personal injury, not claim opening. `medical-lien-calculator`
+became `lien-reduction-letters` for the same reason: the calculation is one step, the letters
+are the deliverable.
 
 Lara refers to these projects by client name, which is not recorded here (public repo). Expect
 shorthand that matches no slug, and ask which one she means rather than guessing.
@@ -93,6 +95,13 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   from the same ~10-solution engagement** at that firm. Confirm with Lara. If so, the root
   README should say so, because one audit producing ten solutions is a stronger story than
   four unrelated builds, and the shared diagnosis stops being repeated four times.
+- **`lien-reduction-letters` is a different client from the FNOL firm.** A Missouri
+  plaintiff-side PI firm, on Fillout/Make/Microsoft 365 rather than the FNOL client's Power
+  Platform estate, with a different case management system that has **no API at all**. So the
+  seven projects span at least two clients, and the root README should not imply one
+  engagement produced all seven. Confirm the split with Lara.
+- **Handover docs for these projects may be authored by colleagues.** The lien one was, and
+  it says "we" throughout. Never write §6 (My involvement) from a doc Lara did not write; ask.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
@@ -106,6 +115,13 @@ One line per session, newest last.
   one person can hold one phone line). Prose passed through `no-ai-slop`. Still open on FNOL:
   Lara's role, timeline, measured after-state, alternatives ruled out, how much to say about
   the CMS API workaround.
+- **2026-08-14.** `medical-lien-calculator` renamed to `lien-reduction-letters` and drafted
+  as a short entry from one handover doc (a colleague's, not Lara's). The domain content is
+  solid: the statutory net-recovery split, the pro-rata pool, and why a per-lienholder letter
+  set has to reconcile against a shared derivation. Scrubbed from the source before drafting:
+  client firm name, doc author's name, case management vendor name, and a client wiki URL
+  containing the firm name. Three `OPEN` blocks carry the weight, on diagnosis, involvement
+  and measured impact, and involvement is genuinely blocking.
 
 ## Conventions
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two
