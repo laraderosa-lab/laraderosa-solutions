@@ -97,6 +97,10 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   names", but Lara named Clio Manage and Clio Grow throughout the dashboard session and named
   the branch after it. The draft names Clio. Either narrow the rule to the FNOL client's CMS,
   or scrub Clio from `firm-ops-dashboard` and call it "the firm's case management system".
+- **Raw source material from Lara arrives unredacted, including material she describes as
+  already modified.** The dashboard-session transcripts named a real referral-partner firm, a
+  first name, a referral marketplace and a city. Sanitize on the way in, quote only after
+  redacting, and never copy an identifier into this file while checking it.
 - **"Pre-anonymized" client exports still need a full check.** The five dashboard PDFs Lara
   supplied as already-modified still carried client emails and phone numbers, legible client
   names under partial blur, a staff name in a slicer, and referral-partner lists that read as
@@ -117,9 +121,16 @@ One line per session, newest last.
 - **2026-08-13 (second session).** `firm-ops-dashboard` drafted from Lara's verbal account plus
   five dashboard PDF exports. Clio Manage/Grow to Skyvia to Azure SQL to Power BI, hourly at
   both hops, five reports on one semantic model, team goals fed from a management spreadsheet.
-  Open on this one: client identity and size, whether it is the same firm as the FNOL work,
-  Lara's role and timeline, any measured impact, her own "what I'd do differently".
-  **Screenshots deliberately not committed**, see below.
+  Open on this one: Lara's timeline, her own "what I'd do differently", and who framed the
+  data-before-AI argument. **Screenshots deliberately not committed**, see below.
+- **2026-08-14.** `firm-ops-dashboard` corrected and filled out from Lara's answers plus three
+  client-call transcript excerpts. Key corrections: **the dashboard client is a different firm
+  from the FNOL client** (~$50M revenue, under 400 people), **Lara did not diagnose this one**
+  (pilot engagement, the client arrived with the pain point stated), and the strongest idea in
+  the project, ranking referral partners by hired rather than by volume, **was the client's,
+  asked for live in the pilot review**. Section 2 rewritten to say so. Impact section now
+  carries redacted client quotes instead of invented metrics. Sequencing recorded: Clio Grow
+  intake shipped alone as the pilot, Clio Manage reports followed.
 
 ## Conventions
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two

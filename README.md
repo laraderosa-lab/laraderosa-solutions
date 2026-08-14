@@ -15,7 +15,7 @@ worth fixing**, what I built, and what changed as a result.
 | [Medical lien calculator](./medical-lien-calculator) | | | |
 | [Liability dispute agent](./liability-dispute-agent) | | | |
 | [Medical provider agent](./medical-provider-agent) | | | |
-| [Firm operating dashboards](./firm-ops-dashboard) | Replicates a PI firm's case management and intake systems into a warehouse hourly, and serves leadership, per-team, intake/marketing and financial reports off one shared model | The firm's data was complete and unreadable. Every question spanning two objects was a manual export, so questions that needed asking weekly stopped being asked. Teams could not see progress toward the bonus they were working for. | Clio Manage/Grow, Skyvia, Azure SQL, Power BI |
+| [Firm operating dashboards](./firm-ops-dashboard) | Replicates a $50M PI firm's case management and intake systems into a warehouse hourly, and serves leadership, per-team, intake/marketing and financial reports off one shared model | The firm's data was complete and unreadable. Every question spanning two objects was a manual export, so questions that needed asking weekly stopped being asked. Teams could not see progress toward the bonus they were working for. Shipped as a data-first pilot in place of the AI project the client came in asking about. | Clio Manage/Grow, Skyvia, Azure SQL, Power BI |
 | [Document generation](./document-generation) | | | |
 
 ★ = flagship deep dive.
@@ -31,7 +31,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | Medical lien calculator | | | | | | |
 | Liability dispute agent | | | | | | |
 | Medical provider agent | | | | | | |
-| Firm operating dashboards | ✅ | | ✅ | ✅ | ✅ | ✅ |
+| Firm operating dashboards | | | ✅ | ✅ | ✅ | ✅ |
 | Document generation | | | | | | |
 
 ## How to read these

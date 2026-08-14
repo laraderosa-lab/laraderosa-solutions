@@ -8,18 +8,19 @@
 
 | | |
 |---|---|
-| **Client** | <!-- OPEN: size, region, headcount. Confirmed only as a plaintiff-side PI firm running Clio Manage and Clio Grow --> Plaintiff-side personal injury firm, US |
+| **Client** | Plaintiff-side personal injury firm, US, ~$50M annual revenue and under 400 people |
 | **Domain** | Legal operations and firm-wide business intelligence |
-| **My role** | <!-- OPEN: sole build? who else was on it? --> |
-| **Timeline** | <!-- OPEN --> |
+| **My role** | Built the dashboards and the underlying model. Co-built the Clio-to-warehouse connector. The diagnosis was the client's own, see section 2 |
+| **Timeline** | <!-- OPEN: how long from kickoff to the intake pilot review, and how long to the full five reports? --> |
 | **Stack** | Clio Manage, Clio Grow, Skyvia, Azure SQL Database, Power BI, Excel (goal input) |
-| **Status** | In production |
+| **Status** | In production. Started as a pilot engagement |
 
 ---
 
 ## 1. Context
 
-The firm runs its entire practice in Clio Manage, with Clio Grow in front of it for intake.
+A plaintiff-side personal injury firm turning around $50M a year, with under 400 people. It
+runs its entire practice in Clio Manage, with Clio Grow in front of it for intake.
 Every fact a partner might want lives in there already: which marketing source a lead arrived
 from, which referral partner sent it, why a lead was declined, who worked it, what stage a
 matter is at, what it settled for, when the statute of limitations expires.
@@ -32,36 +33,38 @@ collected this quarter.
 
 ## 2. Diagnosis: how I knew this was the problem to solve
 
-The ask was a dashboard. The useful finding was that the firm was not missing data, it was
-missing every path from the data to a decision.
+I should be straight about this one, because it is the exception in this portfolio. I did not
+find the problem here. The client did, and they were right.
 
-<!-- OPEN: this section is reconstructed from Lara's verbal account and needs her detail on
-how the diagnosis actually ran. Was there a formal audit, interviews, a workshop where
-leadership listed the questions? Which questions came from partners vs. from the teams? -->
+This was a pilot engagement. The firm came in already able to state its biggest pain point,
+which is rarer than it sounds and worth taking at face value when it happens. Their data was
+complete and unreadable, and they knew it. The diagnostic work I would normally do had already
+been done by the people living inside it.
 
-**Taking the questions seriously one at a time.** Rather than designing charts, I worked
-through the questions people were already asking and traced where each one died inside Clio.
-The pattern held across all of them. The field existed; the report that joined it to anything
-else did not.
+**Where the judgement actually went: sequencing, and holding off on AI.** The conversation
+that brought us in was about AI. The position we took going in was that AI could not be
+evaluated until the firm could see its own numbers, and that if a dashboard is enough to make
+the call, the AI is not needed. That is the reasoning that shaped the engagement, and the
+client came to the same conclusion looking at the first build.
 
-- *Which referral partners are worth keeping warm?* Clio can list matters by referring party.
-  It cannot rank partners by how many of those referrals the firm actually signed. A partner
-  sending twenty cases the firm declines looks identical to one sending twenty it takes.
-- *Are we losing intakes for reasons we control?* The declination reason was captured on every
-  lead. Splitting "declined because it is not our case type" from "declined because we lost
-  contact" needed a manual export and a pivot table.
-- *Which trials and statutes of limitations are coming up firm-wide?* Clio's calendar mixes
-  every event type together and defaults to the current user's own items. Seeing the firm's
-  SOL exposure meant clearing filters and reading around everything else on the calendar.
-- *How close is my team to its bonus?* No one could see it until the quarter closed and
-  someone worked it out by hand.
+<!-- OPEN: confirm who framed the "understand the data before buying AI" argument. Reading the
+transcript it looks like it came from your side and the client agreed, but it could be read
+either way, and it matters for how this section is written. -->
 
-**What the evidence said.** The referral question was the one that reframed the project. The
-firm had partner relationships it maintained on instinct, with no way to see that some
-partners send volume the firm never signs. That is a relationship being funded for nothing,
-and the reverse case is worse: a partner quietly sending the firm its best work with nobody
-noticing. Ranking partners by *hired* cases rather than by referral count turned out to be a
-line the client could act on the same week.
+So the scope was deliberately narrow first. Intake and marketing only, off Clio Grow, because
+it was the smallest complete slice that could prove the pipeline worked and be useful on its
+own. The Clio Manage reports covering teams, caseload, aging and finance came after that
+review.
+
+**What the build surfaced that nobody had asked for.** Two things came out of putting the
+first version in front of the client rather than out of any upfront analysis.
+
+- *Employee-level intake performance.* Showing hired, in-intake and did-not-hire per intake
+  staffer was a byproduct of modelling the lead pipeline properly. The client had not asked
+  for it and named it unprompted as one of the most valuable views.
+- *Ranking referral partners by hired, not by volume.* This one the client asked for live,
+  while looking at the partner chart sorted by total leads. It is the strongest idea in the
+  project and it was theirs. Its value showed up in the same session, described in section 7.
 
 **What I ruled out.**
 
@@ -100,17 +103,17 @@ spreadsheet that management owns, so targets can be changed per team without tou
 build.
 
 Five reports came out of it, sharing one semantic model so leadership and the teams cannot end
-up quoting different numbers.
+up quoting different numbers. The first was shipped alone as the pilot.
 
-**Intake and marketing.** Conversion rate over total leads, split into hired, in-intake and
-did-not-hire, with the declination reason broken out (declined on criteria, lost contact,
-retained other counsel, pending evaluation, co-counsel pending). Lead sources and referral
-partners are both ranked by total leads *and* by conversion rate and case value, which is the
-view that separates a partner worth courtside seats from one worth a polite email. Intake
-staff appear on the same hired / intake / did-not-hire split, so a person carrying an unusual
-share of losses shows up as a coaching conversation rather than a hunch. Matter types carry
-their own conversion rate and median value, which is how the firm sees that a case type it
-takes rarely converts well.
+**Intake and marketing** (the pilot, off Clio Grow). Conversion rate over total leads, split
+into hired, in-intake and did-not-hire, with the declination reason broken out (declined on
+criteria, lost contact, retained other counsel, pending evaluation, co-counsel pending). Lead
+sources and referral partners are ranked by total leads *and* by hired count, conversion rate
+and case value, which is what separates a partner worth investing in from one sending volume
+the firm never signs. Intake staff appear on the same hired / intake / did-not-hire split, so
+a person carrying an unusual share of losses shows up as a coaching conversation rather than a
+hunch. Matter types carry their own conversion rate and median value, which is how the firm
+sees that a case type it takes rarely converts well.
 
 **Leadership.** Open matters split litigation and pre-litigation, median days to close for
 each, open caseload and estimated case value by team, and each team's top matter types and top
@@ -223,36 +226,90 @@ RETURN
 
 ## 6. My involvement
 
-<!-- OPEN: needs Lara's account. What was owned end to end vs. shared? Who chose Skyvia and
-Azure? Who ran the KPI definition sessions with the partners? Who trained the teams on their
-own dashboard, and how was it handed over? The unglamorous parts belong here. -->
+I built the dashboards: the semantic model, the measures, the report design and the per-team
+scoping. I co-built the Clio-to-warehouse connector rather than owning it alone.
+
+I did not run the diagnosis, for the reason given in section 2. Where I did apply judgement
+was in arguing for the data layer before any AI work, in scoping the pilot down to intake so
+there was something real to react to early, and in the modelling decisions in section 5 that
+the client never sees and would have felt within a quarter if they were wrong.
+
+<!-- OPEN: worth adding if you have it. Who chose Skyvia and Azure, you or the client's side?
+Who ran the KPI definition conversations with the partners? How were the teams brought onto
+their own dashboards, and who owns the thing now? -->
 
 ## 7. Impact
 
 No before-and-after metrics were captured on this engagement, so the honest version is
-qualitative.
+qualitative. What exists is the client's reaction in the pilot review, and one worked example
+of a decision the dashboard changed.
 
-| Metric | Before | After |
+| Capability | Before | After |
 |---|---|---|
 | Firm-wide reporting across leads, matters, teams and financials | Manual export and pivot per question | Five live reports, refreshed hourly |
-| Referral partners ranked by signed cases | Not available | Standing view, by conversion rate and case value |
+| Referral partners ranked by signed cases | Not available | Standing view, by hired count, conversion rate and case value |
 | Team visibility of progress toward quarterly bonus | Calculated by hand after the quarter closed | Self-serve, current within the hour |
 | Firm-wide SOL and trial exposure | Buried in a filtered per-user calendar | Dedicated calendars, filterable by team |
 | Aging cases | Found when someone remembered to look | Flagged automatically against the stage median |
 
-The outcome the client talked about was the referral ranking. Being able to see which partners
-send cases the firm actually signs changed how the relationships were worked, immediately and
-without needing a project to act on it.
+**The referral partner case.** In the pilot review the client picked out a partner showing 68
+referrals and a single closed case. Sorted by volume alone that reads as a partner not worth
+the relationship. The dashboard let them see why the number looked that way: the referrals
+were nearly all recent, following one large case the firm had closed for that partner, so the
+low closure count was a lag artifact rather than a quality signal.
 
-<!-- OPEN: is there anything measured at all? Adoption (how many people open these weekly),
-whether the intake declination split changed marketing spend, whether aging-case counts fell
-after the flag went live? Even one measured number would carry this section. -->
+The wider pattern underneath it mattered more. That partner only takes auto collision work and
+had started routing everything else, premises liability, animal bites and product liability,
+into a referral marketplace. The client's firm takes those case types and had quietly picked
+up six product liability matters that way. None of this was visible before, and it is the kind
+of relationship worth actively cultivating rather than discovering by accident.
+
+In the client's words, lightly redacted:
+
+> "This is exactly what I want to see. We can see who's giving us cases. I forget some people
+> that give us cases and I'm like, we should take them to a game. Let's do stuff with them if
+> they're giving us this many cases."
+
+> "It's a great point about [large auto-collision-only referral partner], but we can see only
+> one of them has been closed out of 68, because that's why, because they're all new. We
+> closed a big case for them and then they started giving us a lot of looks."
+
+The ranking-by-hired view came out of this same session, asked for on the spot:
+
+> "Something else that you could be doing with this one in particular is not only sorted by
+> total amount but actually sorted by hired. So you can actually see in the last year how many
+> of the referral partners did you actually hire from. And in this case we're talking about
+> years, but you can move it to 6 months, 1 month."
+
+On the pilot as a whole, before any of the Clio Manage reports existed:
+
+> "This is just your first out the gate product, but I think this is so good just based on what
+> I'm seeing right now, I can make 20 decisions that's going to increase our productivity."
+
+> "This exceeded what I thought it was going to be already. I just thought it would be like I
+> could see certain things. I didn't know, like searching, digging in this deep and going even
+> by performance by employees. This is great."
+
+And on the question the engagement started from:
+
+> "If you can look at the dashboard and you can already make the determination, you don't even
+> need the AI. I don't even need it."
+
+<!-- OPEN: anything measured would still carry this section harder than quotes do. Weekly
+active users across the five reports, whether marketing spend moved off a source the
+conversion view exposed, whether the aging-case count fell after the flag shipped. -->
 
 ## 8. What I'd do differently
 
-<!-- OPEN: needs Lara's own reflections. Candidates from the build, to confirm or replace:
-the goals spreadsheet as an unvalidated input, whether five reports was one too many, whether
-the alert thresholds should have been configurable from the start. -->
+<!-- OPEN: needs your own reflections, this section is empty without them. Candidates from
+the build, to confirm, replace or delete: the goals spreadsheet is an unvalidated input
+feeding numbers that decide bonuses; the aging threshold and alert floors were fixed at build
+time rather than configurable from the start; five reports may be one more than the firm
+needed. -->
+
+<!-- OPEN: one more worth capturing. The single best idea in the project, ranking partners by
+hired, came from the client looking at a chart, not from the design. Is the lesson that the
+first build should ship deliberately incomplete so the client fills the gaps? -->
 
 ---
 
