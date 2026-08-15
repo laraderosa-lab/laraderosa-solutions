@@ -26,7 +26,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 
 | | Discovery / audit | LLM agents | Data modelling | Integrations | Front-end / dashboards | Deployed & handed off |
 |---|---|---|---|---|---|---|
-| FNOL voice agent | ✅ | ✅ | ✅ | ✅ | ✅ | |
+| FNOL voice agent | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Marketing engine | | | | | | |
 | Medical lien calculator | | | | | | |
 | Liability dispute agent | | | | | | |

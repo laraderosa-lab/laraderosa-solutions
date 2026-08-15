@@ -68,7 +68,7 @@ Seven total. Six are unwritten.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
-| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted. Refinement continues in its own dedicated session |
+| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. Two `OPEN`s left (CMS workaround detail, measured after-state) |
 | `marketing-engine` | **Guess.** Invented from the single word "marketing" | TBD | Not started |
 | `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
 | `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
@@ -106,6 +106,18 @@ One line per session, newest last.
   one person can hold one phone line). Prose passed through `no-ai-slop`. Still open on FNOL:
   Lara's role, timeline, measured after-state, alternatives ruled out, how much to say about
   the CMS API workaround.
+- **2026-08-15.** FNOL iteration 1, on branch `claude/fnol-solution-iteration-b1buz6`. Filled
+  in role (co-diagnosed, co-decided; built the Retell agent, Power App, Power Automate flows
+  and Copilot agent), timeline (**6 weeks, first conversation to rollout, alongside the other
+  nine solutions**, which confirms the one-audit-ten-solutions story) and status (completed).
+  Added the **auto-retry (3 attempts when no human is reached) and one-click retry from the
+  app**, which had been missed. Rewrote §8 in Lara's words (re-benchmark voice platforms;
+  pursue direct carrier API integrations for the highest-volume carriers, done elsewhere, out
+  of scope here). Dropped the invented "what I ruled out" subsection and the invented §8.
+  Reframed accuracy evaluation as **detection on top of prevention** (<3% misstatement) with
+  the trust argument: staff would otherwise read every transcript, so surfacing our own errors
+  loudly is what makes silence informative. **Lesson: do not invent a section and present it
+  as fact.** §8 and the ruled-out list were both Claude's inventions and both had to go.
 
 ## Conventions
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two

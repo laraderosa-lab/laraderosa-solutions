@@ -12,10 +12,10 @@
 |---|---|
 | **Client** | Plaintiff-side personal injury firm, ~400 staff, ~$50M annual revenue (US) |
 | **Domain** | Claims operations, a ~30-person department, opening FNOL claims with carriers |
-| **My role** | <!-- OPEN: solo vs team; which parts were yours --> |
-| **Timeline** | <!-- OPEN: dates + duration --> |
+| **My role** | Co-diagnosed the problem and co-decided the approach. Built the voice agent and the system around it |
+| **Timeline** | 6 weeks from the first client conversation to rollout, alongside nine other solutions from the same audit |
 | **Stack** | Retell AI (voice), Microsoft Copilot Studio, Power Automate, Dataverse, AI Builder, React/TypeScript Code App, Teams, Chromium extension |
-| **Status** | <!-- OPEN: in production since when? --> |
+| **Status** | Completed and rolled out |
 
 ---
 
@@ -83,12 +83,6 @@ any one call is slow. They simply can't overlap. The bottleneck was **serializat
 makes the target concurrent calls, and the only way to get concurrency is to take the human
 off the line.
 
-**What I ruled out.** <!-- OPEN: confirm/correct. Presumably considered: (a) carrier web
-portals / APIs, unavailable or partial for these lines, hence phone; (b) hiring more claims
-staff, linear cost and the work is unskilled hold time; (c) a script or macro to speed the
-human's data entry, which doesn't touch hold time or serialization. Tell me which of these
-you actually evaluated and why each was rejected. -->
-
 This FNOL agent was **one of roughly ten solutions** the audit produced for this client. It
 was prioritized early because the cost was large, measurable, and concentrated in a single
 repetitive workflow, which is what you want from a first target while a program still has to
@@ -121,11 +115,20 @@ From the case file open in front of them, a staff member clicks a browser extens
 3. **Parallel calling.** Every selected carrier is called **simultaneously**. The voice agent
    works through the IVR, holds, reaches a human, and answers the carrier's interview from
    the approved case data, while staying inside limits on what it will *not* disclose.
-4. **Write-back.** Each call returns the **claim number, whether the claim was opened, the
+4. **Automatic retry when no human is reached.** Carrier lines fail in ordinary ways. The IVR
+   changes, the menu path dead-ends, nobody picks up. When a call ends without reaching a
+   person, the system calls that carrier again, up to **three attempts** in total, before it
+   tells the staff member no human was reached and to try later.
+5. **One-click retry.** If all three attempts fail, the staff member retries from the app
+   itself. No going back to the case file, no re-opening the extension, no re-reviewing data
+   they already approved. One button re-launches the same approved call, or set of calls.
+6. **Write-back.** Each call returns the **claim number, whether the claim was opened, the
    assigned adjuster and their contact details**, plus a transcript, recording and summary.
    These go back into the case management system and the case file.
-5. **Accuracy check.** A second AI pass compares **what the agent actually said on the call**
-   against **what the reviewer approved**, field by field, and flags mismatches.
+7. **Accuracy check.** A second AI pass compares **what the agent actually said on the call**
+   against **what the reviewer approved**, field by field, and flags mismatches. Nobody has
+   to read a transcript to find out whether the agent got it right. If they hear nothing, it
+   did.
 
 The staff member's involvement drops from ~2.5 hours of talking to a few minutes of
 reviewing.
@@ -165,7 +168,7 @@ flowchart TB
 
   staff --> app
   app <-->|"read / correct"| t
-  app -->|"approve + select carriers"| f2
+  app -->|"approve + select carriers<br/>· one-click retry"| f2
   f2 --> t
   f2 ==>|"N calls, concurrently"| voice
   voice <-->|"IVR → hold → interview"| carrier
@@ -173,6 +176,7 @@ flowchart TB
   voice -->|"webhook"| f3
   f3 --> llm
   f3 --> t
+  f3 -.->|"no human reached<br/>auto-retry, 3 attempts max"| f2
   f3 -->|"claim no. + adjuster"| cms
   f3 -->|"outcome / accuracy alert"| staff
 ```
@@ -182,10 +186,10 @@ flowchart TB
 | Decision | Why | What I gave up |
 |---|---|---|
 | **Human review sits between automated intake and automated calling** | The review costs minutes. The call costs 30–40 minutes and is *irreversible and outward-facing*, because you cannot un-say something to an opposing carrier on a recorded line. Gate the expensive, unrecoverable step rather than the cheap one. | Not fully autonomous. A person is still in the loop on every case. |
-| **One row per carrier per attempt**, rather than one record per case | Makes fan-out (multi-defendant, multi-policy) and retry fall out of the data model instead of needing special-casing. Each attempt keeps its own transcript, outcome and accuracy score, so history is never overwritten. | More rows, and a grouping concern in the UI, since attempts nest under their carrier. |
-| **Post-hoc accuracy evaluation** rather than trying to prevent misstatement | You can't validate a live speech act. Hallucination here is rare but not zero, and the consequence, a wrong date of loss or policy number lodged with a carrier, is expensive. So detect and remediate fast rather than pretend prevention. | Errors are caught after the call, not prevented. Costs a second LLM pass per call. |
-| **Two-tier severity** on that check (essential vs. minor) | A flat "94% match" is noise. A wrong *date of loss* and a wrong *middle initial* are not the same event. Only essential-field mismatches raise an alert and pin the claim open. | A hand-maintained list of which fields are essential, which is a real config drift risk (see §8). |
-| **Built entirely inside the firm's existing Microsoft estate** | The firm was already on Teams, Entra and Power Platform. A standalone app would have meant new logins, a new access model, and IT owning something unfamiliar. Access is granted by existing group membership. | Platform ceilings: per-service capacity limits, and orchestration that's harder to test than plain code. |
+| **One row per carrier per attempt**, rather than one record per case | Makes fan-out (multi-defendant, multi-policy) and retry fall out of the data model instead of needing special-casing. Each attempt keeps its own transcript, outcome and accuracy score, so a retry never overwrites the history of the call before it. | More rows. Three attempts on one carrier is three rows, so the app has to group attempts under their carrier rather than list them flat. |
+| **Post-call accuracy evaluation on top of prevention** | Prevention does most of the work. The agent answers from reviewer-approved data and is constrained on what it may say, which holds misstatement under 3% of calls. It cannot reach zero, because some hallucination is inherent to the model. The evaluation catches the rest, and it is also what makes the system worth using. Without it, staff would read every transcript to be sure the agent got it right, which costs roughly what the call did. Because the system reports its own errors loudly, silence is informative, and a reviewer can trust that no alert means the call was accurate. | A second LLM pass per call, and the last few percent are remediated after the fact rather than prevented. |
+| **Automatic retry, then a one-click retry** | Not reaching a human is the common failure and it is usually transient, so three automatic attempts absorb most of it without anyone noticing. When it does need a person, the expensive part (reading the case, checking the pre-filled data, approving it) is already done and should not be repeated. | The system will occupy a line for three attempts before admitting defeat, so a genuinely unreachable carrier takes longer to surface than a single call would. |
+| **Built entirely inside the firm's existing Microsoft estate** | The firm was already on Teams, Entra and Power Platform. A standalone app would have meant new logins, a new access model, and IT owning something unfamiliar. Access is granted by existing group membership. | Platform ceilings. Per-service capacity and throttling limits, and the shape of the solution is bounded by what the platform exposes. |
 | **Triggered from a browser extension on the case file** | Staff live in the case management system all day. Making them navigate elsewhere and paste a case ID is where adoption dies. One click, in place. | An extension to distribute and maintain per-user. |
 | **No credentials in the client app** | All carrier calling, case-system access and messaging happen server-side in the flows. The browser app holds no secrets. | Slightly more indirection, since the UI can't call third parties directly. |
 
@@ -248,16 +252,23 @@ something.
 
 ## 6. My involvement
 
-<!-- OPEN: This is the section I can't write for you, and it's the one interviewers read
-closest. Specifically:
-  - Did you run the audit and interviews yourself, or join after? Who else was in the room?
-  - Which components did you personally build vs. review vs. delegate?
-    (voice agent + prompt design / the four flows / the React review app / the browser
-    extension / the accuracy evaluator / the data model)
-  - Did you write the three handover docs? They're unusually good and that's worth claiming.
-  - Who did the user training and the rollout? Any resistance to manage?
-  - Is it handed off to the client's IT, or still yours?
-Give it to me plainly, including anything that was someone else's. -->
+I co-ran the diagnosis and co-decided what to build. That is the part of the work that
+decided whether this project should exist at all, and it came out of the department audit
+described in §2 rather than from a client request.
+
+I then built the voice agent and the system around it:
+
+- **The voice agent in Retell AI.** The call design, the prompting, how it handles a carrier's
+  interview, and the limits on what it will not disclose to an opposing insurer.
+- **The Power App.** The review surface where staff check the pre-filled claim, correct it,
+  choose which carriers to call, and retry.
+- **The Power Automate flows.** Intake and party resolution, placing the concurrent calls,
+  the retry logic, write-back into the case management system, and the post-call accuracy
+  evaluation.
+- **The Copilot Studio agent.** The conversational entry point staff talk to.
+
+Six weeks from the first client conversation to rollout, running alongside the nine other
+solutions the same audit produced.
 
 ## 7. Impact
 
@@ -290,21 +301,14 @@ unverifiable percentage in a public portfolio is worse than no percentage. -->
 
 ## 8. What I'd do differently
 
-- **The severity rule lives in two places.** Which fields count as essential is defined both
-  in the orchestration flow and in the app's field catalog, and the two have to be kept in
-  sync by hand, so adding a scored field means remembering to update both. That's a latent
-  bug I built in for expediency. One source of truth, read by both.
-- **A status column was superseded but not removed.** The review state moved to a new
-  operational status field, and the original column stayed behind in the schema. A cleanup
-  job still watching the old column silently stopped matching anything, and it's turned off
-  today, which is why discarded rows don't get deleted. Nothing is broken for users, but this
-  is the kind of drift that costs someone a confusing afternoon later. The migration should
-  have deleted the old column instead of orphaning it.
-- **Choice fields leaked raw option codes** into the accuracy comparison in some cases, the
-  numeric code rather than the human label, which made correct answers look wrong. Formatting
-  belongs at the boundary where data leaves the platform, not at the point of comparison.
-- <!-- OPEN: yours. What actually frustrated you, or what would you rebuild? Anything about
-  the platform choice, the voice agent's reliability, the review UI, the rollout? -->
+- **Re-evaluate the voice platform.** Retell was a good choice at the time. Voice AI is moving
+  fast enough that the right answer has a short shelf life, so I would benchmark the
+  alternatives again rather than assume the original pick still wins.
+- **Go to the largest carriers directly and try to skip the call.** A handful of carriers
+  account for most of the volume. For those, I would open a conversation about an API
+  integration that submits the claim straight into their system, which would be faster and
+  cheaper than dialing them and would leave the voice agent to cover the long tail. We have
+  built that kind of direct integration successfully on other work. It was out of scope here.
 
 ---
 
