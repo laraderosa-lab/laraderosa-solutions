@@ -11,35 +11,45 @@
 
 | | |
 |---|---|
-| **Client** | Plaintiff-side personal injury firm, ~400 staff, ~$50M annual revenue (US). Same firm and same engagement as the [FNOL voice agent](../fnol-voice-agent), different department |
-| **Domain** | Treatment coordination. Following a client's post-accident care and booking the appointments a doctor recommends |
-| **My role** | Sole engineer. Ideation, diagnosis, design and build, end to end. Change management was the client's, by agreement |
-| **Timeline** | <!-- OPEN: dates + duration --> |
+| **Client** | Plaintiff-side personal injury firm, ~400 staff, ~$50M annual revenue (US) |
+| **Domain** | Treatment coordination. Following a client's post-accident care, booking the appointments a doctor recommends, and getting the bills and records back afterwards |
+| **My role** | Co-owned the idea and the diagnosis. Sole engineer on the implementation, end to end. Change management was the client's, by agreement |
+| **Timeline** | 6 weeks from the first client conversation to rollout, alongside nine other solutions from the same audit |
 | **Stack** | React/TypeScript Code App on Microsoft Power Platform, Dataverse, Power Automate, Azure Maps (custom connector), Retell AI (voice), Copilot Studio, Leaflet/MapLibre, Outlook, Teams |
-| **Status** | <!-- OPEN: in production since when? how many users? --> |
+| **Status** | Completed and rolled out <!-- OPEN: in production since when, and how many coordinators use it? --> |
 
 ---
 
 ## 1. Context
 
-The same audit that produced the FNOL voice agent covered a second department at this firm. The
-claims department opens claims with carriers. The **treatment team**, about **65 people**,
-handles what happens next: tracking a client's medical care after the accident, and when a
-doctor recommends a procedure or a specialist, finding a provider and booking the appointment.
+The firm runs plaintiff-side personal injury cases across a ~400-person operation. A client's
+medical treatment after an accident runs for months, alongside the legal case. How fast they
+get the right care shapes both their recovery and what the case is worth.
 
-Booking appointments is the bulk of that team's day. Two things make provider choice
-consequential rather than clerical. The firm cares how fast a case moves through the pipeline,
-so the provider with the earliest opening is usually the right one. And these providers treat
-on a lien, meaning they get paid out of the eventual settlement, so how much a provider
-historically reduces its bill affects what the client actually keeps.
+The **treatment team**, about **65 people**, owns that side of the file. When a doctor
+recommends a procedure or a specialist, they find a provider and book the appointment. They
+also follow the client through treatment, checking in to see that they are going and that the
+care is working, and they chase the bills and records back from each office afterwards so the
+case file has them. Booking is the largest single piece of that job rather than the whole of
+it.
+
+Two things make provider choice consequential rather than clerical. The firm cares how fast a
+case moves through the pipeline, so the provider with the earliest opening is usually the right
+one. And these providers treat on a lien, meaning they get paid out of the eventual settlement,
+so how much a provider historically reduces its bill affects what the client actually keeps.
+
+This was one of roughly ten solutions delivered as a single program off the back of one audit
+of the firm. Another of them, a [voice agent that opens claims with insurance
+carriers](../fnol-voice-agent), came out of the claims department next door.
 
 ## 2. Diagnosis: how I knew this was the problem to solve
 
-**The method here was shadowing, not interviewing.** For the claims department the finding came
-out of interviews down the management ladder, because the gap between the process as designed
-and the process as run was where the waste hid. The treatment team's problem was visible in a
-way that interviews would have flattened, so we sat with them and watched them book
-appointments.
+**The method here was shadowing.** Elsewhere in the audit the findings came out of interviews
+down the management ladder, because the waste hid in the gap between the process as designed
+and the process as run. This team's problem was a different shape. Ask a coordinator how they
+choose a provider and you get a reasonable two-line answer, because the cost is not in the
+decision. It is in the clicking either side of it, and nobody narrates their own clicking. So
+we sat with them and watched them book appointments.
 
 **What the screen actually required.** The case management system holds a contact directory of
 roughly **18,000 providers**, filterable by specialty. There are twenty to thirty specialties,
@@ -54,9 +64,9 @@ So to answer "who is near this client", a coordinator:
 4. copied a candidate provider's address in after it,
 5. read off the distance, and repeated from step 4 for the next candidate.
 
-Then, having picked candidates, they phoned each office to ask its earliest availability,
-because the earliest opening moves the case fastest. Sequential calls, each one through an IVR
-and a hold queue.
+Then, having narrowed that down to the best few matches, they phoned those offices to ask each
+one's earliest availability, because the earliest opening moves the case fastest. Sequential
+calls, one office at a time, each through an IVR and a hold queue.
 
 **The list itself could not be trusted.** Two findings came out of watching people use it:
 
@@ -79,14 +89,20 @@ provider tends to reduce its bill, and how much of the firm's existing caseload 
 with it. Ranking against a specific client is a different job from storage, and the system of
 record was never built to do it.
 
-**The second half of the reframe** is the same finding as FNOL, arrived at independently. Once
-you have a shortlist you still have to phone every office, and a person holds one line at a
-time. Three ten-minute calls is thirty minutes of wall clock because they cannot overlap.
+**The second half of the reframe.** Ranking well still leaves the phone calls. Once there is a
+shortlist, somebody has to ring the offices on it, and a person holds one line at a time. Three
+ten-minute calls is thirty minutes of wall clock. No single call is slow. They simply cannot
+overlap. The same constraint turned up in a second department during the audit, which is a
+reasonable sign it is a property of the firm's work rather than of one team's habits, and it
+has the same answer both times. Take the human off the line.
 
-**What I ruled out.** The one worth recording: **letting the voice agent book the appointment on
-the call.** Firm policy requires appointment requests in writing, so a phone booking would not
-have counted. The agent confirms availability and a human sends the email, which is why the
-workflow ends in a draft rather than a sent message.
+**What I ruled out.** The one worth recording is **letting the voice agent book the appointment
+on the call.** Firm policy requires appointment requests in writing, so an appointment agreed
+over the phone would not have counted. The call therefore settles availability and nothing
+else. The system still writes the booking email itself, pulling the client and case details and
+composing the request, and the coordinator's whole involvement is to read the draft and click
+send. The workflow stops at a draft because sending is the step the firm keeps with a person.
+Everything up to it is automated.
 
 The design alternatives I weighed inside the build are in §5 rather than here, since each one is
 easier to follow next to the decision it lost to.
@@ -97,8 +113,9 @@ for now. Leave this as-is rather than padding it with plausible-sounding options
 ## 3. Problem
 
 Choosing a provider took a manual pass over a specialty slice of an 18,000-row directory,
-followed by copy-pasting two addresses into Google Maps once per candidate, on a team whose
-main job is booking appointments. The list carried outdated notes and an exclusion flag nobody
+followed by copy-pasting two addresses into Google Maps once per candidate, on a team that does
+this several times per case on top of everything else it carries. The list carried outdated
+notes and an exclusion flag nobody
 filled in, so selection quality depended on which coordinator happened to be doing it.
 Confirming availability then meant a sequential phone call per office, through an IVR and a
 hold queue each time. Every one of those steps sat between an injured client and the treatment
@@ -329,10 +346,10 @@ A retry is invisible to the coordinator, because a pending row keeps the batch o
 reporting a failure. And because the unit of completion is the batch rather than the call, the
 same code path serves a one-provider request and a nine-provider one.
 
-The shape is deliberately the same as the FNOL agent's one-row-per-carrier-per-attempt model,
-and both share a status option set across the engagement. Ten solutions built by the same team
-against the same data platform should not each invent their own vocabulary for "this thing
-finished".
+The shape is reused on purpose. Another agent in the same program phones insurance carriers to
+open claims, and it runs the same one-row-per-call-per-attempt model against the same shared
+status option set. Ten solutions built by the same team on the same data platform should not
+each invent their own vocabulary for "this thing finished".
 
 ### Illustrative excerpt: shortlisting before routing
 
@@ -361,17 +378,22 @@ const ranked = [
 
 ## 6. My involvement
 
-**I owned this one end to end.** Nobody asked for it. It came out of shadowing a department to
-find out where its time went, and I took it from that observation through to a deployed app:
+**Nobody asked for this one.** It came out of shadowing a department to find out where its time
+went. The idea and the diagnosis were co-owned, including the shadowing sessions and the
+finding that an existing unused field, rather than a new one, was the real fix for provider
+exclusion.
 
-- the diagnosis, including the shadowing sessions and the finding that an existing unused field
-  was the real fix for provider exclusion,
+**The implementation was mine alone**, everything from that observation to a deployed app:
+
 - the data model, the two scheduled jobs that mirror and geocode the provider catalog, and the
   ranking approach that shortlists on coordinates before paying for driving distance,
 - the React app, the map, and the search and comparison interface,
 - the voice agent and its prompt, the per-call row model, and the batch completion gate that
   turns an unbounded number of calls into one answer,
 - the booking-email flow and the decision to stop at a draft rather than send.
+
+Six weeks from the first client conversation to rollout, running alongside the nine other
+solutions the same audit produced.
 
 **What I did not own: change management.** Training the coordinators and driving adoption were
 the client's responsibility by agreement, not an oversight. That boundary matters more than it
@@ -492,8 +514,8 @@ are real once they catch a single one that is not.
        several returned dates.
      - A drafted booking email with everything identifying redacted.
      Check every image for: firm name, provider names, client names and addresses, matter IDs,
-     dates of loss, dollar figures, PHI. Provider names are the new risk here that FNOL did
-     not have, since a real clinic name is identifying even though it is not the client. -->
+     dates of loss, dollar figures, PHI. Provider names are the risk specific to this project,
+     since a real clinic name is identifying even though it is not the client. -->
 
 Not yet added.
 

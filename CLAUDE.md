@@ -21,6 +21,10 @@ redacted code excerpts where they prove something.
   prefixes, table names or flow names.
 - **Depth is tiered.** 3 flagship deep dives, 4 short entries.
 - Every case study follows `_template/README.md` section for section.
+- **Every case study stands alone.** A reader may open any entry first, so shared context
+  (the client, the audit, a constraint two projects hit) is restated in that entry's own words
+  rather than delegated to a sibling. "The same audit as the FNOL agent" is not allowed as
+  load-bearing prose. Links to sibling entries are fine as see-also, and never as a prerequisite.
 - **Diagnosis is a first-class section.** How the problem was found (audit, process mapping,
   interviews, data) is the differentiator for forward-deployed roles.
 - Diagrams are **Mermaid**. Open questions are `<!-- OPEN: ... -->` HTML comments, so they
@@ -81,7 +85,7 @@ corrected, so none of the original guesses survive.
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | Drafted. OPEN on the Skyvia/Power BI layer, timeline, and every after-state number |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
-| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Materially complete.** All eight sections written, before-state quantified, role and outcome filled in. Outstanding: timeline, status/in-production-since, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
+| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iteration 1 done.** All eight sections written, before-state quantified, role, timeline, status and outcome filled in. Outstanding: in-production-since date and user count, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 | `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
@@ -359,6 +363,26 @@ One line per session, newest last.
   it, and do not try to route around it. Lara deletes branches at
   <https://github.com/laraderosa-lab/laraderosa-solutions/branches>, and
   `claude/portfolio-repo-setup-hxm78l` can only go after the default is moved to `main`.
+- **2026-08-15 (provider selection, iteration 1).** Straight onto `main`. Four corrections from
+  Lara. **Role is the same shape as FNOL**: co-owner of the idea and the diagnosis, sole owner
+  of the end-to-end implementation. The old "sole engineer, ideation through build" was wrong on
+  the front half. **Timeline is FNOL's**: 6 weeks, first conversation to rollout, alongside the
+  nine other solutions, and status is completed and rolled out. **The treaters' role was written
+  too narrowly.** They book appointments (the largest single piece), *and* follow up and check in
+  on clients through treatment, *and* chase bills and records back from the offices afterwards.
+  §1, the Domain row and §3 all said or implied booking-only. **New standing style rule: every
+  case study must stand alone.** Do not write "the same audit as FNOL" or "the same firm as FNOL"
+  as load-bearing prose, because a reader may open any entry first. Cross-links are fine as
+  see-also, and shared context gets restated in the entry's own words. §1, §2 and the §5 excerpt
+  note were rewritten on that basis, plus the root README line saying the diagnosis is "described
+  once, in the FNOL case study". Two clarity fixes: the pre-state availability calls went to
+  **the offices of the best few matches**, not to every office in the specialty; and the booking
+  email is **composed by the system**, with the human only reviewing and clicking send, so §2 no
+  longer reads as though a person writes it.
+  **A session handed a `claude/*` branch may be looking at a stale clone.** This one started on
+  a branch cut before `main` existed, so the checkout showed a three-line stub and CLAUDE.md's
+  old seven-projects table, and the first answer was "there is no draft". `git fetch origin main`
+  and check `origin/main` before telling Lara something is missing.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
