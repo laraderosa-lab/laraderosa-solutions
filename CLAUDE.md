@@ -355,14 +355,18 @@ One line per session, newest last.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
-  client, in a branch name. If a session is handed one that does, say so before pushing and ask
-  to move the work.
-- **Branches.** `main` is the trunk and holds the whole portfolio. On 2026-08-15 all seven
-  session branches were merged into it, so it is the only branch that carries every case study.
-  Branch per project off `main` (`claude/<slug>-<id>`), commit and push as work completes, then
-  **merge back into `main` before the session ends**, or the landing page will not show the
-  work. If two sessions run at once the second will hit push conflicts, so `git pull --rebase`
-  first.
+  client, in a branch name. If a session is handed one that does, say so before pushing and
+  work on `main` instead. Two such branches existed and were deleted on 2026-08-15.
+- **Work on `main`. It is the only branch.** Commit and push straight to `main` as work
+  completes. Do not create a feature branch unless Lara asks for one.
+  Sessions are handed a branch name automatically (`claude/<something>-<id>`). **Ignore it**,
+  `git checkout main` and work there. If a session has already committed to a handed branch,
+  merge it into `main` before the session ends.
+  This is a standing correction, not a preference. Until 2026-08-15 every session worked on its
+  own branch and none merged back, so seven drafts existed and the repo's landing page showed
+  none of them. Lara saw an empty-looking portfolio and reasonably concluded nothing had been
+  pushed.
+  `git pull --rebase` before pushing, since another session may be running.
   **Check whether `main` is actually the repo default before trusting the landing page.**
   Repo-settings writes are blocked by the sandbox proxy, so only Lara can set it, at
   <https://github.com/laraderosa-lab/laraderosa-solutions/settings>. Nothing is broken if it is
