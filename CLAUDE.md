@@ -73,7 +73,8 @@ pass.
 
 ## The seven solutions
 
-Seven total. Five are unwritten.
+Seven total. **All seven now have a draft**, at varying depth. Every slug is confirmed or
+corrected, so none of the original guesses survive.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
@@ -83,17 +84,19 @@ Seven total. Five are unwritten.
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Materially complete.** All eight sections written, before-state quantified, role and outcome filled in. Outstanding: timeline, status/in-production-since, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
+| `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
 
-**Do not infer what a project is from its slug.** The two still marked *Guess* are placeholders
-Claude invented in the first session with no knowledge of the work, and they will read as
-established fact if you let them. Ask Lara what each project actually was, then rename the
-folder. `fnol-intake-agent` became `fnol-voice-agent` and `marketing-engine` became
-`marketing-attribution` for exactly this reason: "intake" means client signup in personal
-injury rather than claim opening, and the marketing work produces no marketing, it measures it.
+**Do not infer what a project is from its slug.** Four of the seven started as placeholders
+Claude invented in the first session with no knowledge of the work, and every one of them was
+wrong. `fnol-intake-agent` became `fnol-voice-agent` ("intake" means client signup in personal
+injury rather than claim opening), `marketing-engine` became `marketing-attribution` (the work
+produces no marketing, it measures it), `medical-lien-calculator` became `lien-reduction-letters`
+(the calculation is one step, the letters are the deliverable), and `medical-provider-agent`
+became `medical-provider-selection`. Ask Lara what a project actually was before naming anything
+after it.
 
 `firm-ops-dashboard` is **confirmed by Lara as a different client** from the Power BI dashboard
 inside `marketing-attribution`. Two dashboards, two engagements. Do not merge them.
-| `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
 
 Lara refers to these projects by client name, which is not recorded here (public repo). Expect
 shorthand that matches no slug, and ask which one she means rather than guessing.
@@ -337,23 +340,33 @@ One line per session, newest last.
   the entry reads as finished. Left open: timeline, current status, and which parts her
   rework covered.
 
+- **2026-08-15 (consolidation).** Seven parallel session branches were merged into `main`,
+  which is now the trunk and the only branch holding the whole portfolio. Sessions had been
+  branching off the old default and never merging back, so Lara opened the repo and saw session
+  one. Root README reconciled by hand: both tables carry all seven projects, flagships grouped
+  first, the superseded "the first two came out of one engagement" paragraph dropped in favour
+  of the four-project version, and duplicate stale rows removed. CLAUDE.md is the union of all
+  seven branches' findings, with the progress log put back in date order. **Two things need
+  Lara.** First, `main` still is not the GitHub default, so the landing page shows the old
+  branch until she flips it in repo settings. Second, **two remote branch names carry client
+  identifiers** (`claude/citrine-marketing-mme404` and `claude/clio-manage-life-dashboard-e1rdm5`)
+  and branch names are public, so they should be deleted; both are fully merged, so nothing is
+  lost. Nine branches are now redundant and can go.
+
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
   client, in a branch name. If a session is handed one that does, say so before pushing and ask
   to move the work.
-- **Branches.** `main` holds the current state of the portfolio and is where work belongs.
-  **Check whether `main` is actually the repo default before trusting the landing page.** As of
-  2026-08-13 it was not: the default was still `claude/portfolio-repo-setup-hxm78l`, and only
-  Lara can change it, because repo-settings writes are blocked by the sandbox proxy. If it is
-  still wrong, the landing page shows session-one work and *nothing is broken*, so do not
-  "fix" it by re-pushing or re-branching. Ask Lara to flip it at
-  <https://github.com/laraderosa-lab/laraderosa-solutions/settings>. Once flipped, the two
-  `claude/*` branches are redundant and can be deleted.
+- **Branches.** `main` is the trunk and holds the whole portfolio. On 2026-08-15 all seven
+  session branches were merged into it, so it is the only branch that carries every case study.
   Branch per project off `main` (`claude/<slug>-<id>`), commit and push as work completes, then
-  merge into `main` so the repo's landing page always shows the real portfolio. Before
-  2026-08-13 the default branch was a session-scoped feature branch, which meant pushed work
-  was invisible on the landing page. If two sessions run at once the second will hit push
-  conflicts, so `git pull --rebase` first.
+  **merge back into `main` before the session ends**, or the landing page will not show the
+  work. If two sessions run at once the second will hit push conflicts, so `git pull --rebase`
+  first.
+  **Check whether `main` is actually the repo default before trusting the landing page.**
+  Repo-settings writes are blocked by the sandbox proxy, so only Lara can set it, at
+  <https://github.com/laraderosa-lab/laraderosa-solutions/settings>. Nothing is broken if it is
+  wrong, so do not "fix" it by re-pushing or re-branching, just say so.
 - Per-project assets in `<slug>/assets/`.
 - Never commit a screenshot without checking for firm or party names, claim or policy numbers,
   dollar figures tied to a real matter, adjuster names, dates of loss, or PHI.
