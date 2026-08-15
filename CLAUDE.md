@@ -20,6 +20,10 @@ redacted code excerpts where they prove something.
   a schema, a scoring rule). No client source, no credentials, no PHI/PII, no real schema
   prefixes, table names or flow names.
 - **Depth is tiered.** 3 flagship deep dives, 4 short entries.
+- **Length: a flagship is ~3,000 to 3,400 words, short entries well under.** Provider selection
+  had to be cut by a third after the fact. Write to length in the first draft. When a section
+  runs long, the fix is usually a structural cut (a duplicated table, a second diagram, a second
+  code excerpt) rather than word-level tightening, which does not move the total.
 - Every case study follows `_template/README.md` section for section.
 - **Every case study stands alone.** A reader may open any entry first, so shared context
   (the client, the audit, a constraint two projects hit) is restated in that entry's own words
@@ -85,7 +89,7 @@ corrected, so none of the original guesses survive.
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | Drafted. OPEN on the Skyvia/Power BI layer, timeline, and every after-state number |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
-| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iteration 1 done.** All eight sections written, before-state quantified, role, timeline, status and outcome filled in. Outstanding: in-production-since date and user count, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
+| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 and 2 done**, and the most finished entry in the repo. Outstanding: in-production-since date and user count, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 | `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
@@ -383,6 +387,39 @@ One line per session, newest last.
   a branch cut before `main` existed, so the checkout showed a three-line stub and CLAUDE.md's
   old seven-projects table, and the first answer was "there is no draft". `git fetch origin main`
   and check `origin/main` before telling Lara something is missing.
+- **2026-08-15 (provider selection, iteration 2).** Slop pass plus a **32% word cut** (5,088 to
+  3,423), on Lara's instruction that the doc was too long. Structural cuts, not just tightening:
+  the two architecture diagrams merged into one, the shortlisting code excerpt dropped (the
+  trade-off row already carries it), §7's before-state table cut from eleven rows to four since
+  it duplicated §3, and the constraints list cut from five bullets to three. Slop removed: the
+  "matters more than it sounds" and "the one I care most about" metadiscourse, the "I would
+  rather publish that gap than fill it" kicker, the "half a job" kicker, and several colon
+  reveals. **Aim for FNOL's length (~3,200 words) on future entries rather than editing down
+  afterwards.**
+  Four corrections from Lara, all of which changed content rather than wording:
+  1. **The §2 reframe was wrong.** It said the ask was "make the directory easier to search" and
+     that better search does not help. False dichotomy. The client did want easier search *and*
+     the directory kept centralised in the case management system, and both were delivered. The
+     ranking layer is a third thing on top, not a replacement.
+  2. **The do-not-use story is misinformation, not an unused field.** Staff were never instructed
+     to use the checkbox, so they typed free-text "DNU" notes onto provider records instead. A
+     note has no date anyone trusts, and the few records actually ticked were stale, so nobody
+     knew whether an old tick still applied. The data was contradictory rather than absent. The
+     fix was making the checkbox the only way to mark a provider, plus documentation and training,
+     so the field gets cleaned in the CMS and then in the app's mirror.
+  3. **Booking by email has practical reasons, not just policy.** The request usually carries the
+     client's previous records as attachments, and the email thread is what the coordinator
+     follows up on weeks later. Also: the draft is unsent because **that is the chosen human
+     review point**. The alternative was a review screen in the app followed by an automatic
+     send, and reviewing a draft in your own outbox is a thing coordinators already do all day.
+  4. **The ad-hoc provider option is not a contradiction of FNOL's "carriers only in the CMS"
+     rule.** The difference is sync latency. FNOL reads the CMS live, so a carrier added upstream
+     appears on the next run and an in-app shortcut would only fragment the source of truth. This
+     catalog is a daily mirror, so the same rule would make a coordinator wait a day to place a
+     call. Hence ad-hoc for today, with training to add it upstream so it syncs overnight. The
+     §5 table now carries this contrast explicitly.
+  **Lara named the CMS vendor in chat.** As always, it stays out of every committed file. Still
+  no blocklist supplied, so still no authoritative identifier scan.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
