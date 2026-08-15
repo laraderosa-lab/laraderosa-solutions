@@ -13,10 +13,10 @@ worth fixing**, what I built, and what changed as a result.
 | ★ **[FNOL voice agent](./fnol-voice-agent)** | Voice AI agent phones insurance carriers to open claims, navigating IVRs, holding, and answering the carrier's interview, with a human approval gate and post-call accuracy verification | A 400-person PI firm was spending **~125–200 staff-hours a week** opening claims by phone, a tenth to a sixth of the claims department's whole capacity, one call at a time. Calls now run concurrently. | Retell AI, Copilot Studio, Power Automate, Dataverse, React/TS |
 | ★ **[Medical provider selection](./medical-provider-selection)** | Ranks an ~18,000-provider directory by driving distance from the client's home, sends voice AI agents to phone the shortlist for their earliest appointment, and drafts the booking email | Choosing providers cost the same firm's 65-person treatment team **~350–440 staff-hours a week**, around a seventh of its capacity, split between scrolling a specialty-filtered directory with Google Maps open in a second tab and phoning offices one at a time. Ranking is now one search, and the calls run concurrently with nobody on the line. | Power Platform Code App (React/TS), Dataverse, Power Automate, Azure Maps, Retell AI, Copilot Studio |
 | ★ **[Marketing attribution](./marketing-attribution)** | Rebuilds a law firm's marketing attribution from ad-account structure through lead capture to settled case value, surfacing ROI per source, campaign and ad group in Power BI | A small criminal-defense and PI firm was spending **well over $500k a year** buying cases and could not attribute a paid search lead at all, because its agency ran one landing page across many ad groups. Its only ROI reporting came from that same agency. | Lawmatics, Clio Manage, Make, Skyvia, BigQuery, Power BI, CallRail, Google Ads |
-| [Medical lien calculator](./medical-lien-calculator) | | | |
 | [Firm operating dashboards](./firm-ops-dashboard) | Replicates a $50M PI firm's case management and intake systems into a warehouse hourly, and serves leadership, per-team, intake/marketing and financial reports off one shared model | The firm's data was complete and unreadable. Every question spanning two objects was a manual export, so questions that needed asking weekly stopped being asked. Teams could not see progress toward the bonus they were working for. Shipped as a data-first pilot in place of the AI project the client came in asking about. | Clio Manage/Grow, Skyvia, Azure SQL, Power BI |
 | **[Document generation](./document-generation)** | Assesses each section of a legal template for the least powerful technique that will fill it, then assembles the document from five levels: boilerplate, merge fields, conditional logic, AI classification, AI narrative | Firms want long documents drafted automatically. Merge-field tooling cannot finish the document, and whole-document AI generation costs more, breaks Word formatting, and puts a review burden on every line. Deciding **per section** is what lets a reviewer know which parts of the page could not have come out wrong. Applied at ~a dozen US PI firms, four directly. | Power Automate, Make.com, SharePoint / Drive, Word field logic, CMS APIs, LLM nodes |
 | ★ **[Liability dispute agent](./liability-dispute-agent)** | A chat agent that helps claims staff answer an insurance carrier's liability denial and drafts the reply into the adjuster's email thread, reasoning only from the firm's own reviewed playbooks and verified Vehicle Code sections | Getting liability accepted is **the biggest single measure of a claims rep's performance**, and the firm had no reliable way to make reps better at it. The knowledge was scattered across contradictory documents, the people who could apply it kept leaving, and juniors were filling the gap with public consumer AI. | Copilot Studio, Claude Opus 4.1, SharePoint knowledge set, Power Automate, MS Graph, MCP |
+| [Lien reduction letters](./lien-reduction-letters) | Turns one settlement form submission into a per-lienholder reduction letter, running the statutory 50/50 pro-rata split once so every letter on the matter reconciles | A Missouri PI firm's case management system couldn't compute the lien split, so settlement figures lived in Excel, the pro-rata math was done on a calculator, and totals were hand-typed into a Word template **once per medical provider** | Fillout, Make, Microsoft 365 Word merge, OneDrive |
 
 ★ = flagship deep dive.
 <!-- OPEN: is document generation a flagship? It has the strongest reusable idea of the seven
@@ -50,7 +50,6 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | FNOL voice agent | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Medical provider selection | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Marketing attribution | ✅ | | ✅ | ✅ | ✅ | ✅ |
-| Medical lien calculator | | | | | | |
 | Firm operating dashboards | | | ✅ | ✅ | ✅ | ✅ |
 | Document generation | ✅ | ✅ | | ✅ | | ✅ |
 
@@ -62,6 +61,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
       Confirm the client owns and maintains them now, or I will split deployed from handed off. -->
 
 | Liability dispute agent | ✅ | ✅ | | ✅ | | |
+| Lien reduction letters | | | | ✅ | | ✅ |
 
 ## How to read these
 

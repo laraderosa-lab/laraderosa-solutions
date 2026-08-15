@@ -1,0 +1,266 @@
+# Lien Reduction Letters
+
+> When a personal injury settlement can't cover the medical liens filed against it, the firm
+> has to write to every lienholder showing the statutory math and asking them to accept less.
+> That was a spreadsheet, a desk calculator, and hand-typing totals into a Word template, once
+> per provider, per case. Now it is **one form submission that produces every letter.**
+
+## At a glance
+
+| | |
+|---|---|
+| **Client** | Plaintiff-side personal injury firm, Missouri (US) |
+| **Domain** | Settlement disbursement, medical provider liens |
+| **My role** | Co-built. A colleague wrote the first version; the reworked system described here is mine |
+| **Timeline** | <!-- OPEN: roughly when, and how long. One line is enough. --> |
+| **Stack** | Fillout (forms), Make (orchestration), Microsoft 365 Word document merge, OneDrive, Outlook |
+| **Status** | <!-- OPEN: still running? --> |
+
+---
+
+## 1. Context
+
+When a personal injury case settles, the money does not go to the client. It gets divided.
+The attorney's fee comes off first, then case expenses, and what remains is the net recovery.
+Under the framework this firm works under, that net is then **split in half**: one half to the
+client, one half reserved as a pool for the medical providers who treated them and filed a
+lien against the recovery.
+
+Each provider with a lien on file is entitled to a share of that pool proportional to what
+they claimed. Nothing complicated so far.
+
+The complication is that **the claimed liens routinely add up to more than the pool.** A
+client with months of treatment can easily have $50,000 in provider liens sitting against a
+pool of $27,000. Every lienholder cannot be paid in full, so before the firm can disburse
+anything it has to write to each one, show them the arithmetic, and formally ask them to
+reduce their claim to the pro-rata figure. Those are lien reduction letters, and no
+disbursement happens until they are out the door.
+
+<details>
+<summary>The arithmetic, with illustrative figures</summary>
+
+Not a real matter. Round numbers chosen to show the shape.
+
+| | |
+|---|---|
+| Gross settlement | $90,000 |
+| Attorney's fee (⅓) | −$30,000 |
+| Case expenses | −$6,000 |
+| **Net recovery** | **$54,000** |
+| Client's half | $27,000 |
+| **Lien pool** | **$27,000** |
+
+Three providers have filed liens totalling **$50,000** against a **$27,000** pool, so every
+lienholder is reduced to 54% of what they claimed:
+
+| Lienholder | Claimed | Share of claims | Pro-rata payout |
+|---|---|---|---|
+| Provider A | $30,000 | 60% | $16,200 |
+| Provider B | $15,000 | 30% | $8,100 |
+| Provider C | $5,000 | 10% | $2,700 |
+| | $50,000 | | **$27,000** |
+
+Three letters, three different figures, one shared derivation. Get one number wrong upstream
+and all three are wrong in a way the recipient is motivated to find.
+
+</details>
+
+## 2. Diagnosis: how I knew this was the problem to solve
+
+This one arrived as a defined request rather than out of an audit, so the honest version of
+this section is short. The firm knew the letters were slow. What was worth getting right was
+the scope of the fix.
+
+**The visible ask was document generation.** Staff were re-typing the same figures into a
+Word template once per provider, and the obvious build is a mail merge over the spreadsheet
+they already kept. That would have worked, and it would have solved the cheaper half of the
+problem.
+
+**The expensive half was that the calculation had no home.** The case management system does
+not implement the half-and-half split or the pro-rata pool, so the figures lived in an Excel
+sheet maintained alongside the system of record, were worked by hand on a calculator, and
+were then transcribed into letters. Three places holding the same numbers, reconciled by a
+person. Merging from the spreadsheet automates the typing and leaves the reconciliation
+exactly where it was.
+
+So the form became the single point of entry for every settlement variable, and the letters
+fall out of it as an artifact. That is the whole design decision, and everything below
+follows from it.
+
+**Why none of this happened inside the case management system.** It exposes no API. There is
+no route to reading settlement figures out of it, computing against them, or writing results
+back. The data has to be entered, once, deliberately, rather than fetched.
+
+## 3. Problem
+
+Every case that settled with liens exceeding the pool required a per-lienholder letter, each
+carrying a different payout figure derived from a shared calculation that no system
+performed. Staff maintained the figures in Excel, ran the pro-rata split on a calculator, and
+hand-transcribed totals and provider details into a Word template once per lienholder. The
+work scaled with the number of providers on the case, which is exactly the direction it
+should not scale. Every transcription was a chance to send a lienholder a number that did not
+match the derivation printed above it in the same letter.
+
+## 4. Solution
+
+One form, submitted once per settlement, produces every letter.
+
+A staff member enters the settlement amount, the attorney's fee, the case expenses, and then
+one repeating block per lienholder covering provider name, address, contact and claimed
+amount. That is the entire human contribution. On submit:
+
+1. **Compute.** Net recovery, the half-and-half split, the total claimed, each lienholder's
+   proportional share, and each resulting payout.
+2. **Fan out.** One pass per lienholder, merging that lienholder's own figures plus the
+   shared settlement derivation into a Word letter template, exported as PDF.
+3. **Client breakdown.** The same inputs generate a settlement breakdown document showing the
+   client their gross, fee, expenses and net share, ready for sign-off.
+4. **Store.** Everything lands in OneDrive and comes back as shareable links.
+5. **Notify.** A single email to the address given on the form, listing a link per letter plus
+   the breakdown, subject line carrying the case identifier.
+6. **Log back.** A note goes onto the case file pointing at the OneDrive folder, so the case
+   file still knows the letters exist.
+
+Nothing sends to a lienholder automatically. The output is a set of documents a person reads
+before any of them leave the firm.
+
+## 5. Architecture
+
+```mermaid
+flowchart TB
+  staff(["Disbursement staff"])
+
+  form["Fillout form<br/>settlement · fee · expenses<br/>+ repeating lienholder block"]
+
+  subgraph orch["Make scenario"]
+    calc["Compute<br/>net → half-and-half split → pro-rata per lienholder"]
+    iter["Iterate lienholders<br/>one pass per row"]
+    merge["Word template merge<br/>placeholders → PDF"]
+    brk["Settlement breakdown<br/>for client sign-off"]
+  end
+
+  store[("OneDrive<br/>PDFs + shareable URLs")]
+  mail["Summary email<br/>one link per letter"]
+  cms[["Case management system<br/>(no API)"]]
+
+  staff -->|"enters once"| form --> calc
+  calc --> iter --> merge --> store
+  calc --> brk --> store
+  store --> mail --> staff
+  staff -->|"reviews, then sends"| out(["Lienholders"])
+  store -.->|"folder link, manual log note"| cms
+```
+
+### Key decisions and tradeoffs
+
+| Decision | Why | What I gave up |
+|---|---|---|
+| **Capture every settlement variable in one form submission** rather than merging letters from the existing spreadsheet | The spreadsheet was the source of the reconciliation problem. Leaving it in place would have automated the typing and kept the drift. One entry point means one set of numbers. | Staff re-key figures that exist elsewhere in the firm. With no API on the case management system, there was no alternative. |
+| **Do the arithmetic in the orchestration layer, not in the document template** | The same derivation appears in every letter and in the client breakdown. Computing once and merging the results keeps all of them consistent by construction. | The math is invisible to whoever edits the letter template later, so a formula change is a developer change. |
+| **Email shareable links instead of attachments** | A case with six lienholders is six PDFs plus a breakdown. As attachments that is a heavy mail; as links the team opens what it needs and the documents stay in one folder. | Recipients need OneDrive access, and a link is a live document rather than a frozen copy of what was generated. |
+| **Generate PDFs, but keep the letter body a Word template** | The wording is legal language the firm owns and revises. Placeholders in a Word file are editable by a paralegal. Hard-coding the template would have made every wording tweak a change request. | Placeholder names become a contract. Renaming one in the template silently breaks a merge. |
+| **No automatic send to lienholders** | These are letters asking a creditor to accept less, on firm letterhead, on a live matter. The saving is in the preparation, and the review step costs minutes. | Not end to end. A person still sends every letter. |
+
+### Constraints I built inside
+
+- **The case management system exposes no API.** No reading case data out, no writing results
+  back. Every downstream decision follows from that, including the form existing at all.
+- **The system of record cannot do the math.** It has no concept of the half-and-half split
+  or a pro-rata pool, which is why the figures had ended up in Excel.
+- **The wording is legal text the firm owns.** It cites the statutory framework and gets
+  revised. Non-developers had to be able to edit it.
+- **Non-technical users.** Disbursement staff, not analysts. The whole surface is a web form
+  and an email full of links.
+
+### Illustrative excerpt: the calculation
+
+*Redacted and simplified. The formula is trivial. What earns the excerpt is the two
+invariants it has to hold, spelled out underneath.*
+
+```js
+// One derivation, computed once, merged into every letter and the client breakdown.
+const fee         = feeIsPercent ? settlement * (feeRate / 100) : feeAmount;
+const net         = settlement - fee - expenses;
+const clientShare = net / 2;
+const lienPool    = net / 2;
+
+const totalClaimed = lienholders.reduce((sum, l) => sum + l.claimed, 0);
+
+// Every lienholder is reduced by the same ratio, so the letters are mutually consistent:
+// each recipient can check their own figure against the shared derivation printed above it.
+const reductionRatio = lienPool / totalClaimed;   // < 1 whenever a reduction is needed
+
+const payouts = lienholders.map(l => ({
+  ...l,
+  payout: round2(l.claimed * reductionRatio),
+}));
+```
+
+Two things this has to guarantee, because a lienholder's billing department will check both.
+Every letter must show the **same** settlement, fee, expenses and pool, since providers on the
+same matter compare notes. And the payouts must **sum to the pool**, which independent
+per-row rounding does not promise. See §8.
+
+## 6. My involvement
+
+Co-built. A colleague wrote the first working version. I took it on and reworked it
+substantially, and the system described above is that rework.
+
+<!-- OPEN: worth one line if you can give it, since this is the section interviewers read
+closest. Which parts did the rework touch? The calculation, the per-lienholder fan-out, the
+template handling, the delivery, the client documentation? Naming even two of them turns
+"improved it substantially" into something a reader can picture. -->
+
+## 7. Impact
+
+**Nothing here was measured.** No before-state timings were taken and no after-state counts
+were kept, so this section is qualitative and says so rather than carrying a number I cannot
+stand behind.
+
+| | Before | After |
+|---|---|---|
+| Where the settlement figures live | Excel sheet, kept alongside the case management system | The form submission, single entry |
+| The pro-rata math | By hand, on a calculator, per case | Computed identically every time |
+| Producing N letters | Hand-transcribe totals and provider details into a Word template, once per lienholder | One pass, all letters and the client breakdown |
+| Provider names and addresses | Typed into each letter | Entered once, flow into all |
+| Risk of an inconsistent figure between letters on the same matter | Real, and it scales with lienholder count | Removed by construction |
+
+What the firm reported: no calculator work, no re-typing, and letters arriving as a set of
+reviewable documents rather than a task list.
+
+The pattern also generalises. Word-template merge driven by structured form input covers
+demands, settlement statements and notices, which is a large share of what a plaintiff firm
+produces.
+
+## 8. What I'd do differently
+
+- **The rounding remainder should be allocated rather than left to chance.** Rounding each
+  payout independently to the cent does not guarantee the payouts sum to the pool, so a
+  six-provider case can distribute a cent more or less than exists. Nobody is harmed by a
+  cent. A letter whose figures do not reconcile is still exactly the kind of thing a
+  lienholder's billing department writes back about, and the reply costs more than the cent.
+  Allocating the remainder to the largest claim makes the set provably sum to the pool.
+- **Placeholder names in the Word template are an undocumented contract.** The template is
+  editable by design, which is right, but nothing stops someone renaming a placeholder and
+  finding out at merge time. A validation step comparing the template's placeholders against
+  the fields the scenario supplies would catch it before a letter goes out with a blank in it.
+- **The link back to the case file is manual.** With no API, the case management system only
+  learns about the letters if someone posts the folder link. That is the one step still
+  relying on a person remembering.
+
+---
+
+<details>
+<summary>Evidence</summary>
+
+<!-- Candidates, all needing a redaction pass:
+     - The Fillout form, with the repeating lienholder block visible (no real case data)
+     - A generated letter with every identifying field replaced by the illustrative figures
+       in §1: no provider names, no firm letterhead, no client name, no real amounts
+     - The Make scenario canvas, which shows the fan-out shape well and carries no data
+     Check every image for: firm name, provider names, client name, claim numbers, real
+     dollar figures, dates of treatment, PHI. A lien letter is dense with all of these. -->
+
+Not yet added.
+
+</details>

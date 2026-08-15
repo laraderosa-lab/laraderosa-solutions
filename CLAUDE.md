@@ -79,7 +79,6 @@ Seven total. Five are unwritten.
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | Drafted. OPEN on the Skyvia/Power BI layer, timeline, and every after-state number |
-| `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Materially complete.** All eight sections written, before-state quantified, role and outcome filled in. Outstanding: timeline, status/in-production-since, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
@@ -94,6 +93,7 @@ injury rather than claim opening, and the marketing work produces no marketing, 
 
 `firm-ops-dashboard` is **confirmed by Lara as a different client** from the Power BI dashboard
 inside `marketing-attribution`. Two dashboards, two engagements. Do not merge them.
+| `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
 
 Lara refers to these projects by client name, which is not recorded here (public repo). Expect
 shorthand that matches no slug, and ask which one she means rather than guessing.
@@ -183,6 +183,21 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   case-carrying pods), but the 400 is load-bearing in the FNOL headline. Ask Lara.
 - The firm's ROI model is the source of the modeled per-solution savings. Benchmark is ~125
   new cases a week across 5 pods. Liability disputes arise on ~half of cases.
+- **`lien-reduction-letters` is a different client from the FNOL firm.** A Missouri
+  plaintiff-side PI firm, on Fillout/Make/Microsoft 365 rather than the FNOL client's Power
+  Platform estate, with a different case management system that has **no API at all**. So the
+  seven projects span at least two clients, and the root README should not imply one
+  engagement produced all seven. Confirm the split with Lara.
+- **Handover docs for these projects may be authored by colleagues.** The lien one was, and
+  it says "we" throughout. Never write §6 (My involvement) from a doc Lara did not write; ask.
+  On the lien project the answer was **co-built**: a colleague wrote the first version, Lara
+  reworked it substantially. She asked that the write-up not characterise the earlier version
+  as weak, so it says whose it was and stops there. Expect this shape again.
+- **Not every project has a diagnosis story or measured impact.** The lien one arrived as a
+  defined request and nothing was measured before or after. Lara said so plainly. The right
+  move is a short §2 explaining the scoping judgment that was actually made, and a §7 that
+  states up front that nothing was measured. Do not pad either section, and never manufacture
+  a discovery narrative to fill the template.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
@@ -312,6 +327,15 @@ One line per session, newest last.
   it. Still open: timeline, status, ruled-out alternatives, whether the handover docs are hers.
   Modeled impact is in the draft and labelled as such; the KPI itself was never instrumented,
   which is now §8's first entry.
+- **2026-08-14.** `medical-lien-calculator` renamed to `lien-reduction-letters` and drafted
+  as a short entry from one handover doc (a colleague's, not Lara's). The domain content is
+  solid: the statutory net-recovery split, the pro-rata pool, and why a per-lienholder letter
+  set has to reconcile against a shared derivation. Scrubbed from the source before drafting:
+  client firm name, doc author's name, case management vendor name, and a client wiki URL
+  containing the firm name. Lara then confirmed: co-built with a colleague, no diagnosis
+  story, no metrics. Rewritten to say all three plainly instead of carrying `OPEN` blocks, so
+  the entry reads as finished. Left open: timeline, current status, and which parts her
+  rework covered.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
