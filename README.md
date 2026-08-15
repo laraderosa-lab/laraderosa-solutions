@@ -16,9 +16,15 @@ worth fixing**, what I built, and what changed as a result.
 | [Medical lien calculator](./medical-lien-calculator) | | | |
 | [Liability dispute agent](./liability-dispute-agent) | | | |
 | [Firm operating dashboards](./firm-ops-dashboard) | Replicates a $50M PI firm's case management and intake systems into a warehouse hourly, and serves leadership, per-team, intake/marketing and financial reports off one shared model | The firm's data was complete and unreadable. Every question spanning two objects was a manual export, so questions that needed asking weekly stopped being asked. Teams could not see progress toward the bonus they were working for. Shipped as a data-first pilot in place of the AI project the client came in asking about. | Clio Manage/Grow, Skyvia, Azure SQL, Power BI |
-| [Document generation](./document-generation) | | | |
+| **[Document generation](./document-generation)** | Assesses each section of a legal template for the least powerful technique that will fill it, then assembles the document from five levels: boilerplate, merge fields, conditional logic, AI classification, AI narrative | Firms want long documents drafted automatically. Merge-field tooling cannot finish the document, and whole-document AI generation costs more, breaks Word formatting, and puts a review burden on every line. Deciding **per section** is what lets a reviewer know which parts of the page could not have come out wrong. Applied at ~a dozen US PI firms, four directly. | Power Automate, Make.com, SharePoint / Drive, Word field logic, CMS APIs, LLM nodes |
 
 ★ = flagship deep dive.
+<!-- OPEN: is document generation a flagship? It has the strongest reusable idea of the seven
+and the weakest measured impact. Add ★ and bold the row if yes. -->
+
+**Document generation is a method, not a build.** It is the approach used whenever one of the
+other solutions has to produce a document, so it appears inside several of the entries above.
+It has its own page because the reusable part is the assessment.
 
 The first two came out of **one engagement at one firm**, an audit of two departments that
 produced around ten solutions. They share a data platform, a run-status vocabulary and the same
@@ -37,7 +43,15 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | Medical lien calculator | | | | | | |
 | Liability dispute agent | | | | | | |
 | Firm operating dashboards | | | ✅ | ✅ | ✅ | ✅ |
-| Document generation | | | | | | |
+| Document generation | ✅ | ✅ | | ✅ | | ✅ |
+
+<!-- OPEN: two things to check on the document generation row.
+  (a) "LLM agents" is the wrong column name for it. That work is prompt orchestration
+      (classification nodes, scoped drafting nodes), not agents. Consider renaming the column
+      to "LLM systems" so the row is honest, or tell me to blank the tick.
+  (b) "Deployed & handed off" is ticked on the strength of "a lot of things were shipped".
+      Confirm the client owns and maintains them now, or I will split deployed from handed off. -->
+
 
 ## How to read these
 

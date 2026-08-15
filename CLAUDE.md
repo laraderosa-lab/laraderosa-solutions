@@ -83,7 +83,7 @@ Seven total. Five are unwritten.
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
 | `liability-dispute-agent` | Lara's own words | TBD | Not started |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Materially complete.** All eight sections written, before-state quantified, role and outcome filled in. Outstanding: timeline, status/in-production-since, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
-| `document-generation` | Lara's own words | TBD | Not started |
+| `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 
 **Do not infer what a project is from its slug.** The two still marked *Guess* are placeholders
 Claude invented in the first session with no knowledge of the work, and they will read as
@@ -151,6 +151,17 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   supplied as already-modified still carried client emails and phone numbers, legible client
   names under partial blur, a staff name in a slicer, and referral-partner lists that read as
   real firms. Blur in an export is not redaction. Substitute at source or crop to aggregates.
+- **`document-generation` is not a project, it is the house method** for any solution that has
+  to emit a document, used across a big chunk of them. Confirmed 2026-08-14: the five-level
+  framework (boilerplate → merge fields → conditional logic → AI classification → AI narrative)
+  was **co-developed by Lara in a group session and written up by someone else**, so do not
+  claim sole authorship. Applied at **~a dozen** US plaintiff-side PI firms practice-wide,
+  **four by Lara directly**, several documents each. Design rule: lowest level that will do the
+  job. Level 4 classifies only, and the prose it selects was written by a human. Template
+  assessment is still **manual**.
+- All document work is **US plaintiff-side PI firms**. The walkthrough video Lara uses is an
+  **Ontario** statement of claim, so any reference to it must say the sample is Ontario while
+  the clients were US.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
@@ -254,6 +265,17 @@ One line per session, newest last.
   and visible, only essential raises an *urgent* alert, examples: essential = date of loss,
   client name, passenger count; minor = airbag deployment, weather); and **carriers can only
   be added in the CMS, never in the app**, to stop the source of truth fragmenting.
+- **2026-08-14.** `document-generation` drafted on branch
+  `claude/document-generation-automation-67eozm`, framed as a **method entry** rather than a
+  single build, since Lara confirmed it is the approach used inside other solutions. Root
+  README row and capability matrix filled. Content came from Lara's verbal account in one
+  session: the five levels, the three deployment shapes (in-CMS with Word field formulas /
+  hybrid export to a flow / flow-only), and the two Level 5 wiring patterns (node per section
+  vs prompts bracketed inside the template). Still open: measured impact (none quoted yet, the
+  weakest part of the entry), Lara's per-client role split, flagship or not, whether the
+  walkthrough video link is public and its sample document clean, and confirmation that the
+  node-vs-in-template tradeoff is written the right way round. Lara will build the demand-letter
+  demo later; the entry deliberately does not describe it as existing.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
