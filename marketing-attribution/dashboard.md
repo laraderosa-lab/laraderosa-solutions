@@ -53,66 +53,13 @@ Note from the firm-ops dashboard work: blur in a client-supplied export is not r
 Previous "pre-anonymized" PDFs still carried legible names under partial blur. Substitute at
 source or crop to aggregates. -->
 
-## The connector that did not exist
-
-Skyvia does the replication and had no Lawmatics connector, so I wrote one: a declarative REST
-definition covering thirteen objects, replicating hourly into BigQuery. Most of the value is in
-four rules that have nothing to do with the data model.
-
-*Redacted and trimmed from thirteen object definitions to one. No credentials appear in the
-definition, since auth is supplied by the platform at runtime.*
-
-```jsonc
-{
-  "ProviderConfiguration": {
-    "BaseUrl": "https://api.lawmatics.com/v1",
-    "AuthorizationToken": { "TokenType": "Header", "TokenName": "Bearer" },
-
-    // 1. Stay under the API's ceiling rather than discovering it in production.
-    "RateLimitThrottling": { "RequestsLimit": 10, "TimeInterval": 1000 },
-
-    // 2. Page by number and trust the API's own page count. Walking until an empty
-    //    response cannot distinguish "done" from "failed".
-    "PagingStrategy": { "Type": "PageNo", "PageSize": 100, "StartIndex": 1,
-                        "TotalPageCountJPath": "meta.total_pages" },
-
-    // 3. Throttling is a guess, so treat 429 as expected rather than exceptional.
-    "ErrorHandling": { "Failover": { "FailoverErrors": ["429", "rate limit"],
-                                     "MaxRetries": 5, "MinDelay": 1000 } }
-  },
-
-  "Metadata": { "Objects": [{
-    "Name": "Prospects", "Url": "/prospects",
-    // The API returns a thin payload unless asked otherwise, so every field is named.
-    "ConstantParameters": [{ "ParameterName": "fields", "Value": "<70+ fields>" }],
-    "Columns": [
-      { "Name": "id",          "APIPath": "id", "Primary": true },
-      { "Name": "source_id",   "APIPath": "relationships.source.data.id" },
-      { "Name": "campaign_id", "APIPath": "relationships.campaign.data.id" },
-
-      // 4. Incremental sync with a deliberate overlap. The >= variant carries a negative
-      //    delta so each run re-reads the edge of the last window. A record lost in the
-      //    gap between two windows is invisible forever.
-      { "Name": "UpdatedDate", "APIPath": "attributes.updated_at", "DbType": "DateTime",
-        "FilterOperations": [
-          { "Operation": "GreaterThan",         "ParameterName": "updatedFrom" },
-          { "Operation": "GreaterThanOrEquals", "ParameterName": "updatedFrom", "Delta": -1 }
-        ] }
-    ]
-  }]}
-}
-```
-
-Rule (4) guarantees duplicates and closes a silent failure in exchange. A number that is
-slightly double-counted gets questioned. A number quietly missing rows does not.
-
 ## Design decisions
 
-The two that shaped the whole reporting layer sit in the main case study's trade-off table:
-Power BI over Lawmatics' native dashboards, because ROI per source is a joined question and
-native reporting can only see its own system, and replicating into a warehouse rather than
-pointing the BI tool at the API, which is paginated at 100 records a page and rate limited to
-ten requests a second.
+The two that shaped the whole reporting layer sit in the main case study, along with the
+Skyvia connector definition that feeds the warehouse: Power BI over Lawmatics' native
+dashboards, because ROI per source is a joined question and native reporting can only see its
+own system, and replicating into a warehouse rather than pointing the BI tool at the API,
+which is paginated at 100 records a page and rate limited to ten requests a second.
 
 <!-- OPEN: the decisions specific to the dashboard itself, which I do not have:
      - how ROI is defined when a PI case settles months or years after the spend that bought it

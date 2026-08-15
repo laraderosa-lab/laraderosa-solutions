@@ -28,8 +28,8 @@ redacted code excerpts where they prove something.
 - **Depth is tiered.** 3 flagship deep dives, 4 short entries.
 - **Length follows the project. The rule is concision, not a word count** (2026-08-15, Lara).
   A bigger project earns a longer entry, and `marketing-attribution` is the clearest case: five
-  layers rebuilt across three months, so it runs around 5,000 words and that is fine. Judge a
-  draft by whether every paragraph is carrying something, not against a target.
+  layers rebuilt across three months, so it runs to roughly 5,700 words and that is fine. Judge
+  a draft by whether every paragraph is carrying something, not against a target.
   There used to be a "~3,000 to 3,400 words" rule here. It was generalised from one entry's
   edit (provider selection, cut by a third in a single session) and it should not have become a
   repo-wide number. Do not reinstate it, and do not cut Lara's material to hit a figure.
@@ -489,8 +489,10 @@ One line per session, newest last.
   **Dashboard split into `marketing-attribution/dashboard.md`**, referenced at the end, because
   the doc was too long. The five pages moved there. It still needs the PDF, which did not
   survive the session.
-  **Length rule corrected**: concision, not a word count, so this entry stays around 5,000
-  words. Also ported into this file: the `petergyang/no-ai-slop` pin, the loosened anonymization rule,
+  **Length rule corrected**: concision, not a word count. The entry was briefly cut to ~5,000
+  words against the old target and then restored to its full ~5,700, since the project is a
+  large one and the cuts were serving a number rather than the reader. Also ported into this
+  file: the `petergyang/no-ai-slop` pin, the loosened anonymization rule,
   the retirement of the blocklist ritual, and a no-swagger rule.
   **Process failure worth recording.** This session was handed `claude/marketing-attribution-
   iteration-nca1jd`, worked on it for four commits, and only discovered `origin/main` existed

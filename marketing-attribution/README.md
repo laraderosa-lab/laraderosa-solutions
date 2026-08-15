@@ -243,7 +243,7 @@ two, so the reporting layer is Power BI over a BigQuery warehouse fed from both.
 Nothing existed to get either system into that warehouse. Skyvia does the replication and had
 no connector for Lawmatics, so I wrote one: a declarative REST connector definition covering
 thirteen objects, with auth, paging, throttling, retry and incremental-sync rules, replicating
-hourly into BigQuery. The definition is in [`dashboard.md`](./dashboard.md).
+hourly into BigQuery. It is the second excerpt in §5.
 
 The dashboard runs to five pages and is covered separately, in
 [`dashboard.md`](./dashboard.md). It is the only part of the system anyone opens after
@@ -304,13 +304,14 @@ flowchart TB
 
 | Decision | Why | What I gave up |
 |---|---|---|
-| **Fix the source data, do not correct at the reporting layer** | A dashboard that compensates for known-bad inputs becomes a second source of truth that silently diverges from the first. Clean statuses in Lawmatics benefit every consumer of the CRM. | Much slower. A presentation-layer fix would have shown a plausible number in days. |
-| **Derive campaign and ad group from the landing page** | We control neither the landing pages, the ad accounts, nor the UTM parameters, and the party who does had already declined to help. The landing page is in every payload and cannot be repointed without our routing breaking visibly. | A dependency on a page-to-ad-group convention enforced socially rather than technically. |
-| **Gate the case-value sync on an explicit "final" checkbox** | Both alternatives are worse. Case closure adds months of lag, since the firm only closes a file when it is completely finished. A stage change relies on staff updating the value before they move the stage, and lets them skip the stage entirely. | Depends on a human ticking a box. If they never tick it, the value never arrives and nothing errors. |
-| **Write a "migrated" flag back into Clio** | The syncs are daily sweeps, so they have to be safe to re-run. A flag on the source record makes the query filter its own idempotency guard, surviving re-runs, redeploys and a second run after a failed reauthentication. | A write back into Clio on every sync, and one more field for staff to wonder about. |
-| **Costs in a self-updating sheet with a fifteen-minute monthly touch**, rather than moving the ROI analysis off the CRM | Lawmatics has no API endpoint for marketing-source costs, and its native alternative is per-campaign daily entry, which for a fixed monthly agency fee means asking a person to divide by thirty and type it thirty times. Moving the analysis elsewhere means reporting somewhere that does not hold the attribution. | The one manual step in the system, and a dependency on someone remembering. I filed a feature request for the cost endpoint. |
-| **Power BI over Lawmatics' native dashboards, reading a warehouse rather than the API** | ROI per source is a joined question, and native reporting cannot reach Clio for settled value or the sheet for costs. The API is paginated at 100 records a page and rate limited to ten a second, so a BI tool pointed straight at it is slow and refetches everything to answer anything. | A whole extra pipeline to own, for a client with no data team, plus reporting latency and a second copy of the data to secure. |
-| **Incremental sync windows overlap on purpose** | Each run re-reads a sliver of the previous window. A duplicate is cheap and detectable downstream. A record falling in the gap between two windows is invisible forever. | Duplicate rows the warehouse has to tolerate. |
+| **Fix the source data, do not correct at the reporting layer** | A dashboard that compensates for known-bad inputs becomes a second source of truth that silently diverges from the first. Clean statuses in Lawmatics benefit every consumer of the CRM, not only the report. | Much slower. A presentation-layer fix would have shown a plausible number in days. |
+| **Derive campaign and ad group from the landing page** | We control neither the landing pages, the ad accounts, nor the UTM parameters, and the party who does had already declined to help. The landing page is in every payload and cannot be repointed without our routing breaking visibly. | A hard dependency on a page-to-ad-group convention that is enforced socially rather than technically. |
+| **Gate the case-value sync on an explicit "final" checkbox** | Both alternatives are worse. Triggering on case closure adds months of lag, because the firm only closes a file when it is completely finished. Triggering on a stage change relies on staff updating the value before they move the stage, and lets them skip the stage entirely. | Depends on a human ticking a box. If they never tick it, the value never arrives, and nothing errors. |
+| **Write a "migrated" flag back into Clio** | The syncs are daily sweeps over recently-updated records, so they have to be safe to re-run. Flipping a flag on the source record makes the query filter itself the idempotency guard, and it survives the job being re-run, re-deployed, or run twice after a failed reauthentication. | A write back into Clio on every sync, and one more field for staff to see and wonder about. |
+| **Costs in a self-updating sheet with a fifteen-minute monthly touch**, rather than moving the ROI analysis off the CRM | Lawmatics has no API endpoint for marketing-source costs, and its only native alternative is per-campaign daily entry, which for a fixed monthly agency fee means asking a person to divide by thirty and type it in thirty times. Moving the analysis elsewhere would have meant reporting somewhere that does not hold the attribution. | The one manual step in the system, and a dependency on someone remembering. I filed a feature request for the cost endpoint. |
+| **Power BI over Lawmatics' native dashboards** | ROI per source is a joined question, and native reporting can only see its own system. It cannot reach Clio for settled case value or the sheet for costs. | A whole extra pipeline to own, for a client with no data team. |
+| **Replicate into a warehouse rather than point the BI tool at the API** | The API is paginated at 100 records a page and rate limited to ten requests a second. A BI tool refreshing against that is slow, fragile, and re-fetches everything to answer anything. A warehouse gives SQL, joins against the cost data, and history the API does not keep. | Latency between the CRM and the dashboard, and a second copy of the data to secure. |
+| **Incremental windows overlap on purpose** | The sync filters on updated-since, and the greater-than-or-equals variant carries a one-unit negative delta, so each run re-reads a sliver of the previous window. A duplicate is cheap and detectable downstream. A record that falls in the gap between two windows is invisible forever. | Duplicate rows the warehouse has to tolerate. |
 
 ### Constraints I built inside
 
@@ -363,8 +364,72 @@ enquiry to protect a reporting field would be the wrong trade by a wide margin. 
 attributes what it can rather than nothing, since the traffic being paid search is known from
 the channel even when the campaign is not.
 
-The connector definition that feeds the warehouse is the other artifact worth reading, and it
-sits in [`dashboard.md`](./dashboard.md) with the reporting layer it belongs to.
+### Illustrative excerpt: the connector that did not exist
+
+*Redacted and trimmed from thirteen object definitions to one. No credentials appear in the
+definition itself, since auth is supplied by the platform at runtime.*
+
+The replication platform had no Lawmatics connector, so the source is described declaratively
+and the platform does the fetching. Most of the value is in four rules that have nothing to do
+with the data model:
+
+```jsonc
+{
+  "ProviderConfiguration": {
+    "BaseUrl": "https://api.lawmatics.com/v1",
+    "AuthorizationType": "AuthorizationToken",
+    "AuthorizationToken": { "TokenType": "Header", "TokenName": "Bearer", "HeaderName": "Authorization" },
+
+    // 1. Stay under the API's ceiling rather than discovering it in production.
+    "RateLimitThrottling": { "RequestsLimit": 10, "TimeInterval": 1000 },
+
+    // 2. Page by number, and trust the API's own page count rather than
+    //    walking until an empty response, which cannot distinguish "done" from "failed".
+    "PagingStrategy": {
+      "Type": "PageNo", "PageNoParameterName": "page", "PageSizeParameterName": "per_page",
+      "PageSize": 100, "StartIndex": 1, "TotalPageCountJPath": "meta.total_pages"
+    },
+
+    // 3. Throttling is a guess, so treat 429 as expected rather than exceptional.
+    "ErrorHandling": {
+      "Failover": {
+        "FailoverErrors": ["Too Many Requests", "429", "rate limit"],
+        "MaxRetries": 5, "MinDelay": 1000
+      }
+    }
+  },
+
+  "Metadata": { "Objects": [{
+    "Name": "Prospects",
+    "Url": "/prospects",
+    // The API returns a thin payload unless asked otherwise, so every field is named.
+    "ConstantParameters": [{ "ParameterName": "fields", "Value": "<70+ fields>" }],
+    "Columns": [
+      { "Name": "id",              "APIPath": "id",                            "Primary": true },
+      { "Name": "source_id",       "APIPath": "relationships.source.data.id"                   },
+      { "Name": "campaign_id",     "APIPath": "relationships.campaign.data.id"                 },
+      { "Name": "actual_value_cents", "APIPath": "attributes.actual_value_cents", "DbType": "Int64" },
+      { "Name": "custom_fields",   "APIPath": "attributes.custom_fields",      "DbType": "JsonArray" },
+
+      // 4. Incremental sync, with a deliberate overlap. The >= variant carries a negative
+      //    delta so each run re-reads the edge of the last window. Duplicates are cheap and
+      //    detectable. A record lost in the gap between two windows is invisible forever.
+      { "Name": "UpdatedDate", "APIPath": "attributes.updated_at", "DbType": "DateTime",
+        "FilterOperations": [
+          { "Operation": "GreaterThan",         "ParameterName": "updatedFrom" },
+          { "Operation": "GreaterThanOrEquals", "ParameterName": "updatedFrom", "Delta": -1 }
+        ] }
+    ]
+  }]}
+}
+```
+
+The lookup objects, sources, campaigns, stages and practice areas, are small enough to declare
+as unpaged, which removes a round trip each and a class of paging bug that only shows up when
+a list crosses one hundred entries.
+
+Rule (4) guarantees duplicates, and it closes a silent failure in exchange. A number that is
+slightly double-counted gets questioned. A number that is quietly missing rows does not.
 
 ## 6. My involvement
 
@@ -408,7 +473,10 @@ burned by bad reporting to accept an automation that deletes records.
 | | Before | After |
 |---|---|---|
 | **Attribution granularity** | None on paid search. Two different ads could deliver a visitor to the same page, the same number and the same form | **Source, campaign and ad group**, on both the call and the form channel |
+| Marketing sources in Lawmatics | ~50 flat entries, mixing genuine sources, campaigns recorded as sources, duplicates and stale spend | A two-level taxonomy, deduplicated, with historical matters remapped onto it |
+| Form-submitted leads carrying source and campaign | None | Every one, carried by which prefilled form the router submits |
 | Personal injury revenue visible to ROI reporting | None. Only criminal defense, priced at intake | Settled PI value synced back from Clio daily on an explicit final-value gate |
+| Conversion rates | Overstated, since dropped and rejected cases kept their prior status | Corrected daily by the hygiene jobs |
 | Cost per source | Known only for paid search | Every source carries a cost, including organic ones costed at the time they consume |
 | Reporting | The agency's monthly report, on impressions and clicks | Power BI over an hourly warehouse: ROI and conversion by source, campaign and ad group, plus rejection reasons |
 | Basis for evaluating the agency and the lead vendor | The vendors' own reports | The firm's own data |
@@ -419,16 +487,17 @@ to the ad group, which is the level at which spend decisions get made.
 **What it surfaced in the first pass.** Joining case value onto lead source put three questions
 in front of the owner that he could not previously have asked:
 
-- **The pre-signed case vendor looks inverted.** Its leads convert well, as cases arriving
-  already signed should, but the average settlement value on that source came out roughly an
-  order of magnitude below the roughly $3,000 the firm pays per lead. That needs a caveat before
-  anyone acts on it, since PI cases take a long time to close and this cohort is young, so
-  recent sources are structurally understated. It is the first answerable version of the
-  question, on a line item costing tens of thousands a month.
+- **The pre-signed case vendor looks inverted.** Its leads convert well, which is what you
+  would expect from cases that arrive already signed, but the average settlement value on that
+  source came out roughly an order of magnitude below the roughly $3,000 the firm pays per
+  lead. That number needs a caveat before anyone acts on it, because personal injury cases take
+  a long time to close and this cohort is young, so recent sources are structurally
+  understated. The dashboard did not produce a verdict. It produced the first version of the
+  question that had ever been answerable, on a line item costing tens of thousands a month.
 - **The largest single reason for rejecting a lead is that the firm does not offer the
-  service**, at over 40% of rejections. That is a media buying problem rather than an intake
-  one, and it is invisible until rejection reasons are counted against the source that produced
-  them.
+  service.** It accounts for over 40% of rejections. That is a media buying problem rather than
+  an intake one, and it is invisible until rejection reasons are counted against the source
+  that produced them.
 - **Around one lead in ten is invalid**, spam, a wrong number or an internal test. Worth
   knowing before quoting a cost per lead to anyone.
 
@@ -463,35 +532,42 @@ If none of it was measured, say so and I will write one honest qualitative line 
   tripwire, and it is still only a tripwire. I would push much harder and much earlier for the
   firm to own the landing page platform under its own account, which is the dependency the
   firm later had to start unwinding anyway.
-- **A hand-maintained routing table drifts, and mine did.** A later review turned up a page
-  filtered on two branches, two branches whose ad group label was copied from the row above and
-  never changed, and one entry whose subdomain does not match the catch-all's exclusion list.
-  None of them announce themselves, because every one still creates a lead. A table assembled
-  by hand needs a test asserting the invariants: every filter value appears once, every label
-  matches its route, and the exclusion list is exactly the set of mapped pages. A few lines,
-  and I never wrote them.
+- **A hand-maintained routing table drifts, and mine did.** Reviewing it later turned up a
+  landing page used as the filter on two different branches, so submissions from it create two
+  leads under two different ad groups; two branches carrying an ad group label copied from the
+  branch above and never changed, so a personal injury page reports as a criminal defense ad
+  group; and one entry whose subdomain does not match the same page in the catch-all's
+  exclusion list, so that page both matches its branch and falls through to the fallback,
+  producing a duplicate lead and a false alert. None of these announce themselves, because
+  every one of them still creates a lead. A routing table assembled by hand, branch by branch,
+  needs a test that asserts the obvious invariants: every filter value appears exactly once,
+  every branch's label matches its route, and the catch-all's exclusion list is exactly the set
+  of mapped pages. That check is a few lines and I never wrote it.
 - **Debug instrumentation outlived its purpose.** The scenario emails the full payload of every
   lead to me, which was right while I was verifying the routing and wrong the day after. It is
-  still on, so every enquirer's name, phone, email and case description accumulates in an inbox
-  that is not the system of record and is not covered by the client's retention rules.
-  Temporary monitoring needs an expiry date attached the moment it is added.
-- **I over-engineered the cost ingestion.** Parsing the agency's monthly report out of email
-  and writing two cells into a copied sheet has more ways to break than the manual step it
-  replaced.
+  still on, so a copy of every enquirer's name, phone, email and case description accumulates
+  in an inbox that is not the system of record and is not covered by the client's retention
+  rules. Temporary monitoring needs an expiry date attached at the moment it is added.
+- **I over-engineered the cost ingestion.** Parsing the agency's monthly report out of email,
+  finding the right month's column and writing two cells into a copied sheet is a lot of
+  machinery to save someone copying two numbers. It has more ways to break than the manual
+  step it replaced.
 - **The "value is final" checkbox is a silent failure mode.** If nobody ticks it, nothing
-  errors and the case value never arrives. It needs a companion report of settled cases sitting
-  unflagged, so the gap is visible rather than absent.
+  errors and the case value simply never arrives. It needs a companion report of settled cases
+  sitting unflagged, so the gap is visible rather than absent.
 - **Deleting junk matters fights the users.** When staff merge a newly created matter into an
   existing one, the merged record can inherit the new matter's identity and get deleted by a
-  job that was right to fire. The "created today" guard I patched in narrows that window
-  without closing it.
+  job that was right to fire. I patched it with a "created today" guard, which narrows the
+  window without closing it.
 - **I should have built the dashboard first.** Two of the four data-quality problems were only
   visible in aggregate, and I found them late because I treated reporting as the last step
-  rather than as the instrument that shows what is wrong.
-- **The connector pulls fields the warehouse has no business holding**, including social
-  security number, driver licence and date of birth, none of which feed a single measure on the
-  dashboard. Exhaustive is the wrong default when the destination is a copy of the data outside
-  the system of record.
+  rather than as the instrument that shows you what is wrong.
+- **The connector pulls fields the warehouse has no business holding.** The field list on the
+  main object was written to be exhaustive, so it includes social security number, driver
+  licence and date of birth, which are replicated into the warehouse and are not used by a
+  single measure on the dashboard. Exhaustive is the wrong default when the destination is a
+  copy of the data outside the system of record. The field list should name what the reporting
+  needs and nothing else.
 
 ---
 
