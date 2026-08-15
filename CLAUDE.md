@@ -81,9 +81,9 @@ Seven total. Five are unwritten.
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | Drafted. OPEN on the Skyvia/Power BI layer, timeline, and every after-state number |
 | `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
-| `liability-dispute-agent` | Lara's own words | TBD | Not started |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Materially complete.** All eight sections written, before-state quantified, role and outcome filled in. Outstanding: timeline, status/in-production-since, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
+| `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 
 **Do not infer what a project is from its slug.** The two still marked *Guess* are placeholders
 Claude invented in the first session with no knowledge of the work, and they will read as
@@ -162,6 +162,27 @@ shorthand that matches no slug, and ask which one she means rather than guessing
 - All document work is **US plaintiff-side PI firms**. The walkthrough video Lara uses is an
   **Ontario** statement of claim, so any reference to it must say the sample is Ontario while
   the clients were US.
+- **The shared-engagement question is answered: yes.** The client's private documentation repo
+  contains one numbered set of ~10 solutions for one firm, covering FNOL, letter of
+  representation, loss of use, DMV filings, police report retrieval, policy limit search,
+  preservation of evidence, medical provider search and booking, liability dispute, and a
+  read-only operations console. `firm-ops-dashboard` is very likely that console, which would
+  make it **five** portfolio entries from one engagement, not four. Confirm with Lara.
+- **Private client repos are available in-session** on the same GitHub account: documentation
+  (three-doc handover set per solution, plus one-page overviews), the Power Platform React
+  apps, and the Azure functions. They are **by far the highest-value input** and they are
+  private, so read them freely and commit nothing from them verbatim. They are not in the
+  session by default, they have to be added and cloned.
+- **Identifiers seen in those repos**, all of which must stay out of this repo: the client's
+  name and initials, the case-management vendor's name, the Dataverse schema prefix, the
+  `fl-<id>-*` flow naming convention, solution package names, the environment host and id, bot
+  ids, SharePoint knowledge-folder names, pod names, and Entra group names.
+- **Headcount needs reconciling.** The committed FNOL page says ~400 staff and ~30 in claims.
+  The client's own ROI model says 99 heads firm-wide and 34 in claims, and their pod directory
+  lists 151 people. Those may be different populations (total staff vs. licensed users vs.
+  case-carrying pods), but the 400 is load-bearing in the FNOL headline. Ask Lara.
+- The firm's ROI model is the source of the modeled per-solution savings. Benchmark is ~125
+  new cases a week across 5 pods. Liability disputes arise on ~half of cases.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
@@ -276,6 +297,21 @@ One line per session, newest last.
   walkthrough video link is public and its sample document clean, and confirmation that the
   node-vs-in-template tradeoff is written the right way round. Lara will build the demand-letter
   demo later; the entry deliberately does not describe it as existing.
+- **2026-08-13 (second session).** `liability-dispute-agent` drafted on its own branch, from the
+  client's private handover docs plus Lara's account. The reframe that makes this one work: it
+  is a **knowledge-retention** project that happens to draft emails. High churn was taking the
+  firm's liability expertise out of the building, and juniors were filling the gap with public
+  consumer AI (confidentiality exposure, hallucinated Vehicle Code citations, arguments with no
+  relationship to the firm's own positions). The first deliverable was consolidating scattered
+  expert knowledge into one reviewed 15-file set, and only then the agent. Two things sharpened
+  it after Lara's answers: the diagnosis **starts with management naming the KPI** (how often a
+  rep gets liability accepted is the biggest measure of their performance, and they said they
+  wished the team were better at it), and the before-state is a **quality** story, not a time
+  one, anchored on a rep sending the carrier a police report that hurt the client's own case.
+  The knowledge consolidation was done **from documents, not interviews**, and Lara did all of
+  it. Still open: timeline, status, ruled-out alternatives, whether the handover docs are hers.
+  Modeled impact is in the draft and labelled as such; the KPI itself was never instrumented,
+  which is now §8's first entry.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

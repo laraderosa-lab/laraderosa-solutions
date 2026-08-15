@@ -14,9 +14,9 @@ worth fixing**, what I built, and what changed as a result.
 | ★ **[Medical provider selection](./medical-provider-selection)** | Ranks an ~18,000-provider directory by driving distance from the client's home, sends voice AI agents to phone the shortlist for their earliest appointment, and drafts the booking email | Choosing providers cost the same firm's 65-person treatment team **~350–440 staff-hours a week**, around a seventh of its capacity, split between scrolling a specialty-filtered directory with Google Maps open in a second tab and phoning offices one at a time. Ranking is now one search, and the calls run concurrently with nobody on the line. | Power Platform Code App (React/TS), Dataverse, Power Automate, Azure Maps, Retell AI, Copilot Studio |
 | ★ **[Marketing attribution](./marketing-attribution)** | Rebuilds a law firm's marketing attribution from ad-account structure through lead capture to settled case value, surfacing ROI per source, campaign and ad group in Power BI | A small criminal-defense and PI firm was spending **well over $500k a year** buying cases and could not attribute a paid search lead at all, because its agency ran one landing page across many ad groups. Its only ROI reporting came from that same agency. | Lawmatics, Clio Manage, Make, Skyvia, BigQuery, Power BI, CallRail, Google Ads |
 | [Medical lien calculator](./medical-lien-calculator) | | | |
-| [Liability dispute agent](./liability-dispute-agent) | | | |
 | [Firm operating dashboards](./firm-ops-dashboard) | Replicates a $50M PI firm's case management and intake systems into a warehouse hourly, and serves leadership, per-team, intake/marketing and financial reports off one shared model | The firm's data was complete and unreadable. Every question spanning two objects was a manual export, so questions that needed asking weekly stopped being asked. Teams could not see progress toward the bonus they were working for. Shipped as a data-first pilot in place of the AI project the client came in asking about. | Clio Manage/Grow, Skyvia, Azure SQL, Power BI |
 | **[Document generation](./document-generation)** | Assesses each section of a legal template for the least powerful technique that will fill it, then assembles the document from five levels: boilerplate, merge fields, conditional logic, AI classification, AI narrative | Firms want long documents drafted automatically. Merge-field tooling cannot finish the document, and whole-document AI generation costs more, breaks Word formatting, and puts a review burden on every line. Deciding **per section** is what lets a reviewer know which parts of the page could not have come out wrong. Applied at ~a dozen US PI firms, four directly. | Power Automate, Make.com, SharePoint / Drive, Word field logic, CMS APIs, LLM nodes |
+| ★ **[Liability dispute agent](./liability-dispute-agent)** | A chat agent that helps claims staff answer an insurance carrier's liability denial and drafts the reply into the adjuster's email thread, reasoning only from the firm's own reviewed playbooks and verified Vehicle Code sections | Getting liability accepted is **the biggest single measure of a claims rep's performance**, and the firm had no reliable way to make reps better at it. The knowledge was scattered across contradictory documents, the people who could apply it kept leaving, and juniors were filling the gap with public consumer AI. | Copilot Studio, Claude Opus 4.1, SharePoint knowledge set, Power Automate, MS Graph, MCP |
 
 ★ = flagship deep dive.
 <!-- OPEN: is document generation a flagship? It has the strongest reusable idea of the seven
@@ -31,6 +31,16 @@ produced around ten solutions. They share a data platform, a run-status vocabula
 batching pattern, so the case studies cross-reference the shared diagnosis instead of repeating
 it.
 
+Four of these came out of a **single engagement at the same firm**, where one audit produced
+roughly ten solutions and I delivered them as a program rather than as separate briefs. The
+diagnosis that found them is described once, in the FNOL case study.
+
+<!-- OPEN: confirm the exact list of four and that "roughly ten" is the number you want to
+     use publicly. Evidence says: FNOL, liability dispute, medical provider, document
+     generation. Also confirm whether the firm-ops dashboard is the same client's operations
+     console, which would make it five. -->
+
+
 ## Capabilities, by project
 
 Filled in as case studies land, so a reader can see breadth without opening seven files.
@@ -41,7 +51,6 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | Medical provider selection | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Marketing attribution | ✅ | | ✅ | ✅ | ✅ | ✅ |
 | Medical lien calculator | | | | | | |
-| Liability dispute agent | | | | | | |
 | Firm operating dashboards | | | ✅ | ✅ | ✅ | ✅ |
 | Document generation | ✅ | ✅ | | ✅ | | ✅ |
 
@@ -52,6 +61,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
   (b) "Deployed & handed off" is ticked on the strength of "a lot of things were shipped".
       Confirm the client owns and maintains them now, or I will split deployed from handed off. -->
 
+| Liability dispute agent | ✅ | ✅ | | ✅ | | |
 
 ## How to read these
 
