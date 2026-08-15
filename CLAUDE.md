@@ -51,7 +51,9 @@ Drafting before all answers are in works well: draft what's known, mark gaps as 
 comments, commit so progress survives the session.
 
 ### Definition of done, per project
-- [ ] `<slug>/README.md` follows all eight template sections
+- [ ] `<slug>/README.md` follows all eight template sections. **§8 is the exception: it only
+      exists if Lara supplied it.** An entry ships with seven sections rather than an invented
+      "what I'd do differently". This has already been got wrong twice.
 - [ ] Root `README.md`: the project's row filled in, plus its row in the capability matrix
 - [ ] `★` added to the row if it's a flagship
 - [ ] Identifier scan passed (below), and every image checked
@@ -89,7 +91,7 @@ corrected, so none of the original guesses survive.
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | Drafted. OPEN on the Skyvia/Power BI layer, timeline, and every after-state number |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
-| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 and 2 done**, and the most finished entry in the repo. Outstanding: in-production-since date and user count, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
+| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 3 done**, and the most finished entry in the repo. Seven sections: §8 is deliberately absent until Lara writes it. Outstanding: in-production-since date and user count, handover-doc authorship, §8, and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 | `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
@@ -420,6 +422,25 @@ One line per session, newest last.
      §5 table now carries this contrast explicitly.
   **Lara named the CMS vendor in chat.** As always, it stays out of every committed file. Still
   no blocklist supplied, so still no authoritative identifier scan.
+- **2026-08-15 (provider selection, iteration 3).** Three deletions, all Lara's.
+  1. **§8 "What I'd do differently" is gone entirely**, because Claude wrote it. Four of the five
+     bullets were defects lifted out of the handover docs (the type-check deploy gap, the
+     specialty-gated search trap, the Teams bot install dependency, the manual specialty refresh)
+     and the fifth was an invented reflection about instrumentation. **This is the second time an
+     invented §8 has had to be deleted**, after FNOL. Do not write that section from documents or
+     from inference. It only exists if Lara says it. An `OPEN` comment now sits where the section
+     was, so the gap is greppable without rendering. **The entry therefore has seven of the eight
+     template sections on purpose**, which is a deliberate exception to the definition of done.
+  2. **§7's "What was not measured" paragraph is gone.** The single reportable outcome (the
+     do-not-use flag is now maintained) stays. Do not restore a paragraph enumerating what was
+     never measured.
+  3. **§6 was overclaiming.** Lara did **not** implement the scheduled job that refreshes the
+     provider table daily. Rewritten to FNOL's shape: a co-owned idea and diagnosis paragraph,
+     then a bulleted list of what she did build (the ranking, the React app, the Retell voice
+     agent, the Power Automate flows), then the timeline. The "what I did not own: change
+     management" paragraph went too. **New rule: §6 lists what Lara did, not what she did not**,
+     and the change-management boundary lives in the At a glance role row instead. When a
+     handover doc describes a component, that is not evidence she built it. Ask.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

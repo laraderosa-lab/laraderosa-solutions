@@ -245,26 +245,35 @@ vocabulary for "this thing finished".
 
 ## 6. My involvement
 
-**Nobody asked for this one.** It came out of shadowing a department to find out where its time
-went. The idea and the diagnosis were co-owned, including the shadowing sessions and the finding
-that an existing ignored field, rather than a new one, was the fix for provider exclusion.
+Nobody asked for this one. I co-owned the idea and the diagnosis, including the shadowing
+sessions and the finding that an existing ignored field, rather than a new one, was the fix for
+provider exclusion. That is the part that decided whether the project should exist at all.
 
-**The implementation was mine alone**, everything from that observation to a deployed app: the
-data model and the two scheduled jobs; the ranking approach that shortlists on coordinates before
-paying for driving distance; the React app, the map and the comparison interface; the voice agent
-and its prompt, the per-call row model and the batch completion gate; and the booking-email flow.
-Six weeks from the first client conversation to rollout, alongside nine other solutions.
+I then built the app and the system around it:
 
-**What I did not own: change management.** Training the coordinators and driving adoption were the
-client's by agreement. The one design choice here that ran on human behaviour rather than code was
-the do-not-use flag, and it needed staff to be trained to use it. That training was somebody
-else's to deliver, and it happened (see §7). Measurement sat with the same people, which is why no
-after-state numbers came back to me.
+- **The ranking.** The coordinate shortlist that picks who is worth a routing call, the Azure
+  Maps driving-distance pass that decides the order, and the rule that keeps excluded providers
+  in the results and at the bottom.
+- **The React app.** The search screen, the map and its pin states, and the comparison view that
+  puts driving distance, average bill reduction and the firm's caseload with a provider side by
+  side.
+- **The voice agent in Retell AI.** The call design and prompting: working an office's IVR,
+  asking for the earliest opening on a named procedure, checking the office performs it at all,
+  and honouring constraints like no morning slots.
+- **The Power Automate flows.** Placing every call in a request at once, the one-row-per-call
+  model, the batch completion gate that turns those calls into a single answer, and the
+  booking-email flow that pulls the client and case details, composes the request and leaves it
+  in the coordinator's own Outlook drafts.
+
+Six weeks from the first client conversation to rollout, running alongside the nine other
+solutions the same audit produced.
 
 <!-- OPEN: did you write the three handover docs this was drawn from (user guide, maintenance
 runbook, architecture)? Worth claiming above if so. Not asserted because I do not know. -->
 
 ## 7. Impact
+
+**The before state, from the shadowing sessions:**
 
 | Metric | Before |
 |---|---|
@@ -286,31 +295,12 @@ staff were trained on it, and it is the single source of truth. The tempting fix
 exclusion flag inside the new app, which would have been faster to build and would have failed the
 same way, because the old field was never ignored for lack of a better field.
 
-**What was not measured.** Nothing was measured after rollout. No count of appointments booked, no
-agent reach rate, no change in time-to-first-appointment, no adoption figure. The before-state
-numbers come from shadowing and the estimates in §3, and everything after that is mechanical,
-meaning it follows from how the system works rather than from watching it work.
-
-## 8. What I'd do differently
-
-- **The deploy can silently ship the previous build.** A type error leaves the output directory
-  untouched while the push step reports success and uploads the stale bundle. The runbook tells
-  the operator to read the build output first, which is a documented workaround for something the
-  pipeline should refuse to do.
-- **Search is specialty-gated, so a provider with no specialty is unreachable.** The row exists,
-  it syncs, it geocodes, and no search can return it. That should surface as a data-quality
-  warning instead of living in a troubleshooting table.
-- **The "draft ready" notification depends on the user having installed the bot.** The draft is in
-  Outlook either way, but someone waiting for a card that will never arrive cannot know that.
-- **The specialty mapping refresh is manual.** The lookup that gates all search depends on someone
-  remembering to run it. It belongs on the same schedule as the other two jobs.
-- **I built the thing and then could not tell you what it did.** Change management was the
-  client's by agreement and I treated measurement as part of it, so no after-state numbers came
-  back, even though quantifying the before state was the whole basis for building this. Next time
-  the instrumentation goes in the build rather than the handover.
-- <!-- OPEN: yours, on the technical side. Anything that actually frustrated you, or that you
-  would rebuild? The Azure Maps cost model, the map component, the 25-provider cap, the
-  six-hour expiry window, the scheduled-mirror approach to the provider catalog? -->
+<!-- OPEN: §8, "What I'd do differently", is deliberately absent rather than unwritten. The
+version that was here was Claude's, drawn from defects in the handover docs plus an invented
+reflection about instrumentation, and Lara removed it. The template's eighth section stays out
+until she gives her own. Ask her: anything that actually frustrated you, or that you would
+rebuild? The Azure Maps cost model, the map component, the 25-provider cap, the six-hour expiry
+window, the scheduled-mirror approach to the provider catalog? -->
 
 ---
 
