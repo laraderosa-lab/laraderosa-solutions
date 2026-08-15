@@ -80,7 +80,7 @@ Seven total. Five are unwritten.
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | Drafted. OPEN on the Skyvia/Power BI layer, timeline, and every after-state number |
 | `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
-| `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
+| `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
 | `liability-dispute-agent` | Lara's own words | TBD | Not started |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Materially complete.** All eight sections written, before-state quantified, role and outcome filled in. Outstanding: timeline, status/in-production-since, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words | TBD | Not started |
@@ -139,6 +139,18 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   criminal defense (the larger book) plus personal injury (the growth bet), roughly six people
   known by role. It runs **Lawmatics** for intake and **Clio Manage** for case management, and
   Lara has confirmed both may be named. Do not conflate it with the FNOL firm.
+- **Naming Clio needs a ruling.** The standing decision bans "vendor case-management-system
+  names", but Lara named Clio Manage and Clio Grow throughout the dashboard session and named
+  the branch after it. The draft names Clio. Either narrow the rule to the FNOL client's CMS,
+  or scrub Clio from `firm-ops-dashboard` and call it "the firm's case management system".
+- **Raw source material from Lara arrives unredacted, including material she describes as
+  already modified.** The dashboard-session transcripts named a real referral-partner firm, a
+  first name, a referral marketplace and a city. Sanitize on the way in, quote only after
+  redacting, and never copy an identifier into this file while checking it.
+- **"Pre-anonymized" client exports still need a full check.** The five dashboard PDFs Lara
+  supplied as already-modified still carried client emails and phone numbers, legible client
+  names under partial blur, a staff name in a slicer, and referral-partner lists that read as
+  real firms. Blur in an export is not redaction. Substitute at source or crop to aggregates.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
@@ -168,6 +180,11 @@ One line per session, newest last.
   treatment team's size and appointment volume (the missing denominator, the equivalent of
   FNOL's 125-200 hrs/wk), how long one selection took, Lara's role, timeline, status, measured
   after-state, what was ruled out.
+- **2026-08-13 (second session).** `firm-ops-dashboard` drafted from Lara's verbal account plus
+  five dashboard PDF exports. Clio Manage/Grow to Skyvia to Azure SQL to Power BI, hourly at
+  both hops, five reports on one semantic model, team goals fed from a management spreadsheet.
+  Open on this one: Lara's timeline, her own "what I'd do differently", and who framed the
+  data-before-AI argument. **Screenshots deliberately not committed**, see below.
 - **2026-08-13 (third session).** Created `main` and made it the repo default, because the
   default had been a session-scoped feature branch, so pushed work never showed on the landing
   page (Lara reported seeing nothing pushed; the commits were fine, the default branch was
@@ -208,6 +225,14 @@ One line per session, newest last.
   API, replicated into BigQuery, read by Power BI. Blocklist confirmed as **any names of people
   or clients**. Branch moved off the client-named one it was handed.
 
+- **2026-08-14.** `firm-ops-dashboard` corrected and filled out from Lara's answers plus three
+  client-call transcript excerpts. Key corrections: **the dashboard client is a different firm
+  from the FNOL client** (~$50M revenue, under 400 people), **Lara did not diagnose this one**
+  (pilot engagement, the client arrived with the pain point stated), and the strongest idea in
+  the project, ranking referral partners by hired rather than by volume, **was the client's,
+  asked for live in the pilot review**. Section 2 rewritten to say so. Impact section now
+  carries redacted client quotes instead of invented metrics. Sequencing recorded: Clio Grow
+  intake shipped alone as the pilot, Clio Manage reports followed.
 - **2026-08-15.** FNOL iteration 1, on branch `claude/fnol-solution-iteration-b1buz6`. Filled
   in role (co-diagnosed, co-decided; built the Retell agent, Power App, Power Automate flows
   and Copilot agent), timeline (**6 weeks, first conversation to rollout, alongside the other

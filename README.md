@@ -15,7 +15,7 @@ worth fixing**, what I built, and what changed as a result.
 | ★ **[Marketing attribution](./marketing-attribution)** | Rebuilds a law firm's marketing attribution from ad-account structure through lead capture to settled case value, surfacing ROI per source, campaign and ad group in Power BI | A small criminal-defense and PI firm was spending **well over $500k a year** buying cases and could not attribute a paid search lead at all, because its agency ran one landing page across many ad groups. Its only ROI reporting came from that same agency. | Lawmatics, Clio Manage, Make, Skyvia, BigQuery, Power BI, CallRail, Google Ads |
 | [Medical lien calculator](./medical-lien-calculator) | | | |
 | [Liability dispute agent](./liability-dispute-agent) | | | |
-| [Firm operations dashboard](./firm-ops-dashboard) | | | |
+| [Firm operating dashboards](./firm-ops-dashboard) | Replicates a $50M PI firm's case management and intake systems into a warehouse hourly, and serves leadership, per-team, intake/marketing and financial reports off one shared model | The firm's data was complete and unreadable. Every question spanning two objects was a manual export, so questions that needed asking weekly stopped being asked. Teams could not see progress toward the bonus they were working for. Shipped as a data-first pilot in place of the AI project the client came in asking about. | Clio Manage/Grow, Skyvia, Azure SQL, Power BI |
 | [Document generation](./document-generation) | | | |
 
 ★ = flagship deep dive.
@@ -36,7 +36,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | Marketing attribution | ✅ | | ✅ | ✅ | ✅ | ✅ |
 | Medical lien calculator | | | | | | |
 | Liability dispute agent | | | | | | |
-| Firm operations dashboard | | | | | | |
+| Firm operating dashboards | | | ✅ | ✅ | ✅ | ✅ |
 | Document generation | | | | | | |
 
 ## How to read these
