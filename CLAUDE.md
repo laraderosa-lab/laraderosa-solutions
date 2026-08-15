@@ -26,10 +26,16 @@ redacted code excerpts where they prove something.
   a schema, a scoring rule). No client source, no credentials, no PHI/PII, no real schema
   prefixes, table names or flow names.
 - **Depth is tiered.** 3 flagship deep dives, 4 short entries.
-- **Length: a flagship is ~3,000 to 3,400 words, short entries well under.** Provider selection
-  had to be cut by a third after the fact. Write to length in the first draft. When a section
-  runs long, the fix is usually a structural cut (a duplicated table, a second diagram, a second
-  code excerpt) rather than word-level tightening, which does not move the total.
+- **Length follows the project. The rule is concision, not a word count** (2026-08-15, Lara).
+  A bigger project earns a longer entry, and `marketing-attribution` is the clearest case: five
+  layers rebuilt across three months, so it runs around 5,000 words and that is fine. Judge a
+  draft by whether every paragraph is carrying something, not against a target.
+  There used to be a "~3,000 to 3,400 words" rule here. It was generalised from one entry's
+  edit (provider selection, cut by a third in a single session) and it should not have become a
+  repo-wide number. Do not reinstate it, and do not cut Lara's material to hit a figure.
+  What still holds: when something genuinely is bloated, the fix is a **structural cut** (a
+  table that restates an earlier section, a second diagram, a third code excerpt) rather than
+  word-level tightening, which does not move the total.
 - Every case study follows `_template/README.md` section for section.
 - **Every case study stands alone.** A reader may open any entry first, so shared context
   (the client, the audit, a constraint two projects hit) is restated in that entry's own words
@@ -77,7 +83,7 @@ comments, commit so progress survives the session.
       "what I'd do differently". This has already been got wrong twice.
 - [ ] Root `README.md`: the project's row filled in, plus its row in the capability matrix
 - [ ] `★` added to the row if it's a flagship
-- [ ] Identifier scan passed (below), and every image checked
+- [ ] No client, firm or person names anywhere, and every image checked
 - [ ] No em dashes; slop pass done
 - [ ] `CLAUDE.md` progress log and solutions table updated
 - [ ] Committed and pushed
@@ -409,8 +415,9 @@ One line per session, newest last.
   it duplicated §3, and the constraints list cut from five bullets to three. Slop removed: the
   "matters more than it sounds" and "the one I care most about" metadiscourse, the "I would
   rather publish that gap than fill it" kicker, the "half a job" kicker, and several colon
-  reveals. **Aim for FNOL's length (~3,200 words) on future entries rather than editing down
-  afterwards.**
+  reveals. (This entry's "aim for ~3,200 words on future entries" instruction was **superseded
+  on 2026-08-15**, see the length standing decision. The cut was right for provider selection
+  and wrong as a general rule.)
   Four corrections from Lara, all of which changed content rather than wording:
   1. **The §2 reframe was wrong.** It said the ask was "make the directory easier to search" and
      that better search does not help. False dichotomy. The client did want easier search *and*
@@ -482,7 +489,8 @@ One line per session, newest last.
   **Dashboard split into `marketing-attribution/dashboard.md`**, referenced at the end, because
   the doc was too long. The five pages moved there. It still needs the PDF, which did not
   survive the session.
-  Also ported into this file: the `petergyang/no-ai-slop` pin, the loosened anonymization rule,
+  **Length rule corrected**: concision, not a word count, so this entry stays around 5,000
+  words. Also ported into this file: the `petergyang/no-ai-slop` pin, the loosened anonymization rule,
   the retirement of the blocklist ritual, and a no-swagger rule.
   **Process failure worth recording.** This session was handed `claude/marketing-attribution-
   iteration-nca1jd`, worked on it for four commits, and only discovered `origin/main` existed
