@@ -10,11 +10,17 @@ A **case-study portfolio, not a code repo**. Prose, diagrams and sanitized evide
 redacted code excerpts where they prove something.
 
 ## Standing decisions (do not re-litigate)
-- **Clients are anonymized.** No client names, firm names, people, product codenames, vendor
-  case-management-system names, or identifiable case data in **any committed file, including
-  this one.** Use role descriptors ("a 400-person plaintiff-side PI firm"). Specificity comes
-  from detail, not names. Third-party tech vendors (Retell, Microsoft, Power Platform) are
-  fine to name.
+- **Clients are anonymized.** No client names, firm names, people, product codenames, or
+  identifiable case data in **any committed file, including this one.** Use role descriptors
+  ("a 400-person plaintiff-side PI firm"). Specificity comes from detail, not names.
+- **Software vendors are fine to name**, including the CRM and the case management system
+  (2026-08-15, Lara). Retell, Microsoft, Power Platform, Lawmatics, Clio, CallRail, Skyvia,
+  BigQuery, and whatever CMS a firm runs on. Thousands of firms use each of these, so naming one
+  identifies nobody, and the constraints they impose are half of why the architecture looks the
+  way it does. Only the client is anonymous. This settles the "naming Clio needs a ruling" open
+  question below. **`fnol-voice-agent` still says "the case management system" throughout and
+  that stays**, which is a deliberate choice on that entry rather than a leftover of the older
+  rule, so do not offer to name it.
 - **This repo is public.** Assume every commit is world-readable the moment it lands.
 - **Code: illustrative excerpts only.** Redacted snippets of the interesting parts (a prompt,
   a schema, a scoring rule). No client source, no credentials, no PHI/PII, no real schema
@@ -34,8 +40,23 @@ redacted code excerpts where they prove something.
 - Diagrams are **Mermaid**. Open questions are `<!-- OPEN: ... -->` HTML comments, so they
   don't render publicly but stay greppable.
 - **No em dashes**, and no AI-slop patterns (colon reveals, "not X but Y" contrasts, asides
-  telling the reader what matters). Use the `no-ai-slop` skill, and write this way in the
-  first draft rather than fixing it afterwards.
+  telling the reader what matters). Write this way in the first draft rather than fixing it
+  afterwards.
+- **The canonical style guide is `petergyang/no-ai-slop` on GitHub, `main` branch.** Always
+  read it before drafting or editing prose here, and do not rely on a local skill of the same
+  name or on memory of what it says. Two files matter:
+  ```bash
+  git clone --depth 1 https://github.com/petergyang/no-ai-slop.git
+  # skills/no-ai-slop/SKILL.md   the rules: words to cut, patterns to cut, editing principles
+  # skills/no-ai-slop/eval.md    the checklist to run against the draft afterwards
+  ```
+  Run the `eval.md` checks against what you wrote before committing. The patterns that actually
+  catch things in this repo are interpretive metadiscourse (a sentence telling the reader what
+  the previous sentence means), aphoristic kicker lines, restating a point the prose already
+  showed, and generic sentences that fail the portability test.
+- **No swagger** (2026-08-15, Lara). Cut "I would say so in an interview", "the decision I would
+  defend hardest", "the part worth noticing", "the row that matters". State what was done and
+  why it mattered, then stop. Nobody asked.
 
 ## Per-project workflow
 One project at a time. Lara's method:
@@ -66,20 +87,14 @@ comments, commit so progress survives the session.
 grep -rn "—" --include="*.md" .          # em dashes, expect 0
 grep -rn "OPEN:" --include="*.md" .      # outstanding questions
 ```
-**The identifier blocklist is deliberately not in this file**, because this file is public.
-**Ask Lara for the current list of client names, firm names, people and vendor system names at
-the start of any session that will commit prose**, hold it in session only, and grep for it
-before committing. Do not run a scan with placeholder terms and treat a clean result as a
-pass.
-
-> **Not yet done.** As of 2026-08-13 the blocklist has been requested twice and never supplied,
-> so **neither written case study has been scanned against Lara's real list.** What was run
-> instead: a scan for identifiers lifted from the handover documents themselves (the CMS vendor
-> product, the client firm name embedded in the batch-ID convention, the internal repo name, the
-> Dataverse column prefix, the security group names, the flow-name convention, the raw
-> option-set integers). All clean. That is stronger than placeholders and still not the
-> authoritative check. **Get the list and re-scan both case studies before treating the repo as
-> publication-ready.**
+Client names, firm names and the names of people at a client must never reach a commit. They
+are not listed here, because this file is public. **The blocklist ritual is retired**
+(2026-08-15, Lara): do not ask for a list of banned terms at the start of a session. The guard
+is that a name should never enter a draft in the first place. Write role descriptors from the
+start rather than typing a name and scrubbing it later, and when a name arrives in source
+material (a handover doc, a transcript, a screenshot) it stays in the session and does not get
+typed into a file. Software vendor names are not covered by any of this, see the standing
+decisions.
 
 ## The seven solutions
 
@@ -89,7 +104,7 @@ corrected, so none of the original guesses survive.
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
-| `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | Drafted. OPEN on the Skyvia/Power BI layer, timeline, and every after-state number |
+| `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iteration 1 done.** Timeline, status and role settled; §4 restructured into the six-step chain; dashboard split into `dashboard.md`. Outstanding: the dashboard PDF, what the ~50 sources collapsed into, whether the cost sheet feeds the CRM or BigQuery, and a business outcome for §7 |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 3 done**, and the most finished entry in the repo. Seven sections: §8 is deliberately absent until Lara writes it. Outstanding: in-production-since date and user count, handover-doc authorship, §8, and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
@@ -152,10 +167,8 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   criminal defense (the larger book) plus personal injury (the growth bet), roughly six people
   known by role. It runs **Lawmatics** for intake and **Clio Manage** for case management, and
   Lara has confirmed both may be named. Do not conflate it with the FNOL firm.
-- **Naming Clio needs a ruling.** The standing decision bans "vendor case-management-system
-  names", but Lara named Clio Manage and Clio Grow throughout the dashboard session and named
-  the branch after it. The draft names Clio. Either narrow the rule to the FNOL client's CMS,
-  or scrub Clio from `firm-ops-dashboard` and call it "the firm's case management system".
+- **Naming Clio is settled: yes** (2026-08-15). Software vendors including the CRM and the CMS
+  can be named, see the standing decisions. `firm-ops-dashboard` keeps Clio Manage and Clio Grow.
 - **Raw source material from Lara arrives unredacted, including material she describes as
   already modified.** The dashboard-session transcripts named a real referral-partner firm, a
   first name, a referral marketplace and a city. Sanitize on the way in, quote only after
@@ -441,6 +454,42 @@ One line per session, newest last.
      management" paragraph went too. **New rule: §6 lists what Lara did, not what she did not**,
      and the change-management boundary lives in the At a glance role row instead. When a
      handover doc describes a component, that is not evidence she built it. Ask.
+
+- **2026-08-15 (marketing, iteration 1).** On `main`. Lara's corrections, all of which changed
+  content: **timeline is ~3 months**, roughly a month each on attribution, cost mapping and
+  dashboard design, replacing the "20 to 30 hours across 2 to 3 weeks" scoping figure.
+  **Status is finalised and handed over.** **The ~1,000 sources figure was wrong: it was about
+  50**, a flat list mixing genuine sources, entries that should have been campaigns under a
+  grouped source, duplicates and stale spend. The count was wrong in four places including the
+  impact table and the Figma line. **The "pitched unasked for months" story is wrong and is
+  gone**: the client asked for the work and Lara was told they wanted it, then owned everything
+  from scoping to handover. §2's "why it had stayed unfixed" paragraph and §6's "months of
+  pitching a project nobody had asked for" both went with it.
+  **§4 restructured into the six-step chain Lara described**, each step a prerequisite for the
+  next: taxonomy (source vs campaign, defined) → route both capture channels into it (longest
+  phase: the ad account restructure, CallRail number pools, the ClickFunnels form path, the
+  agency negotiation) → remap history → cost → revenue → warehouse and dashboard. The through
+  line she wanted stated plainly: the client is spending money it cannot attribute.
+  **`"crim is the one does doesn't need the retroactivity"` is resolved.** Criminal defense is
+  priced at intake so its value is already correct in the CRM, and only personal injury needs
+  the settled value carried back from Clio. §4 step 5 says so.
+  **Five passages deleted at Lara's instruction**, plus their restatements elsewhere: the
+  archive-junk-matters-to-a-sheet trade-off, the custom-fields-as-JSON trade-off, the
+  Lawmatics-fires-once-per-matter and CallRail-cannot-filter-by-number constraints, and the
+  API-returns-duplicate-records constraint. Knock-on trims: the daily-sync code excerpt (whose
+  comment restated the once-per-matter fact), the "API produces duplicates anyway" clauses, and
+  §8's "whether the phone line should have been routed through call tracking at all".
+  **Dashboard split into `marketing-attribution/dashboard.md`**, referenced at the end, because
+  the doc was too long. The five pages moved there. It still needs the PDF, which did not
+  survive the session.
+  Also ported into this file: the `petergyang/no-ai-slop` pin, the loosened anonymization rule,
+  the retirement of the blocklist ritual, and a no-swagger rule.
+  **Process failure worth recording.** This session was handed `claude/marketing-attribution-
+  iteration-nca1jd`, worked on it for four commits, and only discovered `origin/main` existed
+  when a push was rejected. The clone had two branches in it, so `git branch -a` looked like the
+  whole repo, and the session told Lara the marketing draft "was never committed and was lost"
+  when it was sitting on `main` the whole time. **Run `git fetch origin` and look at
+  `origin/main` before concluding anything about what does or does not exist.**
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
