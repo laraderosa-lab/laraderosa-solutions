@@ -111,7 +111,8 @@ From the case file open in front of them, a staff member clicks a browser extens
    claims to open.
 2. **Human review.** The reviewer gets a card in Teams, opens the claim, checks the
    pre-filled details, fixes anything wrong, and **selects which carriers to call.** Nothing
-   dials until they hit submit.
+   dials until they hit submit. If a carrier is missing, they add it in the case management
+   system first, because the app deliberately won't let them create one.
 3. **Parallel calling.** Every selected carrier is called **simultaneously**. The voice agent
    works through the IVR, holds, reaches a human, and answers the carrier's interview from
    the approved case data, while staying inside limits on what it will *not* disclose.
@@ -187,7 +188,11 @@ flowchart TB
 |---|---|---|
 | **Human review sits between automated intake and automated calling** | The review costs minutes. The call costs 30–40 minutes and is *irreversible and outward-facing*, because you cannot un-say something to an opposing carrier on a recorded line. Gate the expensive, unrecoverable step rather than the cheap one. | Not fully autonomous. A person is still in the loop on every case. |
 | **One row per carrier per attempt**, rather than one record per case | Makes fan-out (multi-defendant, multi-policy) and retry fall out of the data model instead of needing special-casing. Each attempt keeps its own transcript, outcome and accuracy score, so a retry never overwrites the history of the call before it. | More rows. Three attempts on one carrier is three rows, so the app has to group attempts under their carrier rather than list them flat. |
+| **One adaptable agent for every carrier**, rather than a scripted agent per carrier | We could have hardcoded the biggest carriers, as in press 2, then 4, then read these answers in this order. That is cheaper per call and more predictable. It also only ever covers the carriers we built it for, it breaks the day a carrier reorders its IVR or changes its question list, and it has nowhere to go when a call leaves the script. One agent that can navigate an unfamiliar menu and answer an unfamiliar interview covers every carrier the firm might call, including the ones nobody thought to configure, and it survives the carrier changing its process. | Somewhat higher cost per call, and a lot more iteration to get the call design right. The scripted version would have been faster to make work for the top few carriers. |
+| **No direct carrier API integrations on this build** | Where a carrier will accept a claim submitted straight into their system, that is faster, cheaper and less error-prone than phoning them, and we have built those integrations on other work. Each one needs a conversation with the carrier and then build time. This project had six weeks from first conversation to rollout, shared with nine other solutions, and that time did not exist. One route that works for every carrier beat a better route that would have covered a handful. | The highest-volume carriers get dialed when they could have been sent a request. This is the first thing I would revisit (§8). |
 | **Post-call accuracy evaluation on top of prevention** | Prevention does most of the work. The agent answers from reviewer-approved data and is constrained on what it may say, which holds misstatement under 3% of calls. It cannot reach zero, because some hallucination is inherent to the model. The evaluation catches the rest, and it is also what makes the system worth using. Without it, staff would read every transcript to be sure the agent got it right, which costs roughly what the call did. Because the system reports its own errors loudly, silence is informative, and a reviewer can trust that no alert means the call was accurate. | A second LLM pass per call, and the last few percent are remediated after the fact rather than prevented. |
+| **Two tiers of severity on that check** (essential and minor) | Some answers have to be right for the claim to be right, like the date of loss, the client's name, or how many passengers were in the car. Others are questions the carrier asks that carry no urgency if they come out wrong, like whether the airbags deployed or what the weather was. Every mismatch of either kind is reported and visible in the post-call accuracy view. Only an essential-field mismatch raises an urgent alert and pins the claim open, which is what keeps that alert worth reacting to. | Which fields count as essential is a judgement call, and the list has to be maintained as scored fields are added. |
+| **Carriers can only be added in the case management system, never in the app** | If a carrier is missing, the reviewer has to go add it upstream before the call can go out. The tempting alternative is to let them type it into the review app, which is faster in the moment and quietly starts a second source of truth. Data entered only where it was needed stops being available to everything else the firm runs off that system. Sending the reviewer upstream keeps one place where a carrier exists. | A slower path when a carrier really is missing, and an obvious feature request I chose not to build. |
 | **Automatic retry, then a one-click retry** | Not reaching a human is the common failure and it is usually transient, so three automatic attempts absorb most of it without anyone noticing. When it does need a person, the expensive part (reading the case, checking the pre-filled data, approving it) is already done and should not be repeated. | The system will occupy a line for three attempts before admitting defeat, so a genuinely unreachable carrier takes longer to surface than a single call would. |
 | **Built entirely inside the firm's existing Microsoft estate** | The firm was already on Teams, Entra and Power Platform. A standalone app would have meant new logins, a new access model, and IT owning something unfamiliar. Access is granted by existing group membership. | Platform ceilings. Per-service capacity and throttling limits, and the shape of the solution is bounded by what the platform exposes. |
 | **Triggered from a browser extension on the case file** | Staff live in the case management system all day. Making them navigate elsewhere and paste a case ID is where adoption dies. One click, in place. | An extension to distribute and maintain per-user. |
@@ -195,11 +200,6 @@ flowchart TB
 
 ### Constraints I built inside
 
-- **The case management system is long-established with an incomplete API.** Getting case
-  data in and claim numbers back out required working around what the API didn't expose
-  rather than a clean integration. <!-- OPEN: how much can I say about the workaround? The
-  architecture doc implies an HTTP bridge. Naming the technique (without naming the vendor)
-  is a strong detail; confirm what's safe. -->
 - **Non-technical end users.** Claims staff, not analysts. The whole surface is one click in
   the browser and one card in Teams.
 - **Recorded, adversarial calls.** The counterparty is the opposing insurer, and the call
@@ -247,8 +247,9 @@ const score = Math.round(
 Three deliberate choices there. Fields the reviewer never supplied are excluded from the
 denominator, so the score isn't punished for absent data. `not_disclosed` (the agent didn't
 say it) is tracked separately from `incorrect` (the agent said it wrong), because they are
-different failures. And only `essential` interrupts a human, so the alert keeps meaning
-something.
+different failures. And only `essential` interrupts a human. A
+`minor` mismatch is still reported and still visible in the post-call accuracy view, it just
+doesn't raise an alarm, which keeps the alarm worth reacting to.
 
 ## 6. My involvement
 
@@ -305,10 +306,11 @@ unverifiable percentage in a public portfolio is worse than no percentage. -->
   fast enough that the right answer has a short shelf life, so I would benchmark the
   alternatives again rather than assume the original pick still wins.
 - **Go to the largest carriers directly and try to skip the call.** A handful of carriers
-  account for most of the volume. For those, I would open a conversation about an API
-  integration that submits the claim straight into their system, which would be faster and
-  cheaper than dialing them and would leave the voice agent to cover the long tail. We have
-  built that kind of direct integration successfully on other work. It was out of scope here.
+  account for most of the volume. For those I would open a conversation about an API
+  integration that submits the claim straight into their system, which is faster, cheaper and
+  less error-prone than dialing, and would leave the voice agent to cover the long tail. We
+  have built that kind of integration successfully on other work. Here it lost to the six-week
+  timeline, which was the right call at the time and is the first thing worth doing next.
 
 ---
 

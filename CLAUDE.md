@@ -68,7 +68,7 @@ Seven total. Six are unwritten.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
-| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. Two `OPEN`s left (CMS workaround detail, measured after-state) |
+| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
 | `marketing-engine` | **Guess.** Invented from the single word "marketing" | TBD | Not started |
 | `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
 | `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
@@ -118,6 +118,15 @@ One line per session, newest last.
   the trust argument: staff would otherwise read every transcript, so surfacing our own errors
   loudly is what makes silence informative. **Lesson: do not invent a section and present it
   as fact.** §8 and the ruled-out list were both Claude's inventions and both had to go.
+  Iteration 1b: **do not mention the CMS API at all**, assume it has one (that constraint
+  bullet is deleted, and the `OPEN` with it). Four real trade-offs added to §5, all Lara's:
+  one adaptable agent vs. a scripted agent per carrier (cheaper and more predictable, but
+  covers only the carriers you build for and breaks when they change their IVR or questions);
+  no direct carrier API integrations, ruled out by the six-week timeline, which is also the
+  §8 item; **two-tier severity restored** with the correct framing (both tiers are reported
+  and visible, only essential raises an *urgent* alert, examples: essential = date of loss,
+  client name, passenger count; minor = airbag deployment, weather); and **carriers can only
+  be added in the CMS, never in the app**, to stop the source of truth fragmenting.
 
 ## Conventions
 - **Branch:** `claude/portfolio-repo-setup-hxm78l`. Commit and push as work completes. If two
