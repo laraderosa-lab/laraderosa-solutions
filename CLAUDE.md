@@ -27,12 +27,12 @@ redacted code excerpts where they prove something.
   prefixes, table names or flow names.
 - **Depth is tiered.** 3 flagship deep dives, 4 short entries.
 - **Length follows the project. The rule is concision, not a word count** (2026-08-15, Lara).
-  A bigger project earns a longer entry, and `marketing-attribution` is the clearest case: five
-  layers rebuilt across three months, so it runs to roughly 5,700 words and that is fine. Judge
-  a draft by whether every paragraph is carrying something, not against a target.
-  There used to be a "~3,000 to 3,400 words" rule here. It was generalised from one entry's
-  edit (provider selection, cut by a third in a single session) and it should not have become a
-  repo-wide number. Do not reinstate it, and do not cut Lara's material to hit a figure.
+  A bigger project earns a longer entry. `marketing-attribution` rebuilt five layers across
+  three months and runs proportionally long, which is correct for what it covers. Judge a draft
+  by whether every paragraph is carrying something, and never against a target.
+  **Do not write a word count into this file.** A "~3,000 to 3,400 words" rule used to live
+  here, generalised from a single entry's edit, and it bound every session after it until Lara
+  asked where the number came from. Replacing it with a different number repeats the mistake.
   What still holds: when something genuinely is bloated, the fix is a **structural cut** (a
   table that restates an earlier section, a second diagram, a third code excerpt) rather than
   word-level tightening, which does not move the total.
@@ -286,8 +286,10 @@ One line per session, newest last.
   wrote the three handover docs, and one technical "what I'd rebuild".**
 - **2026-08-14.** `marketing-engine` renamed to `marketing-attribution` and drafted as the
   second flagship, from a 90-minute client-handover transcript (the walkthrough Google Doc was
-  unreadable, see above). Different, much smaller client than FNOL. The story is a project Lara
-  pitched unasked for months: ~1,000 junk marketing sources, a whole capture channel arriving
+  unreadable, see above). Different, much smaller client than FNOL. The story (**both halves of
+  this sentence were corrected on 2026-08-15: the client asked for the work rather than Lara
+  pitching it unasked, and the source count was about 50, not a thousand**): junk marketing
+  sources, a whole capture channel arriving
   with no attribution because the agency set no UTM parameters, PI revenue never reaching the
   reporting system, and conversion rates inflated by dropped cases that stayed marked hired.
   The strongest beat is non-technical, forcing a hostile vendor onto one-landing-page-per-ad-
@@ -408,8 +410,8 @@ One line per session, newest last.
   a branch cut before `main` existed, so the checkout showed a three-line stub and CLAUDE.md's
   old seven-projects table, and the first answer was "there is no draft". `git fetch origin main`
   and check `origin/main` before telling Lara something is missing.
-- **2026-08-15 (provider selection, iteration 2).** Slop pass plus a **32% word cut** (5,088 to
-  3,423), on Lara's instruction that the doc was too long. Structural cuts, not just tightening:
+- **2026-08-15 (provider selection, iteration 2).** Slop pass plus a substantial cut, on Lara's
+  instruction that *this* doc was too long. Structural cuts, not just tightening:
   the two architecture diagrams merged into one, the shortlisting code excerpt dropped (the
   trade-off row already carries it), §7's before-state table cut from eleven rows to four since
   it duplicated §3, and the constraints list cut from five bullets to three. Slop removed: the
@@ -489,10 +491,9 @@ One line per session, newest last.
   **Dashboard split into `marketing-attribution/dashboard.md`**, referenced at the end, because
   the doc was too long. The five pages moved there. It still needs the PDF, which did not
   survive the session.
-  **Length rule corrected**: concision, not a word count. The entry was briefly cut to ~5,000
-  words against the old target and then restored to its full ~5,700, since the project is a
-  large one and the cuts were serving a number rather than the reader. Also ported into this
-  file: the `petergyang/no-ai-slop` pin, the loosened anonymization rule,
+  **Length rule corrected**: concision, not a word count. The entry was briefly cut against the
+  old target and then restored in full, since the project is a large one and the cuts were
+  serving a number rather than the reader. Also ported into this file: the `petergyang/no-ai-slop` pin, the loosened anonymization rule,
   the retirement of the blocklist ritual, and a no-swagger rule.
   **Process failure worth recording.** This session was handed `claude/marketing-attribution-
   iteration-nca1jd`, worked on it for four commits, and only discovered `origin/main` existed
