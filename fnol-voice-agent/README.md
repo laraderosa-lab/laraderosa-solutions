@@ -31,12 +31,12 @@ Most carriers still only accept a new claim **over the phone**.
 
 ## 2. Diagnosis: how I knew this was the problem to solve
 
-This project came out of an audit, not a feature request. Nobody asked for a voice agent.
+This project came out of an audit. Nobody asked for a voice agent.
 
 **Stage one. The firm's own data pointed at a department.** Management had measured time on
-desk per department. Their read was that claims wasn't the *slowest* department, it was the
-one **consuming the most man-hours**. The volume of work per file was the problem, not the
-latency.
+desk per department. Claims consumed **more man-hours than any other** without being the
+slowest, so what stood out was the volume of work per file rather than how long a file
+waited.
 
 That points at a department rather than a workflow, so there was nothing to build yet.
 
@@ -56,7 +56,7 @@ ran **30–40 minutes**, and almost none of that time went on skilled work. It w
 Every answer already existed in the case management system. A person was reading a screen
 down a phone line for half an hour.
 
-**Why it added up to real money.** The arithmetic is what made this fundable:
+**Why it added up to real money.**
 
 | | |
 |---|---|
@@ -68,20 +68,19 @@ down a phone line for half an hour.
 
 The department has about 30 people, so its total weekly capacity is roughly 1,200 hours.
 Claim-opening calls were consuming 125–200 of them. That is **between a tenth and a sixth of
-the entire department's capacity**, or the equivalent of three to five people doing nothing
-but navigating IVR menus, waiting on hold, and reading a screen down a phone line.
+the entire department's capacity**, or three to five people doing nothing but working menus
+and waiting on hold.
 
-It is also why the audit landed here rather than on a more interesting workflow. This wasn't
-the department's hardest problem. It was its largest, and it was made entirely of work nobody
+It is also why the audit landed here rather than on a more interesting workflow. This was the
+department's largest problem rather than its hardest, and it was made entirely of work nobody
 needed a person for.
 
 **The reframe.** The obvious framing is that the calls take too long, so make them shorter.
 That caps out fast, because you can't compress a carrier's interview much below its question
 list. The actual constraint is that a human can only be on one call at a time. A case with
-five carriers means five sequential calls, roughly 2.5 hours of wall clock, and not because
-any one call is slow. They simply can't overlap. The bottleneck was **serialization**. That
-makes the target concurrent calls, and the only way to get concurrency is to take the human
-off the line.
+five carriers means five sequential calls, roughly 2.5 hours of wall clock, and no one call
+is slow. They cannot overlap. The bottleneck was **serialization**. That makes the target
+concurrent calls, and the only way to get concurrency is to take the human off the line.
 
 This FNOL agent was **one of roughly ten solutions** the audit produced for this client. It
 was prioritized early because the cost was large, measurable, and concentrated in a single
@@ -94,8 +93,8 @@ Opening claims consumed **125–200 staff-hours a week**, a tenth to a sixth of 
 department's entire capacity, in unskilled telephone time. Because calls could only run one
 at a time, each new case sat for hours before substantive work could start. The cost scaled
 linearly with caseload, so growth made it worse. The work was too repetitive to justify
-skilled staff and too consequential to do carelessly: these are recorded calls with an
-opposing insurer, on the record, at the start of a legal matter.
+skilled staff and too consequential to do carelessly. These are recorded calls with an
+opposing insurer at the start of a legal matter.
 
 ## 4. Solution
 
@@ -121,15 +120,14 @@ From the case file open in front of them, a staff member clicks a browser extens
    person, the system calls that carrier again, up to **three attempts** in total, before it
    tells the staff member no human was reached and to try later.
 5. **One-click retry.** If all three attempts fail, the staff member retries from the app
-   itself. No going back to the case file, no re-opening the extension, no re-reviewing data
-   they already approved. One button re-launches the same approved call, or set of calls.
+   itself. One button re-launches the same approved call, or set of calls, without going back
+   to the case file, re-opening the extension, or re-reviewing data they already approved.
 6. **Write-back.** Each call returns the **claim number, whether the claim was opened, the
    assigned adjuster and their contact details**, plus a transcript, recording and summary.
    These go back into the case management system and the case file.
 7. **Accuracy check.** A second AI pass compares **what the agent actually said on the call**
    against **what the reviewer approved**, field by field, and flags mismatches. Nobody has
-   to read a transcript to find out whether the agent got it right. If they hear nothing, it
-   did.
+   to read a transcript to check the agent. If nothing is flagged, nothing went wrong.
 
 The staff member's involvement drops from ~2.5 hours of talking to a few minutes of
 reviewing.
@@ -189,7 +187,7 @@ flowchart TB
 | **Human review sits between automated intake and automated calling** | Review costs minutes. The call costs 30–40 and cannot be taken back, since you cannot un-say something to an opposing carrier on a recorded line. Gate the unrecoverable step, not the cheap one. | Not fully autonomous. A person is in the loop on every case. |
 | **One adaptable agent for every carrier**, rather than a scripted agent per carrier | Hardcoding the big carriers (press 2, then 4, then read these answers) is cheaper per call and more predictable. It also covers only the carriers you built for, breaks the day one reorders its IVR or changes its questions, and has nowhere to go when a call leaves the script. An agent that can work an unfamiliar menu and answer an unfamiliar interview handles every carrier the firm might call, and survives them changing their process. | Higher cost per call, and much more iteration on the call design. |
 | **No direct carrier API integrations on this build** | Submitting a claim straight into a carrier's system is faster, cheaper and less error-prone than phoning, and we have built those elsewhere. Each one costs a carrier conversation plus build time, and six weeks across ten solutions had none to spare. One route covering every carrier beat a better route covering a handful. | The highest-volume carriers get dialed when they could be sent a request. First thing I would revisit (§8). |
-| **Post-call accuracy evaluation on top of prevention** | Prevention does most of the work and holds misstatement under 3% of calls, but it cannot reach zero. The evaluation catches the rest, and it is also what makes the system usable. Without it, staff would read every transcript to be sure, which costs about what the call did. Because the system reports its own errors loudly, no alert is itself information. | A second LLM pass per call, and the last few percent are fixed after the fact rather than prevented. |
+| **Post-call accuracy evaluation on top of prevention** | Prevention does most of the work and holds misstatement under 3% of calls, but it cannot reach zero. The evaluation catches the rest, and it is also what makes the system usable. Without it, staff would read every transcript to be sure, which costs about what the call did. Because the system reports its own errors loudly, no alert means the call was accurate. | A second LLM pass per call, and the last few percent are fixed after the fact rather than prevented. |
 | **Two tiers of severity on that check** (essential and minor) | Some answers have to be right for the claim to be right, like date of loss, client name, passenger count. Others carry no urgency if they come out wrong, like airbag deployment or the weather. Both kinds are reported and visible after the call. Only an essential mismatch raises an urgent alert, which is what keeps the alert worth reacting to. | Which fields are essential is a judgement call, and the list needs maintaining. |
 | **Carriers can only be added in the case management system, never in the app** | Letting a reviewer type a missing carrier straight into the app saves them about two minutes, and I understood why they wanted it. It would also have undermined what the firm was actually buying. Every other solution reads carriers from the case management system, so a carrier that exists only in this app is invisible to all of them, and one source of truth erodes one convenient exception at a time. Two minutes of a reviewer's time does not buy that. | A slower path when a carrier really is missing, and a reasonable user request I turned down. |
 | **Automatic retry, then a one-click retry** | Not reaching a human is the common failure and usually transient, so three attempts absorb most of it unnoticed. When it does need a person, the expensive part (reading the case, checking the data, approving it) is already done and should not be repeated. | A genuinely unreachable carrier takes three attempts to surface instead of one. |
@@ -209,8 +207,8 @@ flowchart TB
 
 ### Illustrative excerpt: the accuracy evaluator's contract
 
-*Redacted and simplified. The decision worth showing is scoring per field and deriving
-severity in code, rather than letting the model grade its own homework.*
+*Redacted and simplified. The model scores each field, and severity is derived in code, so
+the model never grades its own homework.*
 
 ```jsonc
 // Post-call: the transcript is compared against the values the reviewer approved.
@@ -246,15 +244,14 @@ const score = Math.round(
 Three deliberate choices there. Fields the reviewer never supplied are excluded from the
 denominator, so the score isn't punished for absent data. `not_disclosed` (the agent didn't
 say it) is tracked separately from `incorrect` (the agent said it wrong), because they are
-different failures. And only `essential` interrupts a human. A
-`minor` mismatch is still reported and still visible in the post-call accuracy view, it just
-doesn't raise an alarm, which keeps the alarm worth reacting to.
+different failures. And only `essential` interrupts a human. A `minor` mismatch is still
+reported and still visible after the call, but it raises no alarm, which keeps the alarm
+worth reacting to.
 
 ## 6. My involvement
 
-I co-ran the diagnosis and co-decided what to build. That is the part of the work that
-decided whether this project should exist at all, and it came out of the department audit
-described in §2 rather than from a client request.
+I co-ran the diagnosis and co-decided what to build. The project came out of the department
+audit in §2 rather than a client request.
 
 I then built the voice agent and the system around it:
 
@@ -309,7 +306,7 @@ unverifiable percentage in a public portfolio is worse than no percentage. -->
   integration that submits the claim straight into their system, which is faster, cheaper and
   less error-prone than dialing, and would leave the voice agent to cover the long tail. We
   have built that kind of integration successfully on other work. Here it lost to the six-week
-  timeline, which was the right call at the time and is the first thing worth doing next.
+  timeline. That was the right call then, and it is the first thing I would pick up next.
 
 ---
 
