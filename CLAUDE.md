@@ -351,12 +351,20 @@ One line per session, newest last.
   branch until she flips it in repo settings. Second, **two remote branch names carry client
   identifiers** (`claude/citrine-marketing-mme404` and `claude/clio-manage-life-dashboard-e1rdm5`)
   and branch names are public, so they should be deleted; both are fully merged, so nothing is
-  lost. Nine branches are now redundant and can go.
+  lost. All nine `claude/*` branches are now redundant.
+  **Deletion cannot be done from a session.** `git push --delete` returns 403 from the git host
+  for every branch, while ordinary pushes succeed, so the session's credentials allow creating
+  and updating refs but not removing them. The proxy logs no relay failure, so this is not the
+  egress policy. There is no branch-deletion tool on the GitHub MCP server either. Do not retry
+  it, and do not try to route around it. Lara deletes branches at
+  <https://github.com/laraderosa-lab/laraderosa-solutions/branches>, and
+  `claude/portfolio-repo-setup-hxm78l` can only go after the default is moved to `main`.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
   client, in a branch name. If a session is handed one that does, say so before pushing and
-  work on `main` instead. Two such branches existed and were deleted on 2026-08-15.
+  work on `main` instead. **Two such branches exist right now and still need deleting**, see the
+  2026-08-15 log entry.
 - **Work on `main`. It is the only branch.** Commit and push straight to `main` as work
   completes. Do not create a feature branch unless Lara asks for one.
   Sessions are handed a branch name automatically (`claude/<something>-<id>`). **Ignore it**,
