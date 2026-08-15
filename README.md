@@ -12,7 +12,7 @@ worth fixing**, what I built, and what changed as a result.
 |---|---|---|---|
 | ★ **[FNOL voice agent](./fnol-voice-agent)** | Voice AI agent phones insurance carriers to open claims, navigating IVRs, holding, and answering the carrier's interview, with a human approval gate and post-call accuracy verification | A 400-person PI firm was spending **~125–200 staff-hours a week** opening claims by phone, a tenth to a sixth of the claims department's whole capacity, one call at a time. Calls now run concurrently. | Retell AI, Copilot Studio, Power Automate, Dataverse, React/TS |
 | ★ **[Medical provider selection](./medical-provider-selection)** | Ranks an ~18,000-provider directory by driving distance from the client's home, sends voice AI agents to phone the shortlist for their earliest appointment, and drafts the booking email | Choosing providers cost the same firm's 65-person treatment team **~350–440 staff-hours a week**, around a seventh of its capacity, split between scrolling a specialty-filtered directory with Google Maps open in a second tab and phoning offices one at a time. Ranking is now one search, and the calls run concurrently with nobody on the line. | Power Platform Code App (React/TS), Dataverse, Power Automate, Azure Maps, Retell AI, Copilot Studio |
-| [Marketing engine](./marketing-engine) | | | |
+| ★ **[Marketing attribution](./marketing-attribution)** | Rebuilds a law firm's marketing attribution from ad-account structure through lead capture to settled case value, surfacing ROI per source, campaign and ad group in Power BI | A small criminal-defense and PI firm was spending **well over $500k a year** buying cases and could not attribute a paid search lead at all, because its agency ran one landing page across many ad groups. Its only ROI reporting came from that same agency. | Lawmatics, Clio Manage, Make, Skyvia, BigQuery, Power BI, CallRail, Google Ads |
 | [Medical lien calculator](./medical-lien-calculator) | | | |
 | [Liability dispute agent](./liability-dispute-agent) | | | |
 | [Firm operations dashboard](./firm-ops-dashboard) | | | |
@@ -33,7 +33,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 |---|---|---|---|---|---|---|
 | FNOL voice agent | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Medical provider selection | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Marketing engine | | | | | | |
+| Marketing attribution | ✅ | | ✅ | ✅ | ✅ | ✅ |
 | Medical lien calculator | | | | | | |
 | Liability dispute agent | | | | | | |
 | Firm operations dashboard | | | | | | |

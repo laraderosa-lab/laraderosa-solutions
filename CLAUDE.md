@@ -78,18 +78,22 @@ Seven total. Five are unwritten.
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
-| `marketing-engine` | **Guess.** Invented from the single word "marketing" | TBD | Not started |
+| `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | Drafted. OPEN on the Skyvia/Power BI layer, timeline, and every after-state number |
 | `medical-lien-calculator` | **Guess.** Inferred from a two-word shorthand | TBD | Not started |
 | `firm-ops-dashboard` | **Guess.** Only that it was a dashboard for a firm | TBD | Not started |
 | `liability-dispute-agent` | Lara's own words | TBD | Not started |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Materially complete.** All eight sections written, before-state quantified, role and outcome filled in. Outstanding: timeline, status/in-production-since, handover-doc authorship, one technical "what I'd rebuild", and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words | TBD | Not started |
 
-**Do not infer what a project is from its slug.** The three marked *Guess* are placeholders
+**Do not infer what a project is from its slug.** The two still marked *Guess* are placeholders
 Claude invented in the first session with no knowledge of the work, and they will read as
 established fact if you let them. Ask Lara what each project actually was, then rename the
-folder. `fnol-intake-agent` was renamed to `fnol-voice-agent` for exactly this reason, because
-"intake" means client signup in personal injury, not claim opening.
+folder. `fnol-intake-agent` became `fnol-voice-agent` and `marketing-engine` became
+`marketing-attribution` for exactly this reason: "intake" means client signup in personal
+injury rather than claim opening, and the marketing work produces no marketing, it measures it.
+
+`firm-ops-dashboard` is **confirmed by Lara as a different client** from the Power BI dashboard
+inside `marketing-attribution`. Two dashboards, two engagements. Do not merge them.
 
 Lara refers to these projects by client name, which is not recorded here (public repo). Expect
 shorthand that matches no slug, and ask which one she means rather than guessing.
@@ -131,9 +135,17 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   option-set integers. None of those appear in this file either, deliberately. Redact by
   substitution, the way the two drafted case studies do: descriptive table names, flows
   described by function, and "the case management system" for the vendor product.
+- The `marketing-attribution` client is a **different, much smaller firm**: single office, US,
+  criminal defense (the larger book) plus personal injury (the growth bet), roughly six people
+  known by role. It runs **Lawmatics** for intake and **Clio Manage** for case management, and
+  Lara has confirmed both may be named. Do not conflate it with the FNOL firm.
 - Her environment has Fireflies (meeting transcripts, a good source for diagnosis sections),
   Gmail, Supabase and Figma connected. GitHub is scoped to this repo only; other repos need
   `add_repo` and may not be authorized. Uploaded files do **not** survive into a new session.
+- **Google Docs cannot be read in this environment.** `docs.google.com` is blocked by the
+  network egress proxy, and the Google Drive connector exposes only `share_file`, `trash_file`
+  and `update_file`, with no content fetch. Ask Lara to paste or upload doc contents instead of
+  sharing a link, and do not burn a turn discovering this again.
 
 ## Progress log
 One line per session, newest last.
@@ -176,6 +188,26 @@ One line per session, newest last.
   have gone in the build rather than the handover. Alternatives-ruled-out stays thin at Lara's
   direction. **Still open on this project: timeline, status/in-production-since, whether Lara
   wrote the three handover docs, and one technical "what I'd rebuild".**
+- **2026-08-14.** `marketing-engine` renamed to `marketing-attribution` and drafted as the
+  second flagship, from a 90-minute client-handover transcript (the walkthrough Google Doc was
+  unreadable, see above). Different, much smaller client than FNOL. The story is a project Lara
+  pitched unasked for months: ~1,000 junk marketing sources, a whole capture channel arriving
+  with no attribution because the agency set no UTM parameters, PI revenue never reaching the
+  reporting system, and conversion rates inflated by dropped cases that stayed marked hired.
+  The strongest beat is non-technical, forcing a hostile vendor onto one-landing-page-per-ad-
+  group by escalating to the firm's owner. Lawmatics and Clio Manage cleared for naming. Still
+  open: the Skyvia-to-Power BI layer (Lara built a custom Lawmatics connector, vibe coded, and
+  the transcript predates it), the timeline, Lara's role split, and every after-state number.
+  The client walkthrough doc arrived later as a PDF and confirmed the workstream structure,
+  added the accounting-system and referral-fee cost mapping, and showed that each workstream was
+  designed in Figma and walked through with the client before being built. It does not mention
+  Skyvia either. Extract PDFs with `pip install pypdf` then repair the broken backend with
+  `pip install --force-reinstall cffi cryptography`; `pdftotext` and `pdftoppm` are unavailable
+  and poppler-utils will not install. The reporting layer was then filled in from the connector
+  definition and replication config Lara pasted: custom REST connector against the Lawmatics
+  API, replicated into BigQuery, read by Power BI. Blocklist confirmed as **any names of people
+  or clients**. Branch moved off the client-named one it was handed.
+
 - **2026-08-15.** FNOL iteration 1, on branch `claude/fnol-solution-iteration-b1buz6`. Filled
   in role (co-diagnosed, co-decided; built the Retell agent, Power App, Power Automate flows
   and Copilot agent), timeline (**6 weeks, first conversation to rollout, alongside the other
@@ -199,6 +231,9 @@ One line per session, newest last.
   be added in the CMS, never in the app**, to stop the source of truth fragmenting.
 
 ## Conventions
+- **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
+  client, in a branch name. If a session is handed one that does, say so before pushing and ask
+  to move the work.
 - **Branches.** `main` holds the current state of the portfolio and is where work belongs.
   **Check whether `main` is actually the repo default before trusting the landing page.** As of
   2026-08-13 it was not: the default was still `claude/portfolio-repo-setup-hxm78l`, and only
