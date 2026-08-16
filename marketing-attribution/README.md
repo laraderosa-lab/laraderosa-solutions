@@ -2,7 +2,7 @@
 
 > A small criminal-defense and personal-injury firm was spending well over half a million
 > dollars a year on marketing and could not say which of it produced cases. Fixing that meant
-> rebuilding five layers underneath the reports: the source taxonomy, the ad account structure
+> rebuilding five layers underneath the reports: the source taxonomy, the Google Ads account structure
 > that made a lead attributable at all, the historical data, the cost model, and the revenue
 > backflow from the case management system. Paid search went from **no attribution to
 > ad-group-level attribution on both the call and the form channel**, with ROI per source the
@@ -17,7 +17,7 @@
 | **My role** | Sole engineer. The client asked for the work, and I owned it from scoping through to handover |
 | **Timeline** | ~3 months, roughly one month each on attribution, cost mapping, and dashboard design |
 | **Stack** | Lawmatics, Clio Manage, Make, Skyvia, BigQuery, Power BI, CallRail, Google Ads, Google LSA, Meta Ads, ClickFunnels, QuickBooks Online, Google Sheets, Google Workspace admin rules |
-| **Status** | Finalised and handed over to a colleague |
+| **Status** | Finalised and rolled out |
 
 ---
 
@@ -56,23 +56,31 @@ like a reporting request, and the fix turned out to sit four layers underneath t
    historical matters and still selectable on new ones. Add duplicates on top, including three
    separate sources that all meant paid search. No grouping, so no denominator, so no rate of
    anything.
-2. **The ad account had no one-to-one structure, so neither channel could be attributed.**
+2. **The Google Ads account had no one-to-one structure, so neither channel could be attributed.**
    This is the root cause, and it sat in the agency's Google Ads setup rather than anywhere in
    the firm's systems. The same landing page was serving several campaigns and ad groups at
    once, so a personal injury ad and a criminal defense ad could deliver a visitor to the same
    page. That page carries one call-tracking number and one form, so both routes into the firm
    arrive identical no matter which ad was paid for. Tracking numbers were reused across
-   campaigns on top of that. There was no signal left to attribute on, and the form path made
-   it worse by pushing submissions into Lawmatics through an integration that set no UTM
-   parameters, so those leads landed with the marketing origin blank.
+   campaigns on top of that. The form path made it worse by pushing submissions into Lawmatics
+   through an integration that set no UTM parameters, so those leads landed with the marketing
+   origin blank.
+
+   **Why not gclid.** Google Ads stamps every paid click with a gclid, and that identifier does
+   carry the campaign and ad group. It resolves inside Google's own stack, and Lawmatics can
+   neither read it nor exchange it for anything. The agency's setup fed the click data into
+   their own systems, which is why they could produce a report and the firm could not.
+   Attribution had to arrive in a form the CRM could store on a lead, which rules out anything
+   that has to be resolved against an API the CRM does not call.
 3. **The revenue side only counted half the firm.** Case value is recorded in Clio Manage and
    never flowed back to Lawmatics, so Lawmatics reported revenue for criminal defense (priced
    at intake) and effectively zero for personal injury. Every PI source looked like it
    produced nothing.
-4. **The conversion rates were wrong in the firm's favour.** Cases marked hired and then
-   dropped stayed hired. Leads moved into the "did not hire" pipeline kept an open status.
-   Both inflate conversion, and both inflate it hardest on the sources sending the weakest
-   cases, which is precisely where you need the number to be honest.
+4. **The conversion rates were wrong in the firm's favour.** A lead that signs is marked hired
+   in Lawmatics and the matter migrates to Clio. When the firm later drops that case, it is
+   dropped in Clio, and nothing communicates that back, so the lead sits in Lawmatics as hired
+   permanently. Conversion is inflated, and it is inflated hardest on the sources sending the
+   weakest cases, which is exactly where the number needs to be honest.
 
 **The reports that already existed.** The agency sent a monthly report, and it was vanity
 numbers. Impressions, clicks, reach. Nothing connecting a dollar to a signed case, and nothing
@@ -94,21 +102,17 @@ reporting on it outside Lawmatics entirely. It would have been faster and it was
 move. I rejected it because spend is only half the fraction. The other half is signed cases
 and their settled value, which live in Lawmatics and Clio, and joining them somewhere else
 means maintaining a parallel copy of the firm's operational data to answer a question
-Lawmatics already answers once the data underneath it is correct. The principle I held to:
-
-> We could fake the numbers in the dashboard. We want everything as clean as possible instead
-> of modifying the information at the point where it gets displayed.
-
-So the work went into the source data, and the reporting layer stayed thin.
+Lawmatics already answers once the data underneath it is correct. So the work went into the
+source data, and the reporting layer stayed thin.
 
 ## 3. Problem
 
 The firm was spending well over half a million dollars a year to acquire cases and had no
-reliable read on which sources produced them. The ad account had no one-to-one structure, so
+reliable read on which sources produced them. The Google Ads account had no one-to-one structure, so
 paid search leads could not be attributed on either the call or the form channel. The source
 taxonomy could not be grouped. Personal injury revenue never reached the system doing the
-reporting. And the conversion rates that did exist were biased upward by cases that had been
-dropped or rejected without being marked as such.
+reporting. And the conversion rates that did exist were biased upward by cases the firm had
+dropped in Clio that still read as hired in Lawmatics.
 
 The cost of leaving it alone is not staff hours. It is capital allocation. Every month the
 firm renewed a roughly $20,000 paid search budget, a retainer with an agency it suspected was
@@ -143,11 +147,10 @@ or M. -->
 
 ### 2. Route both capture channels into it
 
-The longest phase by a wide margin. A clean taxonomy is worth nothing if the systems creating
-leads do not write into it, and here neither of them could, because the structure upstream
-destroyed the signal before it arrived.
+A clean taxonomy is worth nothing if the systems creating leads do not write into it, and here
+neither of them could, because the structure upstream destroyed the signal before it arrived.
 
-**Restructure the ad account first, because everything else depends on it.** No amount of
+**Restructure the Google Ads account first, because everything else depends on it.** No amount of
 integration work fixes a setup where two different ads land on the same page. So the enabling
 move was a structural rule imposed on the agency: **one landing page per ad group**, and a
 campaign carries several ad groups, which is what buys the granularity. Then **one
@@ -160,23 +163,27 @@ number is to have come through that ad group. Attribution stops being an inferen
 a property of the structure. The numbers are dynamic tracking numbers that swap per visitor, so
 this had to be one CallRail number pool per page rather than one static number.
 
-**The forms.** The agency's forms live in ClickFunnels, not Lawmatics, so the clean path (embed
-a Lawmatics form and let it read the UTM parameters) was closed. Two moves instead. First, I
-rebuilt the Lawmatics intake form so attribution could be supplied at submission time, through
-a hidden source field, a campaign field and a custom field for ad group. Second, I negotiated
-the agency's webhook away from Lawmatics and into a Make scenario, which reads the landing page
-off the payload and routes on it. Every route posts to the same form endpoint. What differs is
-the body: source is a constant, campaign is the ad group's parent, and the ad group goes into
-the custom field. Submitting a real form rather than writing a record sideways means the CRM
-runs its normal intake handling, workflows and all.
+**The forms.** The agency's forms live in ClickFunnels, and the agency was posting each
+submission straight into Lawmatics. That path destroyed the attribution, because the agency
+could not supply a source or a campaign with the lead. Their forms were not set up in a way
+that gave them that information in the first place, so there was nothing for them to send.
+
+So I negotiated the webhook away from them. Instead of posting into the CRM, the agency now
+posts each submission to a webhook of mine in Make. Because one landing page maps to one ad
+group by then, the scenario can read the landing page off the payload and derive the ad group
+from it, and the ad group's parent campaign from that. It routes on the landing page, then
+creates the lead in Lawmatics with source and campaign filled in and the ad group in a custom
+field for a further level of granularity. Creating the lead by submitting a Lawmatics form is
+just how a lead gets made, rather than a choice with anything riding on it.
 
 **The part that made this work was not the code.** None of it is possible while one landing
 page serves several ad groups, because then the page identifies nothing. The agency was doing
 exactly that, and reusing tracking numbers across campaigns on top of it. Its position was that
 it could produce the statistics from its own platforms, which is true and useless, because
-those numbers cannot reach Lawmatics where the signed cases are. I had no commercial leverage
-over a vendor the firm was paying, so I took it to the firm's owner, who did, and got one
-landing page per ad group agreed as a standing rule.
+those numbers cannot reach Lawmatics where the signed cases are. I negotiated both changes with
+the agency directly: one landing page per ad group as a standing rule, and the form webhook
+pointed at me instead of at the CRM. The routing table is a consequence of that agreement
+rather than a substitute for it.
 
 ### 3. Remap the history
 
@@ -204,18 +211,15 @@ source.
   the posting time it consumes plus its design subscription, which I worked out by sitting down
   with the person who does the posting and going through her week.
 
-Lawmatics has no API endpoint for marketing-source costs, so rather than force them into the
-CRM directly, everything lands in a **self-updating Google Sheet** holding spend per source and
-per campaign. What can be pulled in automatically is. What cannot is entered by one person,
-**once a month, in about fifteen minutes**, using figures that are already calculated by then.
+All four of those land automatically in a Google Sheet that builds up spend per source and per
+campaign. The sheet exists only because Lawmatics has no API endpoint for marketing costs. If
+it had one, the costs would be written straight into the CRM and there would be no sheet.
 
-The alternative was to take the ROI analysis somewhere that could hold cost natively. That
-meant moving away from the CRM holding the source of truth for attribution, which costs far
-more than fifteen minutes a month. The trade was made deliberately.
-
-<!-- OPEN: does the sheet feed Lawmatics, or does it join the CRM data downstream in BigQuery?
-The architecture diagram currently shows it keyed into Lawmatics, which is what the earlier
-draft said, but your note reads as though the sheet is the store instead of the CRM. -->
+Getting the numbers from the sheet into Lawmatics is the single manual step in the system: a
+monthly task on the intake manager, **about fifteen minutes**, typing in figures the sheet has
+already worked out. The alternative was to take the ROI analysis somewhere that could hold cost
+natively, which means reporting away from the CRM that holds the attribution. The trade was
+made deliberately.
 
 ### 5. The revenue side of ROI
 
@@ -227,10 +231,11 @@ Lawmatics has to be the source of truth for what a lead was worth. Two flows car
   injury value is only final when Clio says so, so a daily job carries the settled value across,
   gated on an explicit "this value is final" checkbox rather than on a stage change or case
   closure.
-- **Dropped and rejected cases.** Three hygiene jobs, each closing a specific gap: dropped cases
-  get marked lost, did-not-hire leads get their status corrected, and junk matters created by
-  the firm's main phone line get archived and deleted. Without them, spend that produced leads
-  which never became cases disappears from the denominator and every conversion rate reads high.
+- **Dropped cases.** A lead that signs is marked hired in Lawmatics and the matter migrates to
+  Clio. If the firm later drops it, that happens in Clio and nothing tells Lawmatics, so the
+  lead stays hired there forever and every conversion rate built on it reads high. A daily job
+  carries the drop back and marks the lead lost, which is the only reason a source's conversion
+  rate reflects cases the firm actually kept.
 
 With that in place a single lead record carries the whole chain: where it came from, what was
 spent to get it, and what it ended up worth.
@@ -305,10 +310,10 @@ flowchart TB
 | Decision | Why | What I gave up |
 |---|---|---|
 | **Fix the source data, do not correct at the reporting layer** | A dashboard that compensates for known-bad inputs becomes a second source of truth that silently diverges from the first. Clean statuses in Lawmatics benefit every consumer of the CRM, not only the report. | Much slower. A presentation-layer fix would have shown a plausible number in days. |
-| **Derive campaign and ad group from the landing page** | We control neither the landing pages, the ad accounts, nor the UTM parameters, and the party who does had already declined to help. The landing page is in every payload and cannot be repointed without our routing breaking visibly. | A hard dependency on a page-to-ad-group convention that is enforced socially rather than technically. |
+| **Derive campaign and ad group from the landing page** | We control neither the landing pages, the Google Ads account, nor the UTM parameters, and the party who does had already declined to help. The landing page is in every payload and cannot be repointed without our routing breaking visibly. | A hard dependency on a page-to-ad-group convention that is enforced socially rather than technically. |
 | **Gate the case-value sync on an explicit "final" checkbox** | Both alternatives are worse. Triggering on case closure adds months of lag, because the firm only closes a file when it is completely finished. Triggering on a stage change relies on staff updating the value before they move the stage, and lets them skip the stage entirely. | Depends on a human ticking a box. If they never tick it, the value never arrives, and nothing errors. |
 | **Write a "migrated" flag back into Clio** | The syncs are daily sweeps over recently-updated records, so they have to be safe to re-run. Flipping a flag on the source record makes the query filter itself the idempotency guard, and it survives the job being re-run, re-deployed, or run twice after a failed reauthentication. | A write back into Clio on every sync, and one more field for staff to see and wonder about. |
-| **Costs in a self-updating sheet with a fifteen-minute monthly touch**, rather than moving the ROI analysis off the CRM | Lawmatics has no API endpoint for marketing-source costs, and its only native alternative is per-campaign daily entry, which for a fixed monthly agency fee means asking a person to divide by thirty and type it in thirty times. Moving the analysis elsewhere would have meant reporting somewhere that does not hold the attribution. | The one manual step in the system, and a dependency on someone remembering. I filed a feature request for the cost endpoint. |
+| **Build costs up in a sheet and key them into the CRM monthly**, rather than moving the ROI analysis off the CRM | Lawmatics has no API endpoint for marketing-source costs, and its only native alternative is per-campaign daily entry, which for a fixed monthly agency fee means asking a person to divide by thirty and type it in thirty times. Moving the analysis elsewhere would have meant reporting somewhere that does not hold the attribution. | The one manual step in the system, and a dependency on the intake manager remembering. I filed a feature request for the cost endpoint. |
 | **Power BI over Lawmatics' native dashboards** | ROI per source is a joined question, and native reporting can only see its own system. It cannot reach Clio for settled case value or the sheet for costs. | A whole extra pipeline to own, for a client with no data team. |
 | **Replicate into a warehouse rather than point the BI tool at the API** | The API is paginated at 100 records a page and rate limited to ten requests a second. A BI tool refreshing against that is slow, fragile, and re-fetches everything to answer anything. A warehouse gives SQL, joins against the cost data, and history the API does not keep. | Latency between the CRM and the dashboard, and a second copy of the data to secure. |
 | **Incremental windows overlap on purpose** | The sync filters on updated-since, and the greater-than-or-equals variant carries a one-unit negative delta, so each run re-reads a sliver of the previous window. A duplicate is cheap and detectable downstream. A record that falls in the gap between two windows is invisible forever. | Duplicate rows the warehouse has to tolerate. |
@@ -316,7 +321,7 @@ flowchart TB
 ### Constraints I built inside
 
 - **A key vendor owned the inputs and was also the party being measured.** The agency held the
-  landing page platform, the ad accounts and the reporting. Any design that needed their
+  landing page platform, the Google Ads account and the reporting. Any design that needed their
   cooperation had to survive them not cooperating.
 - **Lawmatics has no API endpoint for marketing-source costs**, which puts a permanent manual
   step in the middle of an otherwise automated pipeline.
@@ -464,9 +469,9 @@ document templates and task lists, and built the inbound document routing. I wor
 that and did not touch it.
 
 **The unglamorous parts.** Most of the difficulty here was not engineering. It was getting a
-vendor with no incentive to cooperate to change how it built landing pages, which took several
-meetings and eventually the owner's involvement. And it was persuading a firm that had been
-burned by bad reporting to accept an automation that deletes records.
+vendor with no incentive to cooperate to change how it built landing pages and where it sent
+its leads, which took several meetings and which I did myself. And it was persuading a firm
+that had been burned by bad reporting to accept an automation that deletes records.
 
 ## 7. Impact
 
@@ -476,7 +481,7 @@ burned by bad reporting to accept an automation that deletes records.
 | Marketing sources in Lawmatics | ~50 flat entries, mixing genuine sources, campaigns recorded as sources, duplicates and stale spend | A two-level taxonomy, deduplicated, with historical matters remapped onto it |
 | Form-submitted leads carrying source and campaign | None | Every one, carried by which prefilled form the router submits |
 | Personal injury revenue visible to ROI reporting | None. Only criminal defense, priced at intake | Settled PI value synced back from Clio daily on an explicit final-value gate |
-| Conversion rates | Overstated, since dropped and rejected cases kept their prior status | Corrected daily by the hygiene jobs |
+| Conversion rates | Overstated. A case dropped in Clio stayed hired in Lawmatics permanently, since nothing carried the drop back | Corrected daily, with drops carried back from Clio |
 | Cost per source | Known only for paid search | Every source carries a cost, including organic ones costed at the time they consume |
 | Reporting | The agency's monthly report, on impressions and clicks | Power BI over an hourly warehouse: ROI and conversion by source, campaign and ad group, plus rejection reasons |
 | Basis for evaluating the agency and the lead vendor | The vendors' own reports | The firm's own data |

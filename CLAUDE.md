@@ -292,8 +292,10 @@ One line per session, newest last.
   sources, a whole capture channel arriving
   with no attribution because the agency set no UTM parameters, PI revenue never reaching the
   reporting system, and conversion rates inflated by dropped cases that stayed marked hired.
-  The strongest beat is non-technical, forcing a hostile vendor onto one-landing-page-per-ad-
-  group by escalating to the firm's owner. Lawmatics and Clio Manage cleared for naming. Still
+  The strongest beat is non-technical, getting a hostile vendor onto one-landing-page-per-ad-
+  group (**corrected 2026-08-15: Lara negotiated this with the agency herself. The "escalated
+  to the firm's owner" version was invented and is wrong**). Lawmatics and Clio Manage cleared
+  for naming. Still
   open: the Skyvia-to-Power BI layer (Lara built a custom Lawmatics connector, vibe coded, and
   the transcript predates it), the timeline, Lara's role split, and every after-state number.
   The client walkthrough doc arrived later as a PDF and confirmed the workstream structure,
@@ -491,6 +493,26 @@ One line per session, newest last.
   **Dashboard split into `marketing-attribution/dashboard.md`**, referenced at the end, because
   the doc was too long. The five pages moved there. It still needs the PDF, which did not
   survive the session.
+  **Iteration 1b, same day.** More corrections, several of which killed invented content.
+  **Lara negotiated the agency changes herself. She did not escalate to the firm's owner**, and
+  that claim was in both §4 and §6. **Status is finalised and rolled out**, not handed to a
+  colleague. **The "we could fake the numbers in the dashboard" blockquote is gone**, since
+  Lara did not recognise it. **The cost mechanism was wrong**: everything lands in the Google
+  Sheet automatically, and the manual fifteen minutes is the **intake manager** transcribing
+  from the sheet into Lawmatics, which also answers where costs live. **The conversion-rate
+  mechanism is specific**: a lead is marked hired in Lawmatics, migrates to Clio, gets dropped
+  in Clio, and nothing communicates back, so it stays hired and inflates the rate. That is the
+  flow she built, and §4 step 5 now covers only that one, since the did-not-hire and
+  junk-matter jobs matter less to this solution. **The forms path was written so only its
+  author could follow it** and is rewritten: the agency posted ClickFunnels submissions
+  straight into the CRM with no source or campaign, because their forms never captured that
+  information, so Lara negotiated the webhook to her own Make scenario, which derives ad group
+  from landing page and campaign from ad group. Submitting a Lawmatics form is just how a lead
+  gets created, not a design choice, and the old text claimed otherwise.
+  **New: preempt the gclid objection.** A reader who knows Google Ads will ask why gclid was
+  not used. It resolves only inside Google's stack, Lawmatics cannot read or exchange it, and
+  the agency fed click data to their own systems, which is why only they could report. §2 now
+  says so. Also: call it **the Google Ads account**, never "the ad account".
   **Length rule corrected**: concision, not a word count. The entry was briefly cut against the
   old target and then restored in full, since the project is a large one and the cuts were
   serving a number rather than the reader. Also ported into this file: the `petergyang/no-ai-slop` pin, the loosened anonymization rule,
