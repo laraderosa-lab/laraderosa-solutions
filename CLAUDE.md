@@ -739,8 +739,8 @@ One line per session, newest last.
   the ones needing a reduction, and before this those letters were still typed one at a time.
   Written into §1 (a closing paragraph), §2, §3 (step 2 is now the branch), the diagram (a
   decision node), a new decisions row, the code excerpt (`needsReduction`), and the §5 table.
-  Root README row updated too. One `OPEN` left: whether the no-reduction path merges the same
-  Word template or a different one, currently written as the same.
+  Root README row updated too. **The no-reduction letter is close to the same template**, per
+  Lara, stating the amount that will be paid rather than asking the lienholder to accept less.
   **§2 (Diagnosis) and §6 (My involvement) deleted at Lara's instruction, because this is a
   short entry, and the remaining sections renumbered 1 to 6.** Nothing load-bearing was lost:
   the no-API and no-math-in-the-CMS facts moved into §2 Problem, the scoping decision already
@@ -753,10 +753,14 @@ One line per session, newest last.
   colleague's handover doc, so it now opens "Not source code", matching the fix made to
   `medical-provider-selection`. **Two `Redacted and…` labels remain in `marketing-attribution`
   and still need Lara's ruling** on whether they are real pasted artifacts.
-  **Its §8, now §6, is very likely Claude's** (the rounding remainder, the placeholder
-  contract, the manual log-back). It was not deleted because Lara did not ask, but it has the
-  shape of the three that were deleted elsewhere, and it is written as regret rather than as
-  the rebuild. Put it to her.
+  **§8, now §6, was Claude's and is gone. Fourth time across the repo** (after FNOL, provider
+  selection and marketing). The rounding remainder, the placeholder contract and the manual
+  log-back were all inference from the handover doc. **Replaced with Lara's own, one item**:
+  she'd read settlement amounts out of the case management system and write the calculated
+  reductions back, and the reason she did not is that the system's API could not support it.
+  Her framing is that a build this small does not carry a long list, and the section says so
+  in one paragraph rather than a bullet list. The §5 excerpt note's "See §6" pointer and its
+  independent-rounding clause went with the deleted bullet.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

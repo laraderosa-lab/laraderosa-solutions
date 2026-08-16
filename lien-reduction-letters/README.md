@@ -97,9 +97,10 @@ amount. That is the entire human contribution. On submit:
 1. **Compute the pool and check it against the claims.** Net recovery, the half-and-half
    split, and the total of what the lienholders claim.
 2. **Branch.** If the pool covers the claims, no reduction is needed and the scenario goes
-   straight to drafting, each lienholder's letter carrying what they claimed. If the claims
-   exceed the pool, it runs the pro-rata split and works out each lienholder's share and
-   payout first.
+   straight to drafting. That letter is close to the same one, stating the amount that will
+   be paid rather than asking the lienholder to accept less. If the claims exceed the pool,
+   the scenario runs the pro-rata split and works out each lienholder's share and payout
+   first.
 3. **Fan out.** One pass per lienholder, merging that lienholder's own figures plus the
    shared settlement derivation into a Word letter template, exported as PDF.
 4. **Client breakdown.** The same inputs generate a settlement breakdown document showing the
@@ -112,9 +113,6 @@ amount. That is the entire human contribution. On submit:
 
 Nothing sends to a lienholder automatically. The output is a set of documents a person reads
 before any of them leave the firm.
-
-<!-- OPEN: on the no-reduction path, is it the same Word template merged with the claimed
-amounts, or a separate one with different wording? Written above as the same template. -->
 
 ## 4. Architecture
 
@@ -200,7 +198,7 @@ const payouts = lienholders.map(l => ({
 Two things this has to guarantee, because a lienholder's billing department will check both.
 Every letter must show the **same** settlement, fee, expenses and pool, since providers on the
 same matter compare notes. And whenever a reduction is applied the payouts must **sum to the
-pool**, which independent per-row rounding does not promise. See §6.
+pool**.
 
 ## 5. Impact
 
@@ -226,19 +224,12 @@ produces.
 
 ## 6. What I'd do differently
 
-- **The rounding remainder should be allocated rather than left to chance.** Rounding each
-  payout independently to the cent does not guarantee the payouts sum to the pool, so a
-  six-provider case can distribute a cent more or less than exists. Nobody is harmed by a
-  cent. A letter whose figures do not reconcile is still exactly the kind of thing a
-  lienholder's billing department writes back about, and the reply costs more than the cent.
-  Allocating the remainder to the largest claim makes the set provably sum to the pool.
-- **Placeholder names in the Word template are an undocumented contract.** The template is
-  editable by design, which is right, but nothing stops someone renaming a placeholder and
-  finding out at merge time. A validation step comparing the template's placeholders against
-  the fields the scenario supplies would catch it before a letter goes out with a blank in it.
-- **The link back to the case file is manual.** With no API, the case management system only
-  learns about the letters if someone posts the folder link. That is the one step still
-  relying on a person remembering.
+A build this small does not carry a long list. I'd have it read the settlement figures out of
+the case management system instead of asking someone to type them into the form, and write the
+calculated reductions back onto the case once the letters are drafted. The figures would stay
+in the system of record rather than being re-keyed, and the results would land on the case file
+instead of arriving there as a folder link somebody has to remember to post. The system's API
+could not support either direction.
 
 ---
 
