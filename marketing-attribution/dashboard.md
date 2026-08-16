@@ -38,9 +38,9 @@ is why it runs to five pages rather than the one the project was scoped around.
   buying decision.
 
 Three of the findings these pages produced in the first pass are in
-[§7 of the main case study](./README.md#7-impact): the pre-signed case vendor whose settlement
-values came out below what the firm pays per lead, the 40% of rejections caused by leads for
-services the firm does not offer, and the roughly one lead in ten that is invalid.
+[§7 of the main case study](./README.md#7-impact): the pre-signed case vendor whose cases are
+mostly dropped after signing, the 40% of rejections caused by leads for services the firm does
+not offer, and the roughly one lead in ten that is invalid.
 
 <!-- OPEN: the screenshots. You mentioned a PDF with altered pictures. It did not survive into
 this session, since uploads never do, so please re-attach it and I will build this section
@@ -55,11 +55,12 @@ source or crop to aggregates. -->
 
 ## Design decisions
 
-The two that shaped the whole reporting layer sit in the main case study, along with the
-Skyvia connector definition that feeds the warehouse: Power BI over Lawmatics' native
-dashboards, because ROI per source is a joined question and native reporting can only see its
-own system, and replicating into a warehouse rather than pointing the BI tool at the API,
-which is paginated at 100 records a page and rate limited to ten requests a second.
+The two that shaped the whole reporting layer sit in the main case study, along with the Skyvia
+connector definition that feeds the warehouse. Power BI over Lawmatics' native dashboards,
+because the ROI data is unified in Lawmatics by then and what Lawmatics cannot do is
+cross-filter it. And replicating into a warehouse rather than pointing the BI tool at the API,
+which would refetch everything to answer anything and gives no route to joining or keeping
+history.
 
 <!-- OPEN: the decisions specific to the dashboard itself, which I do not have:
      - how ROI is defined when a PI case settles months or years after the spend that bought it

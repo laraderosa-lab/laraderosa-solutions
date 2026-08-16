@@ -110,7 +110,7 @@ corrected, so none of the original guesses survive.
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
-| `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1 and 1b done.** See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in `dashboard.md`, and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
+| `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 is deliberately absent until Lara writes it. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in `dashboard.md`, and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 3 done**, and the most finished entry in the repo. Seven sections: §8 is deliberately absent until Lara writes it. Outstanding: in-production-since date and user count, handover-doc authorship, and §8 |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
@@ -544,6 +544,41 @@ One line per session, newest last.
   whole repo, and the session told Lara the marketing draft "was never committed and was lost"
   when it was sitting on `main` the whole time. **Run `git fetch origin` and look at
   `origin/main` before concluding anything about what does or does not exist.**
+
+- **2026-08-16 (marketing, iteration 2).** Corrections from Lara, on `main`.
+  **Two decision rows were factually wrong and are rewritten.** The cost row said Lawmatics'
+  native cost entry is daily; it is **per campaign and per period, daily, weekly or monthly,
+  and Lara set it to monthly**, so the "divide by thirty and type it thirty times" line was
+  invented arithmetic. The Power BI row said native reporting "cannot reach Clio or the sheet";
+  wrong, and it contradicts the whole document. **The ROI data is unified in Lawmatics, and the
+  dashboard needs neither Clio nor the sheet to answer the ROI question.** Power BI was chosen
+  for **cross-filtering**: which source converts best, which sources and campaigns produce the
+  most rejected leads, which lost cases the firm caused against which it turned away and why,
+  with sub-categories under each reason. Clio data alongside it is a **bonus, not a dependency**.
+  The same wrong reasoning was in §4 step 6 and in `dashboard.md`, and was fixed in all three.
+  **"The API is paginated at 100 records a page and rate limited to ten requests a second" was
+  a fabrication** built by reading Lara's own connector config back as though it described the
+  API. Those are values *she set*, and the config's own comment says the throttle is a guess.
+  Lawmatics publishes **150 requests a minute**, so the configured 10/sec is likely four times
+  over. The claim is gone from `README.md` and `dashboard.md`. **Rule: a value in a config is a
+  choice, not a documented property of the thing it points at.**
+  **The incremental-overlap row claimed duplicate rows.** It upserts on record id, so the
+  overlap costs a re-read, not a duplicate. Fixed in the row, the code comment and the note
+  under the excerpt.
+  **§8 deleted, Claude's again, third time across the repo** (after FNOL and provider
+  selection). Lara will write it. An `OPEN` marker sits where it was.
+  Other cuts, all Lara's: the custom-field-cleanup and Lawmatics-to-Clio-mapping sentence out
+  of §6 (not part of this project), the "not mine, a colleague set up Clio" paragraph, and the
+  "finding outside the brief" paragraph about the Clio task backlog. **The agency had a
+  negative incentive, not a neutral one**: the reporting being built measures its performance
+  and can contradict its own reports. **The pre-signed vendor finding was wrong.** It is not
+  that average settlement came in under $3k; it is that **most of those cases are dropped after
+  signing** (wrong matter type, client at fault, client goes MIA), which only became visible
+  once drops flowed back from Clio. Lawmatics alone had it as the best-converting source.
+  §7's reporting row now links `dashboard.md`.
+  **Process, again.** This session repeated the exact failure logged on 2026-08-15: it was
+  handed a stale clone with two branches, ran `git branch -a`, and told Lara the marketing
+  draft did not exist. `git fetch origin` **first**, then look at `origin/main`.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

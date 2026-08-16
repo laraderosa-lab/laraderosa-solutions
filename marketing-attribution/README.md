@@ -242,8 +242,12 @@ spent to get it, and what it ended up worth.
 
 ### 6. Warehouse, connector and dashboard
 
-Lawmatics' native reporting can only see its own system, and the questions worth asking span
-two, so the reporting layer is Power BI over a BigQuery warehouse fed from both.
+By this point the ROI question is answerable inside Lawmatics, because the taxonomy, the costs
+and the settled value are all in it. The gap is interrogation. Lawmatics reporting will not
+cross-filter, so a question like which sources and campaigns produce the most rejected leads,
+and for which reasons, has no route to an answer there. So the reporting layer is Power BI over
+a BigQuery warehouse, fed from Lawmatics for everything the ROI question needs and from Clio
+for the case-management reporting the firm would otherwise open a second tool to read.
 
 Nothing existed to get either system into that warehouse. Skyvia does the replication and had
 no connector for Lawmatics, so I wrote one: a declarative REST connector definition covering
@@ -310,13 +314,13 @@ flowchart TB
 | Decision | Why | What I gave up |
 |---|---|---|
 | **Fix the source data, do not correct at the reporting layer** | A dashboard that compensates for known-bad inputs becomes a second source of truth that silently diverges from the first. Clean statuses in Lawmatics benefit every consumer of the CRM, not only the report. | Much slower. A presentation-layer fix would have shown a plausible number in days. |
-| **Derive campaign and ad group from the landing page** | We control neither the landing pages, the Google Ads account, nor the UTM parameters, and the party who does had already declined to help. The landing page is in every payload and cannot be repointed without our routing breaking visibly. | A hard dependency on a page-to-ad-group convention that is enforced socially rather than technically. |
-| **Gate the case-value sync on an explicit "final" checkbox** | Both alternatives are worse. Triggering on case closure adds months of lag, because the firm only closes a file when it is completely finished. Triggering on a stage change relies on staff updating the value before they move the stage, and lets them skip the stage entirely. | Depends on a human ticking a box. If they never tick it, the value never arrives, and nothing errors. |
+| **Derive campaign and ad group from the landing page** | With no UTM parameters, no control over the landing pages or the Google Ads account, and an agency that owns all three and had already declined to help, the landing page URL is the only attribution signal that arrives with the lead. It is in every payload, and if the agency repoints a page the routing breaks loudly the same day rather than misattributing quietly. | A hard dependency on one page mapping to one ad group, which is a convention the agency keeps rather than something the system enforces. |
+| **Gate the case-value sync on an explicit "final" checkbox** | Both alternatives are worse. Triggering on case closure adds months of lag, because the firm only closes a file when it is completely finished. Triggering on a stage change relies on staff updating the final settlement value before they move the stage, and lets them skip the stage entirely. | Depends on a human ticking a box. If they never tick it, the value never arrives, and nothing errors. |
 | **Write a "migrated" flag back into Clio** | The syncs are daily sweeps over recently-updated records, so they have to be safe to re-run. Flipping a flag on the source record makes the query filter itself the idempotency guard, and it survives the job being re-run, re-deployed, or run twice after a failed reauthentication. | A write back into Clio on every sync, and one more field for staff to see and wonder about. |
-| **Build costs up in a sheet and key them into the CRM monthly**, rather than moving the ROI analysis off the CRM | Lawmatics has no API endpoint for marketing-source costs, and its only native alternative is per-campaign daily entry, which for a fixed monthly agency fee means asking a person to divide by thirty and type it in thirty times. Moving the analysis elsewhere would have meant reporting somewhere that does not hold the attribution. | The one manual step in the system, and a dependency on the intake manager remembering. I filed a feature request for the cost endpoint. |
-| **Power BI over Lawmatics' native dashboards** | ROI per source is a joined question, and native reporting can only see its own system. It cannot reach Clio for settled case value or the sheet for costs. | A whole extra pipeline to own, for a client with no data team. |
-| **Replicate into a warehouse rather than point the BI tool at the API** | The API is paginated at 100 records a page and rate limited to ten requests a second. A BI tool refreshing against that is slow, fragile, and re-fetches everything to answer anything. A warehouse gives SQL, joins against the cost data, and history the API does not keep. | Latency between the CRM and the dashboard, and a second copy of the data to secure. |
-| **Incremental windows overlap on purpose** | The sync filters on updated-since, and the greater-than-or-equals variant carries a one-unit negative delta, so each run re-reads a sliver of the previous window. A duplicate is cheap and detectable downstream. A record that falls in the gap between two windows is invisible forever. | Duplicate rows the warehouse has to tolerate. |
+| **Build costs up in a sheet and key them into the CRM monthly**, rather than moving the ROI analysis off the CRM | Lawmatics has no API endpoint for marketing-source costs, so nothing can write them automatically. Native entry is per campaign and per period, daily, weekly or monthly, and I set it to monthly. So every cost feed lands in the sheet instead, and a scheduled monthly task on the intake manager carries the month's figures into the CRM. Moving the analysis elsewhere would have meant reporting somewhere that does not hold the attribution. | The one manual step in the system, and a dependency on the intake manager doing it. I filed a feature request for the cost endpoint. |
+| **Power BI over Lawmatics' native dashboards** | The ROI data is unified in Lawmatics by this point, so the dashboard pulls nothing from the sheet or from Clio to answer the ROI question. The reason to report outside the CRM is what can be asked of the data once it is in one place. Power BI cross-filters, so the owner can ask which source converts best, which sources and campaigns produce the most rejected leads, and which of the lost cases the firm caused against which it turned away and why, with sub-categories under each reason. Lawmatics answers almost none of that. Clio's reporting can then sit beside it instead of in a second tool. | A whole extra pipeline to own, for a client with no data team. |
+| **Replicate into a warehouse rather than point the BI tool at the API** | A BI tool refreshing straight off a paginated REST API is slow, fragile, and re-fetches everything to answer anything. A warehouse gives SQL, joins against the cost data, and history the API does not keep. | Latency between the CRM and the dashboard, and a second copy of the data to secure. |
+| **Incremental windows overlap on purpose** | The sync filters on updated-since, and the greater-than-or-equals variant carries a one-unit negative delta, so each run re-reads a sliver of the previous window. Re-reading a record that has not changed costs one request and rewrites the row it already has. A record that falls in the gap between two windows is invisible forever. | A little wasted read on every run. |
 
 ### Constraints I built inside
 
@@ -417,8 +421,8 @@ with the data model:
       { "Name": "custom_fields",   "APIPath": "attributes.custom_fields",      "DbType": "JsonArray" },
 
       // 4. Incremental sync, with a deliberate overlap. The >= variant carries a negative
-      //    delta so each run re-reads the edge of the last window. Duplicates are cheap and
-      //    detectable. A record lost in the gap between two windows is invisible forever.
+      //    delta so each run re-reads the edge of the last window. Re-reading a record costs
+      //    one request and rewrites the same row. A record lost in the gap is invisible forever.
       { "Name": "UpdatedDate", "APIPath": "attributes.updated_at", "DbType": "DateTime",
         "FilterOperations": [
           { "Operation": "GreaterThan",         "ParameterName": "updatedFrom" },
@@ -433,30 +437,29 @@ The lookup objects, sources, campaigns, stages and practice areas, are small eno
 as unpaged, which removes a round trip each and a class of paging bug that only shows up when
 a list crosses one hundred entries.
 
-Rule (4) guarantees duplicates, and it closes a silent failure in exchange. A number that is
-slightly double-counted gets questioned. A number that is quietly missing rows does not.
+Rule (4) buys out a silent failure for the price of re-reading a handful of records each hour.
+The overlap does not duplicate anything, because the sync keys on the record id and updates the
+row it already holds. A record lost in the gap between two windows would never be noticed.
 
 ## 6. My involvement
 
-The client asked for the work and I was told they wanted it. From there it was mine end to end,
-from the conversations that turned the symptom into a scope through to the handover.
+The client named the symptom. From there it was mine end to end, from the conversations that
+turned that symptom into a scope through to the handover.
 
 **Mine.** The source taxonomy analysis and target model. The historical data remap, done by
-hand. The custom field cleanup on both sides and the Lawmatics to Clio field mapping, including
-reworking the intake forms so the conditional logic collected the new fields at intake instead
-of leaving staff to chase half of them later. The lead vendor integration, including its field
+hand. The lead vendor integration, including its field
 mapping, workflow carve-outs, and the task automation around the seven-day window for disputing
 leads the firm is charged for. The attribution resolver and every Make scenario. The cost model,
 including the interviews that established how each source is actually paid for. The daily sync
 and hygiene jobs. The replication connector, the warehouse and the Power BI dashboard. The
 client relationship, weekly updates, and the handover.
 
-**On the connector, plainly.** I wrote it by iterating against the live API with a model rather
-than from a specification, because there was no specification. Vibe coded. It is a declarative
-definition rather than a program, which is the shape of problem where that approach holds up:
-the failure modes are visible on the first run, the platform validates the schema, and being
-wrong costs a re-run rather than a bad write. I would not have built the deletion automation
-that way.
+**On the connector.** There was no specification to build from, so I built it by calling the
+live API, reading what came back, and correcting the definition against it, with a model doing
+the iterating. Vibe coded. That is usually a bad way to build something, and it held up here
+because the connector is a declaration of what to fetch rather than a program. The platform
+validates it and the first run fails when it is wrong, and it only reads, so being wrong costs
+a re-run instead of a bad write. I did not build the deletion automation that way.
 
 **How the design work was communicated.** Each workstream was mapped in Figma and walked
 through with the client before it was built, which for a non-technical audience is the
@@ -464,14 +467,11 @@ difference between approving a change and approving a description of a change. T
 taxonomy rework in particular is impossible to review as a list, and readable as a diagram of
 fifty flat entries collapsing into a grouped model.
 
-**Not mine.** A colleague set Clio Manage up before I took the client over, including its
-document templates and task lists, and built the inbound document routing. I worked on top of
-that and did not touch it.
-
-**The unglamorous parts.** Most of the difficulty here was not engineering. It was getting a
-vendor with no incentive to cooperate to change how it built landing pages and where it sent
-its leads, which took several meetings and which I did myself. And it was persuading a firm
-that had been burned by bad reporting to accept an automation that deletes records.
+**The unglamorous parts.** Most of the difficulty here was not engineering. It was getting the
+agency to change how it built landing pages and where it sent its leads. The agency had no
+incentive to help and arguably an incentive to refuse, because the reporting being built
+measures its performance off the firm's own data and can contradict the numbers it reports
+itself. That took several meetings, which I did myself.
 
 ## 7. Impact
 
@@ -483,7 +483,7 @@ that had been burned by bad reporting to accept an automation that deletes recor
 | Personal injury revenue visible to ROI reporting | None. Only criminal defense, priced at intake | Settled PI value synced back from Clio daily on an explicit final-value gate |
 | Conversion rates | Overstated. A case dropped in Clio stayed hired in Lawmatics permanently, since nothing carried the drop back | Corrected daily, with drops carried back from Clio |
 | Cost per source | Known only for paid search | Every source carries a cost, including organic ones costed at the time they consume |
-| Reporting | The agency's monthly report, on impressions and clicks | Power BI over an hourly warehouse: ROI and conversion by source, campaign and ad group, plus rejection reasons |
+| Reporting | The agency's monthly report, on impressions and clicks | Power BI over an hourly warehouse: ROI and conversion by source, campaign and ad group, plus rejection reasons. [The five pages](./dashboard.md) |
 | Basis for evaluating the agency and the lead vendor | The vendors' own reports | The firm's own data |
 
 The firm went from being unable to attribute a paid search lead at all to attributing it down
@@ -492,13 +492,14 @@ to the ad group, which is the level at which spend decisions get made.
 **What it surfaced in the first pass.** Joining case value onto lead source put three questions
 in front of the owner that he could not previously have asked:
 
-- **The pre-signed case vendor looks inverted.** Its leads convert well, which is what you
-  would expect from cases that arrive already signed, but the average settlement value on that
-  source came out roughly an order of magnitude below the roughly $3,000 the firm pays per
-  lead. That number needs a caveat before anyone acts on it, because personal injury cases take
-  a long time to close and this cohort is young, so recent sources are structurally
-  understated. The dashboard did not produce a verdict. It produced the first version of the
-  question that had ever been answerable, on a line item costing tens of thousands a month.
+- **The pre-signed case vendor is one of the worst sources in the book, not the best.** Its
+  cases arrive already signed, so read in Lawmatics alone it converts better than anything else
+  the firm buys. Once dropped cases came back from Clio and could be counted against the source
+  that produced them, that reversed. Most of what the vendor sends is dropped after signing. It
+  presented as personal injury, then turned out to be a matter type the firm does not take, or
+  the client was at fault, or the client stopped answering. The firm was buying those cases at
+  roughly $3,000 each on a conversion rate that only looked high because nothing carried the
+  drops back.
 - **The largest single reason for rejecting a lead is that the firm does not offer the
   service.** It accounts for over 40% of rejections. That is a media buying problem rather than
   an intake one, and it is invisible until rejection reasons are counted against the source
@@ -513,12 +514,6 @@ them actually changed the spend, that is the sentence this section wants. -->
 are all on the dashboard and I have deliberately kept them out, using ratios instead. Say if
 you are comfortable publishing any of the absolutes and I will put the strongest ones back. -->
 
-**A finding outside the brief.** The Clio half of the dashboard showed the case-management task
-backlog running at roughly four fifths overdue. That is nothing to do with marketing
-attribution and I was not asked to look at it. It is the kind of thing a reporting layer hands
-you for free once the data is in one place, and worth saying out loud to a client even when it
-is not billable, because it is a bigger operational risk than anything on the marketing page.
-
 <!-- OPEN: the table above is a capability change, which is real and defensible. What would
 make this section land is a business outcome on top of it:
   - Did it change a spend decision? A campaign or ad group cut or scaled on these numbers, the
@@ -530,49 +525,9 @@ make this section land is a business outcome on top of it:
   - Dashboard adoption: who opens it, how often.
 If none of it was measured, say so and I will write one honest qualitative line instead. -->
 
-## 8. What I'd do differently
-
-- **The routing table encodes a convention I do not control.** Every entry depends on the
-  agency keeping one landing page per ad group. The alert on an unrecognised page is a good
-  tripwire, and it is still only a tripwire. I would push much harder and much earlier for the
-  firm to own the landing page platform under its own account, which is the dependency the
-  firm later had to start unwinding anyway.
-- **A hand-maintained routing table drifts, and mine did.** Reviewing it later turned up a
-  landing page used as the filter on two different branches, so submissions from it create two
-  leads under two different ad groups; two branches carrying an ad group label copied from the
-  branch above and never changed, so a personal injury page reports as a criminal defense ad
-  group; and one entry whose subdomain does not match the same page in the catch-all's
-  exclusion list, so that page both matches its branch and falls through to the fallback,
-  producing a duplicate lead and a false alert. None of these announce themselves, because
-  every one of them still creates a lead. A routing table assembled by hand, branch by branch,
-  needs a test that asserts the obvious invariants: every filter value appears exactly once,
-  every branch's label matches its route, and the catch-all's exclusion list is exactly the set
-  of mapped pages. That check is a few lines and I never wrote it.
-- **Debug instrumentation outlived its purpose.** The scenario emails the full payload of every
-  lead to me, which was right while I was verifying the routing and wrong the day after. It is
-  still on, so a copy of every enquirer's name, phone, email and case description accumulates
-  in an inbox that is not the system of record and is not covered by the client's retention
-  rules. Temporary monitoring needs an expiry date attached at the moment it is added.
-- **I over-engineered the cost ingestion.** Parsing the agency's monthly report out of email,
-  finding the right month's column and writing two cells into a copied sheet is a lot of
-  machinery to save someone copying two numbers. It has more ways to break than the manual
-  step it replaced.
-- **The "value is final" checkbox is a silent failure mode.** If nobody ticks it, nothing
-  errors and the case value simply never arrives. It needs a companion report of settled cases
-  sitting unflagged, so the gap is visible rather than absent.
-- **Deleting junk matters fights the users.** When staff merge a newly created matter into an
-  existing one, the merged record can inherit the new matter's identity and get deleted by a
-  job that was right to fire. I patched it with a "created today" guard, which narrows the
-  window without closing it.
-- **I should have built the dashboard first.** Two of the four data-quality problems were only
-  visible in aggregate, and I found them late because I treated reporting as the last step
-  rather than as the instrument that shows you what is wrong.
-- **The connector pulls fields the warehouse has no business holding.** The field list on the
-  main object was written to be exhaustive, so it includes social security number, driver
-  licence and date of birth, which are replicated into the warehouse and are not used by a
-  single measure on the dashboard. Exhaustive is the wrong default when the destination is a
-  copy of the data outside the system of record. The field list should name what the reporting
-  needs and nothing else.
+<!-- OPEN: §8 "What I'd do differently" is deliberately absent. The previous version was
+Claude's and Lara deleted it (2026-08-16). She will supply this section herself. Do not write
+it from the source material or from inference. -->
 
 ---
 
