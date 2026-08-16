@@ -591,6 +591,10 @@ One line per session, newest last.
      could not have built a dashboard on data that bad. **The §2 paragraph claiming two of the
      four problems were discovered by modelling data for the dashboard is deleted, because it
      is not true.** Do not reintroduce a discovered-it-from-the-dashboard story anywhere.
+     **The real provenance**, and §2 now says so: findings 3 and 4 (PI revenue reading zero,
+     cases dropped in Clio still marked hired in Lawmatics) came out of Lara's own analysis
+     while she was building the revenue side of the ROI, not out of the initial audit and not
+     out of any reporting layer.
   2. A companion report for the unticked final-value checkbox. Rejected: the checkbox is still
      the best approach, so a known disadvantage of a design she would keep does not belong in a
      "what I'd do differently".

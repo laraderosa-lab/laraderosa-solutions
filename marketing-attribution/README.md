@@ -82,6 +82,11 @@ like a reporting request, and the fix turned out to sit four layers underneath t
    permanently. Conversion is inflated, and it is inflated hardest on the sources sending the
    weakest cases, which is exactly where the number needs to be honest.
 
+**Where the last two came from.** Not the initial audit. I found them while working out the
+revenue side of the ROI, which meant going through what Lawmatics held against each source.
+Personal injury revenue read zero, and cases the firm had dropped in Clio were still sitting in
+Lawmatics as hired.
+
 **The reports that already existed.** The agency sent a monthly report, and it was vanity
 numbers. Impressions, clicks, reach. Nothing connecting a dollar to a signed case, and nothing
 the firm could audit, because the agency owned the reporting, the landing pages, the ad
