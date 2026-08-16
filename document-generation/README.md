@@ -12,7 +12,7 @@
 | | |
 |---|---|
 | **What it is** | A framework, not a single build. The approach used whenever a solution has to emit a document |
-| **Applies to** | Any high-volume document with a mostly repeated structure, a few genuinely variable passages, and a system of record holding the underlying data |
+| **Applies to** | Any high-volume document with a mostly repeated structure, a few genuinely variable passages, and a system of record holding the underlying data. Described here through personal injury documents, which is where it has been used |
 | **Where it has been used** | Around a dozen US plaintiff-side personal injury firms across the practice, **four of them by me**, several documents each. Every application so far has been legal, though nothing in the framework is |
 | **My role** | Co-developed the framework with the team, then applied it client-side across four engagements <!-- OPEN: for your four, sole builder or splitting work? Which parts were yours: template authoring, field mapping, flow build, prompt design, option libraries? --> |
 | **Provenance** | The five levels came out of a group working session. I co-developed them and someone else on the team wrote them up |
@@ -35,7 +35,7 @@ Every block of a document (a section, a paragraph, a line) gets assigned to one 
 | Level | What it is | Example | Who decides the words | Verification burden | Hallucination risk |
 |---|---|---|---|---|---|
 | **1. Boilerplate** | Language that never changes case to case | Form instructions, standing recitals | Nobody. It is fixed | None | None |
-| **2. Merge fields** | Placeholder replaced by a mapped value from the system of record | Claimant name, date of loss, file number | The field | Check the mapping once | None |
+| **2. Merge fields** | Placeholder replaced by a mapped value from the case management system | Claimant name, date of loss, file number | The field | Check the mapping once | None |
 | **3. Conditional logic** | Pre-written language selected by a rule reading a field | Pronouns, corporate against individual defendant language | A rule you wrote | Test the branches | None |
 | **4. AI classification** | Pre-written language selected by a model, where no clean field exists | Picking the right liability paragraph from a fixed list | A model **chooses**. It does not write | Check the choice | Wrong choice, right prose |
 | **5. AI narrative** | Case-specific prose that cannot be templatized | How the injury changed this person's life | A model **writes** | Read every word | Full |
@@ -43,6 +43,13 @@ Every block of a document (a section, a paragraph, a line) gets assigned to one 
 **The design rule is to use the lowest level that will fill the block.** Deterministic where
 possible, AI where needed. Every level up buys flexibility and charges verification burden and
 maintenance, and from Level 4 up it adds hallucination risk to a block that had none.
+
+Nothing in the five levels is specific to legal documents. The framework applies to any
+document with a mostly repeated structure, a few genuinely variable passages, and a system of
+record holding the data behind them, which describes plenty of insurance, HR, finance and
+procurement documents as well. Everything below is written through personal injury documents
+because that is where I have applied it, so the examples are statements of claim and demand
+letters and the system of record is a case management system.
 
 ## 2. Why the two obvious approaches fail
 
@@ -62,7 +69,7 @@ ask for the finished document. No prompt fixes what happens next:
 - **It introduces hallucination risk into sections that had none.** Level 1 boilerplate cannot
   be wrong. Route it through a model and now it can.
 
-**Merge fields only.** This is where most system-of-record tooling lands, and it stalls one
+**Merge fields only.** This is where most case management systems land, and it stalls one
 step short of useful. Almost every document a firm needs has some narrative in it. If the tool
 cannot produce that, the drafter still opens the document, still reads it top to bottom, still
 writes the passage by hand, and the automation saved them keystrokes rather than a task.
@@ -134,24 +141,24 @@ throughout, so no client, party, carrier or matter on that page is real.
 ## 5. Where the work runs
 
 Three deployment shapes, chosen by how high the document's highest block goes and by what the
-system of record can do.
+case management system can do.
 
 ```mermaid
 flowchart TB
     A["Assess the document<br/>block by block"] --> B{"Highest level<br/>in the document?"}
-    B -->|"Levels 1 to 3"| C["Shape 1: in the system of record<br/>merge fields + Word field logic"]
+    B -->|"Levels 1 to 3"| C["Shape 1: in the case management system<br/>merge fields + Word field logic"]
     B -->|"Levels 4 or 5,<br/>system does useful work"| D["Shape 2: hybrid<br/>system fills what it can,<br/>flow adds the AI blocks"]
     B -->|"Levels 4 or 5,<br/>system in the way"| E["Shape 3: flow only<br/>flow assembles the whole document"]
 ```
 
-**Shape 1, inside the system of record.** The template lives somewhere the client can still
+**Shape 1, inside the case management system.** The template lives somewhere the client can still
 edit it, usually SharePoint or Google Drive, and the system merges fields into it. Since most
 of these systems have no conditional logic of their own, the conditionals are built as
 **formula fields inside the Word document itself**: if this value equals that, print this
 clause, otherwise print the other one. The logic lives in the generated document rather than in
 the system. This only works when merge fields and conditionals are the whole job.
 
-**Shape 2, hybrid.** Let the system of record do what it is good at, then export the partially
+**Shape 2, hybrid.** Let the case management system do what it is good at, then export the partially
 filled document into a flow, generate the AI blocks there, and write the finished document
 back.
 
@@ -163,7 +170,7 @@ flowchart TB
 
     subgraph sources["Sources"]
       tpl[["Template<br/>SharePoint / Google Drive<br/>client-editable"]]
-      sor[["System of record<br/>(API)"]]
+      sor[["Case management system<br/>(API)"]]
       docs[["Case documents<br/>records, reports"]]
     end
 
@@ -210,7 +217,7 @@ document saying something true about the wrong kind of case, which a reviewer ca
 checking one line. Compare Level 5, where the failure mode is a fluent sentence asserting
 something that never happened.
 
-The closed sets are generally the values the system of record already knows about, which keeps
+The closed sets are generally the values the case management system already knows about, which keeps
 the list maintainable and the vocabulary consistent with the rest of the firm's data.
 
 *Not source code. The contract written out for readability, from a pattern built in a flow
@@ -278,11 +285,11 @@ assumes a document that is always laid out the same way. Correct me if it was th
 | **Templates stored where the client can edit them** | The firm changes its own language constantly. A template locked inside an integration becomes a change request, and change requests do not get made | Template edits happen outside version control, so someone can break a merge field or a Word formula with no review |
 | **Conditionals as Word field formulas when the system cannot branch** | Gets Level 3 documents fully generated without dragging a whole flow platform into the project | The logic hides inside a Word document, which is an awkward place to debug or hand over |
 | **Scope the model's inputs rather than trying to make it truthful** | You cannot stop a model hallucinating. You can restrict it to the documents and fields it is allowed to draw from, which lowers the odds | Lower odds, not zero. Level 5 output still needs a human read before the document leaves the firm |
-| **Do the AI work in a flow platform, outside the system of record** | These systems do not do this and are not going to. Keeping generation in a flow means the same pattern ports across clients on different systems | Another platform in the estate, and flow-based orchestration is harder to test than plain code |
+| **Do the AI work in a flow platform, outside the case management system** | Case management systems do not do this and are not going to. Keeping generation in a flow means the same pattern ports across clients on different systems | Another platform in the estate, and flow-based orchestration is harder to test than plain code |
 
 **Constraints I built inside.**
 
-- **The system of record is a given.** Different firms, different systems, most supporting merge
+- **The case management system is a given.** Different firms, different systems, most supporting merge
   fields and nothing more. The method has to degrade gracefully onto whatever is there, which is
   why there are three deployment shapes rather than one.
 - **The output is a Word document that has to keep its formatting.** Mandated layout and
@@ -317,7 +324,7 @@ rather than a number.
 | | Before | After |
 |---|---|---|
 | Who fills a boilerplate block | A person, re-reading it every time | Nobody. It is fixed in the template |
-| Who fills a data block | A person, copying from the system of record | A mapped merge field |
+| Who fills a data block | A person, copying from the case management system | A mapped merge field |
 | Who selects standard language | A person, deciding case by case | A rule, or a classifier picking from human-written options |
 | Who writes case-specific narrative | A person, from scratch | A model, from scoped inputs, reviewed by a person |
 | Where review attention goes | The whole document | The Level 4 choices and the Level 5 passages |

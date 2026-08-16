@@ -180,7 +180,7 @@ footer { margin-top: 26px; color: var(--text-3); font-size: 12.5px; max-width: 7
     <section class="panel">
       <h2>What the system already has</h2>
       <dl class="fields">
-        <dt>System of record</dt>
+        <dt>Case management system</dt>
         <dd>
           <code>claimant.full_name</code> Jordan Avery<br>
           <code>claimant.pronoun_subject</code> they<br>
@@ -247,7 +247,7 @@ const BLOCKS = [
            Date of loss <span class="mf">4 March 2026</span><br>
            Policy limits <span class="mf">$100,000</span></p>`,
     fills: "Mapped merge fields.",
-    why: "Every value is a field the system of record already holds. A model asked to write this line would be doing lookup work that a mapping does exactly.",
+    why: "Every value is a field the case management system already holds. A model asked to write this line would be doing lookup work that a mapping does exactly.",
     inputs: "claimant.full_name, insured.full_name, carrier.claim_no, incident.date_of_loss, policy.limits",
     risk: "None from the model. The mapping is checked once, then it is right every time."
   },
@@ -280,7 +280,7 @@ const BLOCKS = [
            collision with a stationary vehicle establishes a breach of that duty, and your
            insured has offered no evidence of a sudden emergency.</p>`,
     fills: "An attorney wrote this paragraph. A model chose it from nine.",
-    why: "No field in the system of record says the impact was a rear-end. A model reads the case and returns one key from a closed list, and the paragraph that lands on the page was written by a lawyer in advance.",
+    why: "No field in the case management system says the impact was a rear-end. A model reads the case and returns one key from a closed list, and the paragraph that lands on the page was written by a lawyer in advance.",
     inputs: "Police report narrative and incident.type. The model returns a key, a confidence and a one-line basis. It is never asked for prose.",
     risk: "Wrong choice, right prose. The letter would argue a true rule about the wrong kind of accident, which a reviewer catches by reading one line. Low confidence routes the block to a person instead."
   },
