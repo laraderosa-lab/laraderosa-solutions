@@ -11,7 +11,7 @@
 |---|---|
 | **Client** | Plaintiff-side personal injury firm, Missouri (US) |
 | **Domain** | Settlement disbursement, medical provider liens |
-| **My role** | Co-built. A colleague wrote the first version; the reworked system described here is mine |
+| **My role** | Co-built. A colleague wrote the first version; the reworked system described here is mine <!-- OPEN: worth one line if you can give it. Which parts did the rework touch? The calculation, the per-lienholder fan-out, the template handling, the delivery, the client documentation? Naming even two turns "reworked substantially" into something a reader can picture. --> |
 | **Timeline** | <!-- OPEN: roughly when, and how long. One line is enough. --> |
 | **Stack** | Fillout (forms), Make (orchestration), Microsoft 365 Word document merge, OneDrive, Outlook |
 | **Status** | <!-- OPEN: still running? --> |
@@ -65,33 +65,11 @@ and all three are wrong in a way the recipient is motivated to find.
 
 </details>
 
-## 2. Diagnosis: how I knew this was the problem to solve
+The pool does not always fall short. Plenty of settlements cover every lien on the case in
+full, and those still need a letter to each lienholder, with no reduction to argue and no
+pro-rata figure to derive.
 
-This one arrived as a defined request rather than out of an audit, so the honest version of
-this section is short. The firm knew the letters were slow. What was worth getting right was
-the scope of the fix.
-
-**The visible ask was document generation.** Staff were re-typing the same figures into a
-Word template once per provider, and the obvious build is a mail merge over the spreadsheet
-they already kept. That would have worked, and it would have solved the cheaper half of the
-problem.
-
-**The expensive half was that the calculation had no home.** The case management system does
-not implement the half-and-half split or the pro-rata pool, so the figures lived in an Excel
-sheet maintained alongside the system of record, were worked by hand on a calculator, and
-were then transcribed into letters. Three places holding the same numbers, reconciled by a
-person. Merging from the spreadsheet automates the typing and leaves the reconciliation
-exactly where it was.
-
-So the form became the single point of entry for every settlement variable, and the letters
-fall out of it as an artifact. That is the whole design decision, and everything below
-follows from it.
-
-**Why none of this happened inside the case management system.** It exposes no API. There is
-no route to reading settlement figures out of it, computing against them, or writing results
-back. The data has to be entered, once, deliberately, rather than fetched.
-
-## 3. Problem
+## 2. Problem
 
 Every case that settled with liens exceeding the pool required a per-lienholder letter, each
 carrying a different payout figure derived from a shared calculation that no system
@@ -101,7 +79,14 @@ work scaled with the number of providers on the case, which is exactly the direc
 should not scale. Every transcription was a chance to send a lienholder a number that did not
 match the derivation printed above it in the same letter.
 
-## 4. Solution
+The cases where the pool covered everything were no faster. The arithmetic was easier, but
+the letters were still typed one at a time.
+
+The case management system was no help with any of it. It exposes no API, and it implements
+neither the half-and-half split nor the pro-rata pool, which is why the figures had ended up
+in Excel alongside the system of record in the first place.
+
+## 3. Solution
 
 One form, submitted once per settlement, produces every letter.
 
@@ -109,22 +94,29 @@ A staff member enters the settlement amount, the attorney's fee, the case expens
 one repeating block per lienholder covering provider name, address, contact and claimed
 amount. That is the entire human contribution. On submit:
 
-1. **Compute.** Net recovery, the half-and-half split, the total claimed, each lienholder's
-   proportional share, and each resulting payout.
-2. **Fan out.** One pass per lienholder, merging that lienholder's own figures plus the
+1. **Compute the pool and check it against the claims.** Net recovery, the half-and-half
+   split, and the total of what the lienholders claim.
+2. **Branch.** If the pool covers the claims, no reduction is needed and the scenario goes
+   straight to drafting, each lienholder's letter carrying what they claimed. If the claims
+   exceed the pool, it runs the pro-rata split and works out each lienholder's share and
+   payout first.
+3. **Fan out.** One pass per lienholder, merging that lienholder's own figures plus the
    shared settlement derivation into a Word letter template, exported as PDF.
-3. **Client breakdown.** The same inputs generate a settlement breakdown document showing the
+4. **Client breakdown.** The same inputs generate a settlement breakdown document showing the
    client their gross, fee, expenses and net share, ready for sign-off.
-4. **Store.** Everything lands in OneDrive and comes back as shareable links.
-5. **Notify.** A single email to the address given on the form, listing a link per letter plus
+5. **Store.** Everything lands in OneDrive and comes back as shareable links.
+6. **Notify.** A single email to the address given on the form, listing a link per letter plus
    the breakdown, subject line carrying the case identifier.
-6. **Log back.** A note goes onto the case file pointing at the OneDrive folder, so the case
+7. **Log back.** A note goes onto the case file pointing at the OneDrive folder, so the case
    file still knows the letters exist.
 
 Nothing sends to a lienholder automatically. The output is a set of documents a person reads
 before any of them leave the firm.
 
-## 5. Architecture
+<!-- OPEN: on the no-reduction path, is it the same Word template merged with the claimed
+amounts, or a separate one with different wording? Written above as the same template. -->
+
+## 4. Architecture
 
 ```mermaid
 flowchart TB
@@ -133,7 +125,9 @@ flowchart TB
   form["Fillout form<br/>settlement · fee · expenses<br/>+ repeating lienholder block"]
 
   subgraph orch["Make scenario"]
-    calc["Compute<br/>net → half-and-half split → pro-rata per lienholder"]
+    calc["Compute<br/>net → half-and-half split → lien pool"]
+    gate{"Pool covers<br/>total claimed?"}
+    prorata["Pro-rata split<br/>share and payout per lienholder"]
     iter["Iterate lienholders<br/>one pass per row"]
     merge["Word template merge<br/>placeholders → PDF"]
     brk["Settlement breakdown<br/>for client sign-off"]
@@ -144,7 +138,10 @@ flowchart TB
   cms[["Case management system<br/>(no API)"]]
 
   staff -->|"enters once"| form --> calc
-  calc --> iter --> merge --> store
+  calc --> gate
+  gate -->|"yes, liens paid in full"| iter
+  gate -->|"no, shortfall"| prorata --> iter
+  iter --> merge --> store
   calc --> brk --> store
   store --> mail --> staff
   staff -->|"reviews, then sends"| out(["Lienholders"])
@@ -156,6 +153,7 @@ flowchart TB
 | Decision | Why | What I gave up |
 |---|---|---|
 | **Capture every settlement variable in one form submission** rather than merging letters from the existing spreadsheet | The spreadsheet was the source of the reconciliation problem. Leaving it in place would have automated the typing and kept the drift. One entry point means one set of numbers. | Staff re-key figures that exist elsewhere in the firm. With no API on the case management system, there was no alternative. |
+| **Test whether the pool covers the claims and branch**, rather than treating a shortfall as the only case | The shortfall is what the firm asked about, but the letters still have to go out when there is enough money to pay everyone, and staff were typing those by hand for want of anywhere else to produce them. One test at the top of the scenario makes the form the entry point for both. | Two paths through one scenario, so a change to the letter set has to be checked on both. |
 | **Do the arithmetic in the orchestration layer, not in the document template** | The same derivation appears in every letter and in the client breakdown. Computing once and merging the results keeps all of them consistent by construction. | The math is invisible to whoever edits the letter template later, so a formula change is a developer change. |
 | **Email shareable links instead of attachments** | A case with six lienholders is six PDFs plus a breakdown. As attachments that is a heavy mail; as links the team opens what it needs and the documents stay in one folder. | Recipients need OneDrive access, and a link is a live document rather than a frozen copy of what was generated. |
 | **Generate PDFs, but keep the letter body a Word template** | The wording is legal language the firm owns and revises. Placeholders in a Word file are editable by a paralegal. Hard-coding the template would have made every wording tweak a change request. | Placeholder names become a contract. Renaming one in the template silently breaks a merge. |
@@ -174,8 +172,8 @@ flowchart TB
 
 ### Illustrative excerpt: the calculation
 
-*Redacted and simplified. The formula is trivial. What earns the excerpt is the two
-invariants it has to hold, spelled out underneath.*
+*Not source code. The logic of the Make scenario written out for readability. The formula is
+trivial. What earns the excerpt is the branch and the two invariants underneath it.*
 
 ```js
 // One derivation, computed once, merged into every letter and the client breakdown.
@@ -186,32 +184,25 @@ const lienPool    = net / 2;
 
 const totalClaimed = lienholders.reduce((sum, l) => sum + l.claimed, 0);
 
-// Every lienholder is reduced by the same ratio, so the letters are mutually consistent:
-// each recipient can check their own figure against the shared derivation printed above it.
-const reductionRatio = lienPool / totalClaimed;   // < 1 whenever a reduction is needed
+// The gate. The letters go out whether or not the money runs short. The ratio is what changes.
+const needsReduction = totalClaimed > lienPool;
+
+// When reducing, every lienholder is cut by the same ratio, so the letters are mutually
+// consistent: each recipient can check their own figure against the derivation printed above it.
+const reductionRatio = needsReduction ? lienPool / totalClaimed : 1;
 
 const payouts = lienholders.map(l => ({
   ...l,
-  payout: round2(l.claimed * reductionRatio),
+  payout: round2(l.claimed * reductionRatio),   // claimed in full when there is enough to go round
 }));
 ```
 
 Two things this has to guarantee, because a lienholder's billing department will check both.
 Every letter must show the **same** settlement, fee, expenses and pool, since providers on the
-same matter compare notes. And the payouts must **sum to the pool**, which independent
-per-row rounding does not promise. See §8.
+same matter compare notes. And whenever a reduction is applied the payouts must **sum to the
+pool**, which independent per-row rounding does not promise. See §6.
 
-## 6. My involvement
-
-Co-built. A colleague wrote the first working version. I took it on and reworked it
-substantially, and the system described above is that rework.
-
-<!-- OPEN: worth one line if you can give it, since this is the section interviewers read
-closest. Which parts did the rework touch? The calculation, the per-lienholder fan-out, the
-template handling, the delivery, the client documentation? Naming even two of them turns
-"improved it substantially" into something a reader can picture. -->
-
-## 7. Impact
+## 5. Impact
 
 **Nothing here was measured.** No before-state timings were taken and no after-state counts
 were kept, so this section is qualitative and says so rather than carrying a number I cannot
@@ -222,6 +213,7 @@ stand behind.
 | Where the settlement figures live | Excel sheet, kept alongside the case management system | The form submission, single entry |
 | The pro-rata math | By hand, on a calculator, per case | Computed identically every time |
 | Producing N letters | Hand-transcribe totals and provider details into a Word template, once per lienholder | One pass, all letters and the client breakdown |
+| Cases where the pool covers every lien | Still typed one letter at a time | Same form, same output, the scenario skips the reduction |
 | Provider names and addresses | Typed into each letter | Entered once, flow into all |
 | Risk of an inconsistent figure between letters on the same matter | Real, and it scales with lienholder count | Removed by construction |
 
@@ -232,7 +224,7 @@ The pattern also generalises. Word-template merge driven by structured form inpu
 demands, settlement statements and notices, which is a large share of what a plaintiff firm
 produces.
 
-## 8. What I'd do differently
+## 6. What I'd do differently
 
 - **The rounding remainder should be allocated rather than left to chance.** Rounding each
   payout independently to the cent does not guarantee the payouts sum to the pool, so a

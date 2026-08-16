@@ -127,7 +127,7 @@ corrected, so none of the original guesses survive.
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. Outstanding: in-production-since date and user count, handover-doc authorship, and the evidence screenshots |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
-| `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
+| `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. **§2 and §6 deliberately removed 2026-08-16**, so it runs six sections. Only `OPEN`s left are timeline, status, what the rework covered, and which template the no-reduction path merges |
 
 **Do not infer what a project is from its slug.** Four of the seven started as placeholders
 Claude invented in the first session with no knowledge of the work, and every one of them was
@@ -731,6 +731,32 @@ One line per session, newest last.
   Mermaid can be validated in-session: `npx -y @mermaid-js/mermaid-cli@11 -p pc.json -i x.mmd
   -o x.svg` with `pc.json` containing `{"args":["--no-sandbox","--disable-setuid-sandbox"]}`.
   Without the puppeteer config it dies as root; the config takes an **array**, not an object.
+- **2026-08-16 (lien letters, shorter shape plus the no-reduction path).** On `main`. Two
+  changes from Lara. **The scenario branches**: it computes the pool, tests it against the
+  total claimed, and if the pool covers the claims it drafts the letters with each lienholder
+  paid in full, skipping the pro-rata split entirely. Only a shortfall triggers the
+  calculation. The point is that the firm can use the tool on any settlement rather than only
+  the ones needing a reduction, and before this those letters were still typed one at a time.
+  Written into §1 (a closing paragraph), §2, §3 (step 2 is now the branch), the diagram (a
+  decision node), a new decisions row, the code excerpt (`needsReduction`), and the §5 table.
+  Root README row updated too. One `OPEN` left: whether the no-reduction path merges the same
+  Word template or a different one, currently written as the same.
+  **§2 (Diagnosis) and §6 (My involvement) deleted at Lara's instruction, because this is a
+  short entry, and the remaining sections renumbered 1 to 6.** Nothing load-bearing was lost:
+  the no-API and no-math-in-the-CMS facts moved into §2 Problem, the scoping decision already
+  lived in the first §4 decisions row, and the co-built role is in the At a glance row, where
+  the "which parts did the rework touch" `OPEN` now sits. **A short entry can drop template
+  sections beyond §8.** Provider selection dropped §8 only; this one drops two from the
+  middle. Do not restore them.
+  **The code excerpt was relabelled.** It said "Redacted and simplified", which claims it is
+  the real artifact with identifiers swapped. It is a Make scenario written out as code from a
+  colleague's handover doc, so it now opens "Not source code", matching the fix made to
+  `medical-provider-selection`. **Two `Redacted and…` labels remain in `marketing-attribution`
+  and still need Lara's ruling** on whether they are real pasted artifacts.
+  **Its §8, now §6, is very likely Claude's** (the rounding remainder, the placeholder
+  contract, the manual log-back). It was not deleted because Lara did not ask, but it has the
+  shape of the three that were deleted elsewhere, and it is written as regret rather than as
+  the rebuild. Put it to her.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
