@@ -329,10 +329,6 @@ separates **engaged** sessions, meaning a real back-and-forth that produced work
 opened and abandoned. Only engaged sessions count toward value. That feeds the firm-wide
 operations console alongside every other solution in the program.
 
-What was not instrumented is the number that started the project. Nobody set up a measurement of
-whether liability acceptance rates moved, which is the honest gap in this case study and the
-first thing I would fix (see §8).
-
 <!-- OPEN: if any of these exist, they'd go here and would be worth a lot:
   - engaged sessions to date, over what period
   - adoption: how many of the claims team use it, is it the default path now
@@ -342,28 +338,22 @@ Otherwise the section stands as written, which is honest. -->
 
 ## 8. What I'd do differently
 
-- **Editing a playbook changes the firm's legal positions with nothing standing in the way.**
-  Behaviour lives in documents on purpose, so the claims experts can own it without a
-  developer. The cost is that there is no review step, no version gate, and no regression
-  check. A well-meant edit to a mechanism playbook silently changes what the firm argues on
-  every case of that type. A small set of held-out disputes, re-run after any knowledge edit,
-  would have caught that for very little work.
-- **The usage reporting is the weakest part of the build.** It sits outside the solution
-  package, so a solution export does not back it up. It runs on a schedule with a short
-  look-back window, so a gap longer than that window drops sessions permanently rather than
-  catching up. Recovering them takes a script.
-- **I never instrumented the number the project was justified on.** Management told me at the
-  start that liability acceptance rate is the biggest measure of a claims rep's performance, and
-  the whole case for building this rested on moving it. What gets counted instead is engaged
-  sessions, which shows that a conversation happened rather than that a better dispute went out.
-  Capturing the outcome on each dispute the agent touched, whether the carrier accepted,
-  reduced, or held its allocation of fault, would have needed a field and a follow-up, and it
-  would have turned the strongest claim in this case study into a measured one. This is the
-  thing I would go back and change first.
-- **The case-reading tool is named for a job smaller than the one it does.** It was scoped to
-  fetch the facts of loss and grew into fetching whatever the agent needs from the case,
-  including the carrier, the claim number, the adjuster, and notes. The name stayed. It is
-  cosmetic until the day somebody trusts the name instead of the code.
+- **I'd put a regression set behind the playbooks.** Behaviour lives in documents on purpose, so
+  a claims expert can change what the agent argues without a developer, and I would keep that.
+  What I'd add is a small set of held-out disputes that re-runs whenever a playbook is edited, so
+  the person making the change sees what it does to the arguments before it reaches a live case.
+  The people who own the knowledge would then get a signal on their own edits.
+- **I'd move the usage reporting into the solution package.** Today it sits next to the agent
+  rather than inside the package, so bringing it in would mean a solution export carries the
+  reporting with it. I'd also widen the schedule's look-back window, so the job picks up any
+  sessions it missed on its next run rather than needing someone to go and fetch them.
+- **I'd measure the outcome, not only the conversation.** Management named liability acceptance
+  rate as the biggest measure of a claims rep's performance, and that is the number the project
+  was built to move. Usage reporting counts engaged sessions, which shows a conversation
+  happened. I'd record the result of each dispute the agent touched, whether the carrier
+  accepted, reduced, or held its allocation of fault, which takes a field to hold it and a
+  follow-up step to fill it in. That gives the firm the acceptance rate itself rather than a
+  proxy for it.
 - <!-- OPEN: yours. What actually frustrated you here? The knowledge consolidation, the
   platform, getting people to switch off the public tools, model behaviour? -->
 

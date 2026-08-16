@@ -678,6 +678,19 @@ One line per session, newest last.
   and the first answer to Lara was that the medical entry was an unwritten stub. It is on
   `main` and has been since 2026-08-15. `git fetch origin main` **before** answering anything
   about what exists.
+- **2026-08-16 (liability dispute, §7 and §8 pass).** On `main`. Two deletions and a rewrite,
+  all Lara's. Deleted from §7: the closing paragraph saying the liability acceptance rate was
+  never instrumented. Deleted from §8: the case-reading tool being named for a smaller job than
+  it does. **She keeps the three remaining §8 items but not the way they were written.** They
+  read as running down the work. **New standing rule for §8: write the rebuild, not the
+  regret.** Each item is now "I'd do X" and argues for what the change would give the firm,
+  rather than naming the shipped build's weakness and then offering a fix. Two things she
+  called out specifically: **"for very little work" is Claude's opinion and had to go**, since
+  a session has no basis for estimating effort on a system it did not build, and **"I never
+  instrumented X" becomes "I'd instrument X"**. Cut on the same grounds: "the weakest part of
+  the build", "the honest gap in this case study", "the strongest claim in this case study",
+  and "the thing I would go back and change first". The §5 no-gate trade-off row still points
+  at §8 and still resolves.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
