@@ -770,6 +770,14 @@ One line per session, newest last.
   note that this is a simpler solution than the others is the reason the entry stays short,
   and it is not written into the entry itself. The only `OPEN` left on this project is which
   parts her rework covered, which sits on the role row.
+  **Slop pass run against the pinned `petergyang/no-ai-slop` repo.** Vocabulary was clean. Seven
+  pattern fixes, all cuts or clarity: three pieces of metadiscourse ("which is exactly the
+  direction it should not scale", "What earns the excerpt is…", "Every downstream decision
+  follows from that"), an abstract topic sentence ahead of the fact it introduced ("The pattern
+  also generalises"), an inanimate subject doing a human verb ("so the case file still knows
+  the letters exist"), a dangling quantifier ("Every lienholder cannot be paid in full" to "Not
+  every lienholder can be paid in full"), and a fragment in a code comment. Bold-inside-prose
+  was left alone, since it is house style across all seven entries.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

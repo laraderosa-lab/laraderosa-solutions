@@ -31,7 +31,7 @@ they claimed. Nothing complicated so far.
 
 The complication is that **the claimed liens routinely add up to more than the pool.** A
 client with months of treatment can easily have $50,000 in provider liens sitting against a
-pool of $27,000. Every lienholder cannot be paid in full, so before the firm can disburse
+pool of $27,000. Not every lienholder can be paid in full, so before the firm can disburse
 anything it has to write to each one, show them the arithmetic, and formally ask them to
 reduce their claim to the pro-rata figure. Those are lien reduction letters, and no
 disbursement happens until they are out the door.
@@ -75,9 +75,9 @@ Every case that settled with liens exceeding the pool required a per-lienholder 
 carrying a different payout figure derived from a shared calculation that no system
 performed. Staff maintained the figures in Excel, ran the pro-rata split on a calculator, and
 hand-transcribed totals and provider details into a Word template once per lienholder. The
-work scaled with the number of providers on the case, which is exactly the direction it
-should not scale. Every transcription was a chance to send a lienholder a number that did not
-match the derivation printed above it in the same letter.
+work scaled with the number of providers on the case. Every transcription was a chance to
+send a lienholder a number that did not match the derivation printed above it in the same
+letter.
 
 The cases where the pool covered everything were no faster. The arithmetic was easier, but
 the letters were still typed one at a time.
@@ -108,8 +108,8 @@ amount. That is the entire human contribution. On submit:
 5. **Store.** Everything lands in OneDrive and comes back as shareable links.
 6. **Notify.** A single email to the address given on the form, listing a link per letter plus
    the breakdown, subject line carrying the case identifier.
-7. **Log back.** A note goes onto the case file pointing at the OneDrive folder, so the case
-   file still knows the letters exist.
+7. **Log back.** A note goes onto the case file pointing at the OneDrive folder, so anyone
+   opening the matter later can find the letters.
 
 Nothing sends to a lienholder automatically. The output is a set of documents a person reads
 before any of them leave the firm.
@@ -160,7 +160,7 @@ flowchart TB
 ### Constraints I built inside
 
 - **The case management system exposes no API.** No reading case data out, no writing results
-  back. Every downstream decision follows from that, including the form existing at all.
+  back, which is why the form exists at all.
 - **The system of record cannot do the math.** It has no concept of the half-and-half split
   or a pro-rata pool, which is why the figures had ended up in Excel.
 - **The wording is legal text the firm owns.** It cites the statutory framework and gets
@@ -170,8 +170,7 @@ flowchart TB
 
 ### Illustrative excerpt: the calculation
 
-*Not source code. The logic of the Make scenario written out for readability. The formula is
-trivial. What earns the excerpt is the branch and the two invariants underneath it.*
+*Not source code. The logic of the Make scenario written out for readability.*
 
 ```js
 // One derivation, computed once, merged into every letter and the client breakdown.
@@ -182,7 +181,7 @@ const lienPool    = net / 2;
 
 const totalClaimed = lienholders.reduce((sum, l) => sum + l.claimed, 0);
 
-// The gate. The letters go out whether or not the money runs short. The ratio is what changes.
+// The gate. The letters go out whether or not the money runs short; only the ratio changes.
 const needsReduction = totalClaimed > lienPool;
 
 // When reducing, every lienholder is cut by the same ratio, so the letters are mutually
@@ -214,9 +213,8 @@ pool**.
 What the firm reported: no calculator work, no re-typing, and letters arriving as a set of
 reviewable documents rather than a task list.
 
-The pattern also generalises. Word-template merge driven by structured form input covers
-demands, settlement statements and notices, which is a large share of what a plaintiff firm
-produces.
+Word-template merge driven by structured form input also covers demands, settlement statements
+and notices, which is a large share of what a plaintiff firm produces.
 
 ## 6. What I'd do differently
 
