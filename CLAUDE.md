@@ -112,7 +112,7 @@ corrected, so none of the original guesses survive.
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1 and 1b done.** See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in `dashboard.md`, and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
-| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 3 done**, and the most finished entry in the repo. Seven sections: §8 is deliberately absent until Lara writes it. Outstanding: in-production-since date and user count, handover-doc authorship, §8, and the identifier scan against Lara's real blocklist |
+| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 3 done**, and the most finished entry in the repo. Seven sections: §8 is deliberately absent until Lara writes it. Outstanding: in-production-since date and user count, handover-doc authorship, and §8 |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 | `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
@@ -449,8 +449,10 @@ One line per session, newest last.
      catalog is a daily mirror, so the same rule would make a coordinator wait a day to place a
      call. Hence ad-hoc for today, with training to add it upstream so it syncs overnight. The
      §5 table now carries this contrast explicitly.
-  **Lara named the CMS vendor in chat.** As always, it stays out of every committed file. Still
-  no blocklist supplied, so still no authoritative identifier scan.
+  (This entry's "the CMS vendor stays out of every committed file" note was **superseded on
+  2026-08-15**, see the software-vendors standing decision. The entry still says "the case
+  management system" throughout, which is now a choice rather than a rule, and Lara has not
+  asked for it to be named.)
 - **2026-08-15 (provider selection, iteration 3).** Three deletions, all Lara's.
   1. **§8 "What I'd do differently" is gone entirely**, because Claude wrote it. Four of the five
      bullets were defects lifted out of the handover docs (the type-check deploy gap, the
