@@ -105,9 +105,9 @@ From the case file open in front of them, a staff member clicks a browser extens
 **FNOL**. Everything after that is automated up to a single review step:
 
 1. **Intake.** The system reads the case, works out every party on the accident and every
-   carrier attached to them, and builds **one reviewable row per carrier**. Multi-defendant
-   and multi-policy cases fan out correctly, so two defendants with two policies each is four
-   claims to open.
+   carrier attached to them, and builds **one reviewable row per party per carrier**.
+   Multi-defendant and multi-policy cases fan out correctly, so two defendants with two
+   policies each is four claims to open.
 2. **Human review.** The reviewer gets a card in Teams, opens the claim, checks the
    pre-filled details, fixes anything wrong, and **selects which carriers to call.** Nothing
    dials until they hit submit. If a carrier is missing, they add it in the case management
@@ -140,18 +140,20 @@ flowchart TB
 
   subgraph client["In the tools staff already use"]
     ext["Browser extension<br/>on the case file"]
-    agent["Conversational agent<br/>(Copilot Studio)"]
+    agent["Conversational agent<br/>(Copilot Studio, in Teams)"]
     app["Review app<br/>(React, in Teams)"]
   end
 
   subgraph orch["Orchestration (cloud flows)"]
-    f1["1 · Intake<br/>read case → resolve parties → one row per carrier"]
-    f2["2 · Place calls<br/>one outbound call per selected carrier"]
-    f3["3 · Post-call<br/>write-back + accuracy evaluation"]
+    f1["1 · Intake<br/>read the case → resolve parties and carriers"]
+    f2["2 · Place calls<br/>one HTTP request per selected carrier"]
+    f3["3 · Post-call webhook<br/>receives the extracted variables"]
+    gate{"Human<br/>reached?"}
+    post["Evaluate + write back"]
   end
 
   subgraph data["System of record"]
-    t[("Review table<br/>1 row per claim per attempt")]
+    t[("Review table<br/>1 row per party per carrier<br/>attempt count on the row")]
     cms[["Case management system"]]
   end
 
@@ -160,24 +162,28 @@ flowchart TB
   llm["LLM prompt steps<br/>party extraction · accuracy scoring"]
 
   staff --> ext --> agent --> f1
-  f1 --> cms
+  f1 -->|"read the case"| cms
   f1 --> llm
-  f1 --> t
-  f1 -->|"ready to review"| staff
+  f1 -->|"one row per party per carrier"| t
+  f1 -->|"ready to review"| agent
 
   staff --> app
-  app <-->|"read / correct"| t
+  t -->|"pre-filled rows · then outcome,<br/>accuracy result, full transcript"| app
+  app -->|"corrections"| t
   app -->|"approve + select carriers<br/>· one-click retry"| f2
-  f2 --> t
+  f2 -->|"request status"| t
   f2 ==>|"N calls, concurrently"| voice
   voice <-->|"IVR → hold → interview"| carrier
 
   voice -->|"webhook"| f3
-  f3 --> llm
-  f3 --> t
-  f3 -.->|"no human reached<br/>auto-retry, 3 attempts max"| f2
-  f3 -->|"claim no. + adjuster"| cms
-  f3 -->|"outcome / accuracy alert"| staff
+  f3 --> gate
+  gate -.->|"no · re-dial the same carrier,<br/>3 attempts in total"| voice
+  gate -->|"yes"| post
+  post --> llm
+  post -->|"result, score, transcript"| t
+  post -->|"claim number, adjuster<br/>(API write)"| cms
+  post -->|"call finished · accuracy alert"| agent
+  agent --> staff
 ```
 
 ### Key decisions and tradeoffs
@@ -315,6 +321,15 @@ unverifiable percentage in a public portfolio is worse than no percentage. -->
   enough that writing back was not on the table. Given one that accepts writes, I would let a
   reviewer add the carrier where they are already working and push it back, which keeps the
   source of truth intact without sending someone into another system first.
+
+<!-- OPEN: this item says the integration only runs one way and that the API is too limited
+for write-back, but the post-call step does write the claim number and adjuster into the case
+management system through an API call. So writes work for some things and not others. How
+should this read? Options as I see them: the API accepts updates to an existing case record
+but not the creation of new related records like a carrier; or the endpoints that exist cover
+the claim fields only. Tell me which and I'll rewrite the sentence. Leaving it as-is because
+it's your section. -->
+
 
 ---
 
