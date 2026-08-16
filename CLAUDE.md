@@ -305,7 +305,11 @@ One line per session, newest last.
   the transcript predates it), the timeline, Lara's role split, and every after-state number.
   The client walkthrough doc arrived later as a PDF and confirmed the workstream structure,
   added the accounting-system and referral-fee cost mapping, and showed that each workstream was
-  designed in Figma and walked through with the client before being built. It does not mention
+  designed in Figma and walked through with the client before being built. (**Partly wrong,
+  corrected 2026-08-16: the dashboard was not designed in Figma at all.** The claim came from
+  that PDF, which is unrecoverable, so "each workstream" cannot be trusted. §6 now narrows it to
+  the taxonomy rework and carries an `OPEN` asking whether even that is right. Do not restate
+  the every-workstream version.) It does not mention
   Skyvia either. Extract PDFs with `pip install pypdf` then repair the broken backend with
   `pip install --force-reinstall cffi cryptography`; `pdftotext` and `pdftoppm` are unavailable
   and poppler-utils will not install. The reporting layer was then filled in from the connector

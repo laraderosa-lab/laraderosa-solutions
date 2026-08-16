@@ -454,11 +454,17 @@ including the interviews that established how each source is actually paid for. 
 and hygiene jobs. The replication connector, the warehouse and the Power BI dashboard. The
 client relationship, weekly updates, and the handover.
 
-**How the design work was communicated.** Each workstream was mapped in Figma and walked
-through with the client before it was built, which for a non-technical audience is the
-difference between approving a change and approving a description of a change. The source
-taxonomy rework in particular is impossible to review as a list, and readable as a diagram of
-fifty flat entries collapsing into a grouped model.
+<!-- OPEN: the Figma claim. It came from the client walkthrough PDF read on 2026-08-14, as
+"each workstream was designed in Figma and walked through with the client before being built",
+and that PDF is not recoverable. Lara has confirmed the dashboard was not designed in Figma, so
+the claim is narrowed here to the taxonomy rework. Confirm Figma was used for that, or delete
+this paragraph. -->
+
+**How the design work was communicated.** The source taxonomy rework was mapped in Figma and
+walked through with the client before it was built, which for a non-technical audience is the
+difference between approving a change and approving a description of a change. Fifty flat
+entries collapsing into a grouped model cannot be reviewed as a list and can be read as a
+diagram.
 
 **The unglamorous parts.** Most of the difficulty here was not engineering. It was getting the
 agency to change how it built landing pages and where it sent its leads. The agency had no
