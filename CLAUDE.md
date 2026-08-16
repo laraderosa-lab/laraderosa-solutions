@@ -127,7 +127,7 @@ corrected, so none of the original guesses survive.
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. Outstanding: in-production-since date and user count, handover-doc authorship, and the evidence screenshots |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
-| `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. **§2 and §6 deliberately removed 2026-08-16**, so it runs six sections. Only `OPEN`s left are timeline, status, what the rework covered, and which template the no-reduction path merges |
+| `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | **Complete except for one `OPEN`** (what Lara's rework covered). **§2 and §6 deliberately removed 2026-08-16**, so it runs six sections. ~2 weeks, completed and delivered |
 
 **Do not infer what a project is from its slug.** Four of the seven started as placeholders
 Claude invented in the first session with no knowledge of the work, and every one of them was
@@ -766,6 +766,10 @@ One line per session, newest last.
   does not carry a long list" went, because the section should read as an ordinary change
   rather than an apology for having one item. **General rule: do not preface a section with
   a note about its own size or completeness.**
+  **At a glance closed**: timeline **~2 weeks**, status **completed and delivered**. Lara's
+  note that this is a simpler solution than the others is the reason the entry stays short,
+  and it is not written into the entry itself. The only `OPEN` left on this project is which
+  parts her rework covered, which sits on the role row.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

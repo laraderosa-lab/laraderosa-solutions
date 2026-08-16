@@ -12,9 +12,9 @@
 | **Client** | Plaintiff-side personal injury firm, Missouri (US) |
 | **Domain** | Settlement disbursement, medical provider liens |
 | **My role** | Co-built. A colleague wrote the first version; the reworked system described here is mine <!-- OPEN: worth one line if you can give it. Which parts did the rework touch? The calculation, the per-lienholder fan-out, the template handling, the delivery, the client documentation? Naming even two turns "reworked substantially" into something a reader can picture. --> |
-| **Timeline** | <!-- OPEN: roughly when, and how long. One line is enough. --> |
+| **Timeline** | ~2 weeks |
 | **Stack** | Fillout (forms), Make (orchestration), Microsoft 365 Word document merge, OneDrive, Outlook |
-| **Status** | <!-- OPEN: still running? --> |
+| **Status** | Completed and delivered |
 
 ---
 
