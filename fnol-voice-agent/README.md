@@ -217,7 +217,7 @@ the model never grades its own homework.*
   "fields": [
     { "key": "date_of_loss",  "approved": "2026-03-14", "heard": "2026-03-14", "status": "correct" },
     { "key": "policy_number", "approved": "<redacted>",  "heard": "<redacted>", "status": "correct" },
-    { "key": "airbags",       "approved": "Did not deploy", "heard": null,      "status": "not_disclosed" },
+    { "key": "airbags",       "approved": "Did not deploy", "heard": null,      "status": "not_asked" },
     { "key": "client_name",   "approved": "<redacted>",  "heard": "<redacted>", "status": "incorrect" }
   ]
 }
@@ -228,7 +228,8 @@ the model never grades its own homework.*
 // A model that both makes the error and rates its seriousness is not a control.
 const ESSENTIAL = ['date_of_loss', 'client_name', 'policy_number', 'vehicle', /* … */];
 
-const scored    = fields.filter(f => f.status !== 'not_provided_by_user');
+// Only fields the reviewer supplied AND the carrier actually asked about are scorable.
+const scored    = fields.filter(f => !['not_provided_by_user', 'not_asked'].includes(f.status));
 const incorrect = scored.filter(f => f.status === 'incorrect');
 
 const severity =
@@ -242,11 +243,11 @@ const score = Math.round(
 ```
 
 Three deliberate choices there. Fields the reviewer never supplied are excluded from the
-denominator, so the score isn't punished for absent data. `not_disclosed` (the agent didn't
-say it) is tracked separately from `incorrect` (the agent said it wrong), because they are
-different failures. And only `essential` interrupts a human. A `minor` mismatch is still
-reported and still visible after the call, but it raises no alarm, which keeps the alarm
-worth reacting to.
+denominator, so the score isn't punished for absent data. `not_asked` is excluded for the
+same reason, since carriers each ask their own set of questions and one that never comes up
+gives the agent nothing to get wrong. And only `essential` interrupts a human. A `minor`
+mismatch is still reported and still visible after the call, but it raises no alarm, which
+keeps the alarm worth reacting to.
 
 ## 6. My involvement
 
