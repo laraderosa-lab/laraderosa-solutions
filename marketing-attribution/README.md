@@ -92,11 +92,6 @@ That reframes the project. The deliverable is the **firm's ability to evaluate i
 suppliers**, including the agency and including the lead vendor selling $3,000 pre-signed cases
 that the firm was quietly dropping later.
 
-**What building the reporting layer then surfaced.** Two of the four problems above I only
-found once I started modelling the data for the dashboard. Aggregating the pipeline is what
-exposed matters sitting in a did-not-hire stage while still carrying an open status, which is
-invisible one record at a time and obvious the moment you count.
-
 **What I ruled out.** Pulling spend from the ad platforms and the accounting system and
 reporting on it outside Lawmatics entirely. It would have been faster and it was the obvious
 move. I rejected it because spend is only half the fraction. The other half is signed cases
@@ -314,11 +309,11 @@ flowchart TB
 | Decision | Why | What I gave up |
 |---|---|---|
 | **Fix the source data, do not correct at the reporting layer** | A dashboard that compensates for known-bad inputs becomes a second source of truth that silently diverges from the first. Clean statuses in Lawmatics benefit every consumer of the CRM, not only the report. | Much slower. A presentation-layer fix would have shown a plausible number in days. |
-| **Derive campaign and ad group from the landing page** | With no UTM parameters, no control over the landing pages or the Google Ads account, and an agency that owns all three and had already declined to help, the landing page URL is the only attribution signal that arrives with the lead. It is in every payload, and if the agency repoints a page the routing breaks loudly the same day rather than misattributing quietly. | A hard dependency on one page mapping to one ad group, which is a convention the agency keeps rather than something the system enforces. |
+| **Derive campaign and ad group from the landing page** | With no UTM parameters, no control over the landing pages or the Google Ads account, and an agency that owns all three, the landing page URL is the only attribution signal that arrives with the lead. It is in every payload, and if the agency repoints a page the routing breaks loudly the same day rather than misattributing quietly. | A hard dependency on one page mapping to one ad group, which is a convention the agency keeps rather than something the system enforces. |
 | **Gate the case-value sync on an explicit "final" checkbox** | Both alternatives are worse. Triggering on case closure adds months of lag, because the firm only closes a file when it is completely finished. Triggering on a stage change relies on staff updating the final settlement value before they move the stage, and lets them skip the stage entirely. | Depends on a human ticking a box. If they never tick it, the value never arrives, and nothing errors. |
 | **Write a "migrated" flag back into Clio** | The syncs are daily sweeps over recently-updated records, so they have to be safe to re-run. Flipping a flag on the source record makes the query filter itself the idempotency guard, and it survives the job being re-run, re-deployed, or run twice after a failed reauthentication. | A write back into Clio on every sync, and one more field for staff to see and wonder about. |
 | **Build costs up in a sheet and key them into the CRM monthly**, rather than moving the ROI analysis off the CRM | Lawmatics has no API endpoint for marketing-source costs, so nothing can write them automatically. Native entry is per campaign and per period, daily, weekly or monthly, and I set it to monthly. So every cost feed lands in the sheet instead, and a scheduled monthly task on the intake manager carries the month's figures into the CRM. Moving the analysis elsewhere would have meant reporting somewhere that does not hold the attribution. | The one manual step in the system, and a dependency on the intake manager doing it. I filed a feature request for the cost endpoint. |
-| **Power BI over Lawmatics' native dashboards** | The ROI data is unified in Lawmatics by this point, so the dashboard pulls nothing from the sheet or from Clio to answer the ROI question. The reason to report outside the CRM is what can be asked of the data once it is in one place. Power BI cross-filters, so the owner can ask which source converts best, which sources and campaigns produce the most rejected leads, and which of the lost cases the firm caused against which it turned away and why, with sub-categories under each reason. Lawmatics answers almost none of that. Clio's reporting can then sit beside it instead of in a second tool. | A whole extra pipeline to own, for a client with no data team. |
+| **Power BI over Lawmatics' native dashboards** | Power BI cross-filters, so the owner can ask which source converts best, which sources and campaigns produce the most rejected leads, and which of the lost cases the firm caused against which it turned away and why, with sub-categories under each reason. Lawmatics answers almost none of that. Clio's reporting can then sit beside it instead of in a second tool. | A whole extra pipeline to own, for a client with no data team. |
 | **Replicate into a warehouse rather than point the BI tool at the API** | A BI tool refreshing straight off a paginated REST API is slow, fragile, and re-fetches everything to answer anything. A warehouse gives SQL, joins against the cost data, and history the API does not keep. | Latency between the CRM and the dashboard, and a second copy of the data to secure. |
 | **Incremental windows overlap on purpose** | The sync filters on updated-since, and the greater-than-or-equals variant carries a one-unit negative delta, so each run re-reads a sliver of the previous window. Re-reading a record that has not changed costs one request and rewrites the row it already has. A record that falls in the gap between two windows is invisible forever. | A little wasted read on every run. |
 
@@ -447,19 +442,12 @@ The client named the symptom. From there it was mine end to end, from the conver
 turned that symptom into a scope through to the handover.
 
 **Mine.** The source taxonomy analysis and target model. The historical data remap, done by
-hand. The lead vendor integration, including its field
-mapping, workflow carve-outs, and the task automation around the seven-day window for disputing
-leads the firm is charged for. The attribution resolver and every Make scenario. The cost model,
+hand. The lead vendor integration, including its field mapping, workflow carve-outs, and the
+task automation around the seven-day window for disputing leads the firm is charged for. The
+attribution resolver and every Make scenario. The cost model,
 including the interviews that established how each source is actually paid for. The daily sync
 and hygiene jobs. The replication connector, the warehouse and the Power BI dashboard. The
 client relationship, weekly updates, and the handover.
-
-**On the connector.** There was no specification to build from, so I built it by calling the
-live API, reading what came back, and correcting the definition against it, with a model doing
-the iterating. Vibe coded. That is usually a bad way to build something, and it held up here
-because the connector is a declaration of what to fetch rather than a program. The platform
-validates it and the first run fails when it is wrong, and it only reads, so being wrong costs
-a re-run instead of a bad write. I did not build the deletion automation that way.
 
 **How the design work was communicated.** Each workstream was mapped in Figma and walked
 through with the client before it was built, which for a non-technical audience is the
@@ -471,7 +459,7 @@ fifty flat entries collapsing into a grouped model.
 agency to change how it built landing pages and where it sent its leads. The agency had no
 incentive to help and arguably an incentive to refuse, because the reporting being built
 measures its performance off the firm's own data and can contradict the numbers it reports
-itself. That took several meetings, which I did myself.
+itself.
 
 ## 7. Impact
 
@@ -527,22 +515,19 @@ If none of it was measured, say so and I will write one honest qualitative line 
 
 ## 8. What I'd do differently
 
-- **Put Lawmatics' own forms on the firm's website and tag the ads with UTM parameters.** What
-  shipped works, and it is the weaker of the two designs. A form submission travels from
-  ClickFunnels to a webhook, into a Make scenario that reads the landing page, derives the ad
-  group from it and the campaign from the ad group, and only then reaches Lawmatics. Every step
-  of that chain exists to reconstruct attribution that was destroyed before the lead arrived.
-  Embed the CRM's forms on the site instead, with UTM parameters filling hidden fields, and the
-  lead is created with its source and campaign already on it. No routing table, no derivation
-  step, no scenario to keep in sync with someone else's landing pages. The bigger gain is that
-  it takes the agency off the critical path of every form lead, rather than writing a system
-  that depends on a party with no interest in it staying correct.
-
-<!-- OPEN: more §8 items, if any. Lara supplied the one above (2026-08-16) and was not sure
-what else belonged. Candidates were put to her in chat: build the dashboard first, a companion
-report for the unticked final-value checkbox, the PII in the connector's field list, the cost
-ingestion being over-engineered, and the throttle set above the API's published ceiling.
-Do not add any of them here until she says so. -->
+- **Put Lawmatics' own forms on the firm's website, and set the UTM parameters on the landing
+  pages myself.** What shipped works, and it is the weaker of the two designs. A form
+  submission travels from ClickFunnels to a webhook, into a Make scenario that reads the
+  landing page, derives the ad group from it and the campaign from the ad group, and only then
+  reaches Lawmatics. Every step of that chain exists to reconstruct attribution that was
+  destroyed before the lead arrived. Embed the CRM's forms on the site instead, tag the landing
+  pages with UTM parameters, which the agency does not do, and a submission arrives in Lawmatics
+  with its source and campaign already filled in. No routing table, no derivation step, no
+  scenario to keep in sync with someone else's landing pages. And it takes an external party
+  off the critical path of every form lead.
+- **The cost ingestion is over-engineered.** Parsing the agency's monthly report out of an
+  email to get its figures into the sheet is a lot of machinery for something a person does in
+  two minutes, and it has more ways to break than the step it replaced.
 
 ---
 

@@ -579,11 +579,28 @@ One line per session, newest last.
   **Process, again.** This session repeated the exact failure logged on 2026-08-15: it was
   handed a stale clone with two branches, ran `git branch -a`, and told Lara the marketing
   draft did not exist. `git fetch origin` **first**, then look at `origin/main`.
-  **§8 then written, from Lara, one item.** Embed Lawmatics forms on the firm's own website
-  with UTM parameters, so source and campaign arrive filled in and the ClickFunnels to webhook
-  to Make to landing-page-derivation chain disappears. Her reason for calling the shipped design
-  weaker is the external dependency, not the complexity. She was unsure what else belonged and
-  asked for suggestions; five were put to her and none are in the file. An `OPEN` lists them.
+  **§8 then written, from Lara, two items.** First, embed Lawmatics forms on the firm's own
+  website and **set the UTM parameters on the landing pages herself, which the agency does
+  not**, so source and campaign arrive filled in and the ClickFunnels to webhook to Make to
+  landing-page-derivation chain disappears. Her reason for calling the shipped design weaker is
+  the external dependency, not the complexity. Second, **the cost ingestion is over-engineered
+  for a task a person does in two minutes**, which is her phrasing.
+  **Five candidates were put to her and four were rejected. Do not re-propose them:**
+  1. "I should have built the dashboard first." **Rejected, and the premise was false.** She
+     could not have built a dashboard on data that bad. **The §2 paragraph claiming two of the
+     four problems were discovered by modelling data for the dashboard is deleted, because it
+     is not true.** Do not reintroduce a discovered-it-from-the-dashboard story anywhere.
+  2. A companion report for the unticked final-value checkbox. Rejected: the checkbox is still
+     the best approach, so a known disadvantage of a design she would keep does not belong in a
+     "what I'd do differently".
+  3. The connector replicating SSN, driver licence and date of birth into the warehouse.
+     Rejected, she would not say that is true.
+  4. The throttle configured above the API's published ceiling. Rejected.
+  Also cut this round, all Lara's: the ROI-data-is-unified opening of the Power BI decision row
+  (it survives once in §4 step 6, and the row now argues cross-filtering only), "and had already
+  declined to help" from the landing-page row, **the whole "On the connector" paragraph in §6**
+  (the vibe-coded explanation, which she found unclear even after a plain-language rewrite), and
+  "That took several meetings, which I did myself" from the unglamorous-parts paragraph.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
