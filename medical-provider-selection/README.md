@@ -13,7 +13,7 @@
 | **Domain** | Treatment coordination. Following a client's post-accident care, booking the appointments a doctor recommends, chasing the bills and records afterwards |
 | **My role** | Co-owned the idea and the diagnosis. Sole engineer on the implementation, end to end. Change management was the client's, by agreement |
 | **Timeline** | 6 weeks, first client conversation to rollout, alongside nine other solutions from the same audit |
-| **Stack** | React/TypeScript Code App on Microsoft Power Platform, Dataverse, Power Automate, Azure Maps, Retell AI (voice), Copilot Studio, Outlook, Teams |
+| **Stack** | React/TypeScript Code App on Microsoft Power Platform, Dataverse, Power Automate, Azure Functions, Azure Maps, Retell AI (voice), Copilot Studio, Outlook, Teams |
 | **Status** | Completed and rolled out <!-- OPEN: in production since when, and how many coordinators use it? --> |
 
 ---
@@ -249,21 +249,24 @@ Nobody asked for this one. I co-owned the idea and the diagnosis, including the 
 sessions and the finding that an existing ignored field, rather than a new one, was the fix for
 provider exclusion. That is the part that decided whether the project should exist at all.
 
-I then built the app and the system around it:
+Then I built it, starting with the geocoding, because nothing ranks by distance until every
+provider has coordinates:
 
-- **The ranking.** The coordinate shortlist that picks who is worth a routing call, the Azure
-  Maps driving-distance pass that decides the order, and the rule that keeps excluded providers
-  in the results and at the bottom.
+- **Geocoding the ~18,000-row catalog.** Addresses go to Azure Maps through an Azure Function
+  and the coordinates go back into Dataverse. Doing that a row at a time is 18,000 calls on each
+  side, so I batched it 100 rows at a time on both, calling the Dataverse API directly rather
+  than the prebuilt actions. That is **180 calls on each end instead of 18,000, about 90% off
+  the cost of geocoding, and a full run down from a few hours to around 15 minutes.**
 - **The React app.** The search screen, the map and its pin states, and the comparison view that
   puts driving distance, average bill reduction and the firm's caseload with a provider side by
   side.
+- **The flow that runs the calls.** Placing every call in a request at once, taking each result
+  back on a webhook, and holding the notification until the whole batch is in.
+- **The flow that drafts the booking email.** Pulling the matter's client and case details,
+  composing the request, and leaving it in the coordinator's own Outlook drafts.
 - **The voice agent in Retell AI.** The call design and prompting: working an office's IVR,
   asking for the earliest opening on a named procedure, checking the office performs it at all,
   and honouring constraints like no morning slots.
-- **The Power Automate flows.** Placing every call in a request at once, the one-row-per-call
-  model, the batch completion gate that turns those calls into a single answer, and the
-  booking-email flow that pulls the client and case details, composes the request and leaves it
-  in the coordinator's own Outlook drafts.
 
 Six weeks from the first client conversation to rollout, running alongside the nine other
 solutions the same audit produced.

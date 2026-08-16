@@ -470,6 +470,19 @@ One line per session, newest last.
      management" paragraph went too. **New rule: §6 lists what Lara did, not what she did not**,
      and the change-management boundary lives in the At a glance role row instead. When a
      handover doc describes a component, that is not evidence she built it. Ask.
+- **2026-08-15 (provider selection, iteration 3b).** §6 corrected again, this time upward. The
+  **geocoding is hers** and it is the best pure-engineering detail in the repo: ~18,000 provider
+  addresses to Azure Maps via an Azure Function, coordinates back into Dataverse, **batched 100
+  rows at a time on both ends and calling the Dataverse API directly rather than the prebuilt
+  actions**. That is 180 calls per side instead of 18,000, **~90% off the geocoding cost and a
+  full run from a few hours to ~15 minutes**. What she did *not* build is the **daily catalog
+  sync that refreshes the provider table from the case management system**, which is the job the
+  previous draft wrongly attributed to her. The two are easy to confuse because §4 describes them
+  as a pair of scheduled jobs. §6's list is now in her own order: geocoding, React app, the
+  call-running flow, the booking-email flow, the Retell agent. Azure Functions added to the stack
+  row. **Lesson: when a correction removes a component, ask what the adjacent ones actually were
+  rather than dropping the whole area.** The first pass deleted the geocoding along with the sync
+  and lost a measured 90% cost win.
 
 - **2026-08-15 (marketing, iteration 1).** On `main`. Lara's corrections, all of which changed
   content: **timeline is ~3 months**, roughly a month each on attribution, cost mapping and
