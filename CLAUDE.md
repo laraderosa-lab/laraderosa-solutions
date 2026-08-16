@@ -109,10 +109,10 @@ corrected, so none of the original guesses survive.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
-| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
+| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done, plus a third §8 item added 2026-08-16 (two-way write-back). One `OPEN` left (measured after-state) |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 exists with one item, Lara's, and may gain more. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in `dashboard.md`, and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
-| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 3b done**, and the most finished entry in the repo. Seven sections: §8 is deliberately absent until Lara writes it. Outstanding: in-production-since date and user count, handover-doc authorship, and §8 |
+| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. Outstanding: in-production-since date and user count, handover-doc authorship, and the evidence screenshots |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 | `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
@@ -606,6 +606,28 @@ One line per session, newest last.
   declined to help" from the landing-page row, **the whole "On the connector" paragraph in §6**
   (the vibe-coded explanation, which she found unclear even after a plain-language rewrite), and
   "That took several meetings, which I did myself" from the unglamorous-parts paragraph.
+
+- **2026-08-16 (§8 write-back, two entries).** Lara's own item, and it lands in **both**
+  `medical-provider-selection` and `fnol-voice-agent`: the integration with the case management
+  system runs one way, so she would make the systems write back into it. In provider selection
+  that means adding a provider or ticking do-not-use from the app and having it land upstream,
+  which is what the ad-hoc-provider and flag-stays-upstream trade-off rows are working around.
+  In FNOL it means adding a carrier from the app. Her stated reason is that **this case
+  management system's API is very limited**, so write-back was not available, and she would
+  build it two-way on a system that accepts writes. `medical-provider-selection` therefore has
+  §8 for the first time, and its "deliberately absent" `OPEN` is replaced by one saying more
+  items may come. **This is the first §8 content that did not have to be deleted, because it
+  is hers.**
+  **Note the tension to watch:** the 2026-08-15 FNOL rule was "do not mention the CMS API at
+  all, assume it has one". The new item names the API's limits as the reason on both pages.
+  Lara gave it in one breath covering both projects, so it is written that way, and she has
+  been asked to confirm. If she vetoes, the FNOL item can stand on "the integration only runs
+  one way" without naming the cause.
+  Process: this session opened on a **stale clone again**, the third time. `git branch -a`
+  showed two `claude/*` branches and no `main`, the working tree was the 2026-08-13 scaffold,
+  and the first answer to Lara was that the medical entry was an unwritten stub. It is on
+  `main` and has been since 2026-08-15. `git fetch origin main` **before** answering anything
+  about what exists.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

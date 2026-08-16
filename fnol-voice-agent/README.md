@@ -307,6 +307,13 @@ unverifiable percentage in a public portfolio is worse than no percentage. -->
   less error-prone than dialing, and would leave the voice agent to cover the long tail. We
   have built that kind of integration successfully on other work. Here it lost to the six-week
   timeline. That was the right call then, and it is the first thing I would pick up next.
+- **Let the app write back into the case management system.** A carrier can only be added in
+  the case management system, never in the app. I chose that to keep one source of truth, and
+  it costs a reviewer the slower path on the day a carrier really is missing. It had to be a
+  rule because the integration only runs one way. This case management system's API is limited
+  enough that writing back was not on the table. Given one that accepts writes, I would let a
+  reviewer add the carrier where they are already working and push it back, which keeps the
+  source of truth intact without sending someone into another system first.
 
 ---
 

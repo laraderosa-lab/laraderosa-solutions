@@ -298,12 +298,21 @@ staff were trained on it, and it is the single source of truth. The tempting fix
 exclusion flag inside the new app, which would have been faster to build and would have failed the
 same way, because the old field was never ignored for lack of a better field.
 
-<!-- OPEN: §8, "What I'd do differently", is deliberately absent rather than unwritten. The
-version that was here was Claude's, drawn from defects in the handover docs plus an invented
-reflection about instrumentation, and Lara removed it. The template's eighth section stays out
-until she gives her own. Ask her: anything that actually frustrated you, or that you would
-rebuild? The Azure Maps cost model, the map component, the 25-provider cap, the six-hour expiry
-window, the scheduled-mirror approach to the provider catalog? -->
+## 8. What I'd do differently
+
+- **Make the sync run both ways.** The catalog is a one-way daily mirror of the case management
+  system, and two of the design decisions above exist only because of that. A provider added in
+  the app covers the request in front of the coordinator but is not permanent until someone adds
+  it upstream as well and waits for the overnight sync. A wrong do-not-use flag can only be
+  fixed upstream, so the app keeps showing it wrong until the next pull. Both ask the
+  coordinator to enter the same thing twice in two places. I would rather the app wrote back, so
+  that ticking do-not-use or adding a missing provider from wherever someone is already working
+  lands in the case management system and everything else reads it from there. This one's API is
+  limited enough that writing back was not on the table. On a case management system that
+  accepts writes I would build it two-way from the start.
+
+<!-- OPEN: Lara gave the write-back item on 2026-08-16 and said she was not sure what else.
+More may come. Do not add any without her. -->
 
 ---
 
