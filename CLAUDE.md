@@ -699,6 +699,26 @@ One line per session, newest last.
   opening sentence ("the same firm-wide audit that produced the FNOL voice agent") was
   rewritten for the same reason. When Lara says two projects share a fact, write the fact into
   the entry, never the sibling's name.
+- **2026-08-16 (FNOL, §5 architecture).** On `main`. Lara said the diagram misportrayed the
+  runtime, and gave the real chain. It is now drawn as: extension → **Copilot agent** → flow 1
+  (reads the case, resolves parties and carriers) → **one row per party per carrier** in
+  Dataverse, which feeds the review app. Submit fires flow 2, which sends **one HTTP request
+  per selected carrier to Retell** and writes **only request status** to the row. Retell posts
+  back to **flow 3, the webhook**, which **branches**: no human reached **re-dials Retell
+  directly** (not via flow 2), **3 attempts in total**, with the **attempt count updated on the
+  same row and no new row created**; human reached runs the accuracy evaluation, updates the
+  row, and writes the claim number and adjuster into the case management system **by API call**.
+  **Flows notify through the Copilot agent in Teams**, so notification edges go flow → agent →
+  staff rather than flow → staff. The review app is **also the results surface**: outcome,
+  accuracy evaluation and full transcript are read there. §4 step 1's "one row per carrier"
+  corrected to per party per carrier.
+  **Open tension, flagged not resolved.** §8 says the integration only runs one way and that
+  this CMS's API is too limited for write-back, but flow 3 writes the claim number and adjuster
+  in through the API. So writes work for some things and not others. An `OPEN` sits in §8
+  asking Lara which it is; her words were left untouched.
+  Mermaid can be validated in-session: `npx -y @mermaid-js/mermaid-cli@11 -p pc.json -i x.mmd
+  -o x.svg` with `pc.json` containing `{"args":["--no-sandbox","--disable-setuid-sandbox"]}`.
+  Without the puppeteer config it dies as root; the config takes an **array**, not an object.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
