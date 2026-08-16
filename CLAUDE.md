@@ -691,6 +691,14 @@ One line per session, newest last.
   the build", "the honest gap in this case study", "the strongest claim in this case study",
   and "the thing I would go back and change first". The §5 no-gate trade-off row still points
   at §8 and still resolves.
+  **Then, same day.** The §8 usage-reporting item deleted too, so §8 is down to two: the
+  regression set behind the playbooks, and measuring the outcome. **Timeline and status are
+  FNOL's**: 6 weeks from the first client conversation to rollout, alongside nine other
+  solutions from the same firm-wide audit, completed and rolled out. Both `OPEN`s in At a
+  glance are closed. Written **without naming FNOL**, per the stand-alone rule, and §2's
+  opening sentence ("the same firm-wide audit that produced the FNOL voice agent") was
+  rewritten for the same reason. When Lara says two projects share a fact, write the fact into
+  the entry, never the sibling's name.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

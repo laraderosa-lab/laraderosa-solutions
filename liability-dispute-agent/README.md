@@ -14,9 +14,9 @@
 | **Client** | Plaintiff-side personal injury firm, ~400 staff (US, California auto caseload) |
 | **Domain** | Claims operations, disputing liability with carriers |
 | **My role** | Sole delivery. I built the knowledge base and the agent <!-- OPEN: confirm this covers the whole build, see §6 --> |
-| **Timeline** | <!-- OPEN: dates + duration --> |
+| **Timeline** | 6 weeks from the first client conversation to rollout, alongside nine other solutions from the same firm-wide audit |
 | **Stack** | Microsoft Copilot Studio (generative agent), Claude Opus 4.1, SharePoint knowledge set, Power Automate, Microsoft Graph, MCP mail action, Teams / M365 Copilot, Dataverse (usage reporting only) |
-| **Status** | <!-- OPEN: in production since when? --> |
+| **Status** | Completed and rolled out |
 
 ---
 
@@ -37,8 +37,8 @@ The firm grows by hiring. It also has high churn.
 
 ## 2. Diagnosis: how I knew this was the problem to solve
 
-This came out of the same firm-wide audit that produced the FNOL voice agent, and like that
-one it started with management rather than with a feature request.
+This came out of a firm-wide audit of how the claims department worked, and it started with
+management rather than with a feature request.
 
 **Where it started. Management named the metric themselves.** Asked how they judge a claims
 rep, they said the biggest single measure of performance is **how often that rep gets liability
@@ -92,7 +92,7 @@ needed it.
 The result is a **knowledge-retention** system that happens to draft emails. Once the playbooks
 exist and are maintained, the firm keeps the expertise whether or not the expert stays.
 
-<!-- OPEN: §2 needs "what I ruled out" to match the template and the FNOL page. You said come
+<!-- OPEN: §2 needs "what I ruled out" to match the template. You said come
      back to it. Candidates to react to: an enterprise ChatGPT/Copilot licence with no
      grounding (solves confidentiality, not provenance or accuracy); a written manual or
      wiki nobody opens; a template library in the document-generation solution; training
@@ -343,10 +343,6 @@ Otherwise the section stands as written, which is honest. -->
   What I'd add is a small set of held-out disputes that re-runs whenever a playbook is edited, so
   the person making the change sees what it does to the arguments before it reaches a live case.
   The people who own the knowledge would then get a signal on their own edits.
-- **I'd move the usage reporting into the solution package.** Today it sits next to the agent
-  rather than inside the package, so bringing it in would mean a solution export carries the
-  reporting with it. I'd also widen the schedule's look-back window, so the job picks up any
-  sessions it missed on its next run rather than needing someone to go and fetch them.
 - **I'd measure the outcome, not only the conversation.** Management named liability acceptance
   rate as the biggest measure of a claims rep's performance, and that is the number the project
   was built to move. Usage reporting counts engaged sessions, which shows a conversation
