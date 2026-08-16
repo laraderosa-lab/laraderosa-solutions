@@ -525,9 +525,24 @@ make this section land is a business outcome on top of it:
   - Dashboard adoption: who opens it, how often.
 If none of it was measured, say so and I will write one honest qualitative line instead. -->
 
-<!-- OPEN: §8 "What I'd do differently" is deliberately absent. The previous version was
-Claude's and Lara deleted it (2026-08-16). She will supply this section herself. Do not write
-it from the source material or from inference. -->
+## 8. What I'd do differently
+
+- **Put Lawmatics' own forms on the firm's website and tag the ads with UTM parameters.** What
+  shipped works, and it is the weaker of the two designs. A form submission travels from
+  ClickFunnels to a webhook, into a Make scenario that reads the landing page, derives the ad
+  group from it and the campaign from the ad group, and only then reaches Lawmatics. Every step
+  of that chain exists to reconstruct attribution that was destroyed before the lead arrived.
+  Embed the CRM's forms on the site instead, with UTM parameters filling hidden fields, and the
+  lead is created with its source and campaign already on it. No routing table, no derivation
+  step, no scenario to keep in sync with someone else's landing pages. The bigger gain is that
+  it takes the agency off the critical path of every form lead, rather than writing a system
+  that depends on a party with no interest in it staying correct.
+
+<!-- OPEN: more §8 items, if any. Lara supplied the one above (2026-08-16) and was not sure
+what else belonged. Candidates were put to her in chat: build the dashboard first, a companion
+report for the unticked final-value checkbox, the PII in the connector's field list, the cost
+ingestion being over-engineered, and the throttle set above the API's published ceiling.
+Do not add any of them here until she says so. -->
 
 ---
 
