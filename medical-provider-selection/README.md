@@ -210,9 +210,8 @@ the same rule would mean telling a coordinator to wait a day to make a call.
 
 ### Illustrative excerpt: the batch completion gate
 
-*Not source code. The real implementation is a Power Automate cloud flow, and this is its logic
-written out, which reads better than a screenshot of a designer canvas. Table and column names
-are replaced. It is what makes an unbounded number of calls behave like one request.*
+*Logic taken off the Power Automate flow and written as code for readability, with table and
+column names replaced. It is what makes an unbounded number of calls behave like one request.*
 
 ```js
 // Post-call webhook. Fires once per completed call, so N times for an N-provider request.
