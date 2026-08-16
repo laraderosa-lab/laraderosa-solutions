@@ -202,10 +202,6 @@ pool**.
 
 ## 5. Impact
 
-**Nothing here was measured.** No before-state timings were taken and no after-state counts
-were kept, so this section is qualitative and says so rather than carrying a number I cannot
-stand behind.
-
 | | Before | After |
 |---|---|---|
 | Where the settlement figures live | Excel sheet, kept alongside the case management system | The form submission, single entry |
@@ -224,12 +220,11 @@ produces.
 
 ## 6. What I'd do differently
 
-A build this small does not carry a long list. I'd have it read the settlement figures out of
-the case management system instead of asking someone to type them into the form, and write the
-calculated reductions back onto the case once the letters are drafted. The figures would stay
-in the system of record rather than being re-keyed, and the results would land on the case file
-instead of arriving there as a folder link somebody has to remember to post. The system's API
-could not support either direction.
+I'd have it read the settlement figures out of the case management system instead of asking
+someone to type them into the form, and write the calculated reductions back onto the case once
+the letters are drafted. The figures would stay in the system of record rather than being
+re-keyed, and the results would land on the case file instead of arriving there as a folder
+link somebody has to remember to post. The system's API could not support either direction.
 
 ---
 

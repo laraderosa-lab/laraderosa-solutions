@@ -758,9 +758,14 @@ One line per session, newest last.
   log-back were all inference from the handover doc. **Replaced with Lara's own, one item**:
   she'd read settlement amounts out of the case management system and write the calculated
   reductions back, and the reason she did not is that the system's API could not support it.
-  Her framing is that a build this small does not carry a long list, and the section says so
-  in one paragraph rather than a bullet list. The §5 excerpt note's "See §6" pointer and its
+  One paragraph rather than a bullet list. The §4 excerpt note's "See §6" pointer and its
   independent-rounding clause went with the deleted bullet.
+  Then two more deletions, both Lara's. **§5's "Nothing here was measured" opening paragraph
+  is gone**, the same cut she made to provider selection's §7, so Impact starts on the
+  before/after table. And **§6 does not get framed as a small build**: "a build this small
+  does not carry a long list" went, because the section should read as an ordinary change
+  rather than an apology for having one item. **General rule: do not preface a section with
+  a note about its own size or completeness.**
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
