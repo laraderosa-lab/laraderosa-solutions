@@ -626,6 +626,27 @@ One line per session, newest last.
   colleague over the following month**, so §6's claim to the whole dashboard may be overclaiming
   the same way provider selection did. And she had **already built a marketing dashboard natively
   in Lawmatics** before this one.
+  **Then the five dashboard screenshots arrived** (2026-08-16) and `dashboard.md` was rebuilt
+  around them: what it is (five tabs, page by page), **how the pages relate** (source is a shared
+  dimension, lead to matter to settled value and back onto the lead, with a Mermaid diagram),
+  what it exists to do, the measure definitions, and the design decisions. Verified from the
+  images: **conversion rate = hired / (hired + did not hire)**, with intake excluded, which
+  matches her explanation exactly; loss reasons are ~20 codes prefixed to say who ended it,
+  rolled into three categories (firm rejected, did not hire, invalid); **median case value is
+  shown next to total, not average**; the financial page separates cash received, revenue earned
+  but unpaid, and outstanding balance, with a gross/net toggle. **The deployed tab names are
+  "Lawmatics: Intake Overview", "Clio: Matters Overview", "Financial Dashboard", "Task Tracker"
+  and "Lawmatics Monthly"**, which does not match the five-page list the entry had, and two of
+  those tabs have never been seen. An `OPEN` asks her to map them.
+  **The screenshots are not publishable and Lara said so herself.** Firm name and logo on every
+  page, client names, emails and phone numbers, case numbers built from client surnames,
+  attorney and staff names, referral partners by name, both marketing vendors by name with one
+  of them inside a source name, area codes that place the firm, and real settlement figures.
+  **Do not commit them without a substitute-at-source or crop-to-aggregates pass.**
+  **One number to check with her**: §7 says "around one lead in ten is invalid". The lost-lead
+  summary makes invalid ~10.7% of *lost* leads, which is ~6.5% of all leads, though the
+  practice-area view has several invalid-ish buckets that together run higher. Not changed,
+  because the definition varies by page and she knows which one the claim came from.
   **Later biweeklies are a colleague's, not hers.** The 2026-07-13 sync shows the dashboard in
   use and the owner winding down the marketing agency on the back of ad-spend-versus-hires
   analysis, which is the business outcome §7 is missing, but it happened post-handover. Do not

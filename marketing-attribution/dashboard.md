@@ -15,37 +15,116 @@ their own channels, so a per-campaign number that contradicts what they already 
 noticed in the first week. Once one number is wrong the whole thing stops being opened, and the
 firm goes back to the agency's monthly report on impressions and clicks.
 
-## The five pages
+## What it is
 
-Power BI over an hourly BigQuery warehouse fed from both Lawmatics and Clio Manage. Once the
-warehouse exists the marginal cost of the next question is a query rather than a project, which
-is why it runs to five pages rather than the one the project was scoped around.
+Power BI over an hourly BigQuery warehouse fed from both Lawmatics and Clio Manage, in five
+tabs. The firm had been reading three separate things: a scorecard a staff member rebuilt by
+hand every week, a report exported out of the CRM, and a financial report living in a different
+BI tool. All three are on one model here, which is what lets a marketing source and a settlement
+figure appear in the same sentence.
 
-- **Intake overview**, from Lawmatics. The funnel from total leads through qualified to hired,
-  with conversion and qualification rates, split by practice area, plus lead volume by month
-  and by day of week.
-- **Source performance**, the page the attribution work exists to make true. Leads, hires,
-  conversion rate and case value by source, by campaign and by ad group, with referral
-  partners broken out individually.
-- **Intake detail.** Consultations booked, attended, missed and paid, and a full breakdown of
-  **why** rejected leads were rejected, separating leads the firm turned down from leads that
-  turned the firm down.
-- **Matters overview**, from Clio. Open cases by practice area, pipeline funnels per practice
-  area, median days to close, and an aging list of the oldest open files, each deep-linking
-  back into Clio so the dashboard is a way into the work rather than a read-only artifact.
-- **Financials.** Estimated against actual case value, accrued and cash positions by month,
-  and average settlement value by lead source, which is the join that turns attribution into a
-  buying decision.
+**Intake overview.** The top of the funnel, from the CRM. Total leads, qualified leads, leads
+currently in intake, hired and did-not-hire as headline counts, with the conversion and
+qualification rates derived from them. Underneath, the status and qualification breakdowns, a
+matrix of every stage inside each status, so the intake stages a lead can sit in are visible
+individually rather than as one bucket. The funnel from total leads to qualified to hired, lead
+volume split by practice area at each of those three steps, a six-month trend of the three
+series together, and lead volume by day of week.
 
-Three of the findings these pages produced in the first pass are in
-[§7 of the main case study](./README.md#7-impact): the pre-signed case vendor whose cases are
-mostly dropped after signing, the 40% of rejections caused by leads for services the firm does
-not offer, and the roughly one lead in ten that is invalid.
+**Source performance.** The page the attribution work exists to make true. Leads by source and
+by practice area as stacked bars, each segment being a status, so the shape of a source is
+visible before any rate is read. Beside each, a table carrying total leads, hired, conversion
+rate, qualification rate, median case value and total case value for every source, expandable
+into the campaigns underneath it. Referral partners get the same treatment on their own, broken
+out individually, because for this firm they behave like a channel rather than a rounding error.
 
-<!-- OPEN: the Clio pages. The V1 walkthrough covered the Lawmatics pages and the financials,
-and Clio was still hypothetical at that point ("same thing if we ever did a dashboard for
-Clio"). Were the two Clio-fed pages yours, or did they land after the account moved to a
-colleague? Section 6 of the main case study currently claims the whole dashboard. -->
+**Intake detail.** Consultations booked, paid and followed up, split by practice area, with
+completion, miss and pending rates for each. Then the reason breakdown, roughly twenty
+categories, each prefixed to say who ended it. Rejections are the firm turning a lead away.
+Did-not-hires are the lead going quiet, going elsewhere, or balking at cost. A summary donut
+rolls those twenty categories into three: firm rejected, did not hire, and invalid. Under all of
+it, the full lead list with source, campaign, stage and owner on every row.
+
+**Matters overview**, from Clio. Open matters, closed cases per month, open cases by practice
+area, and median days to close split by practice area and litigation stage, which is where the
+difference between a criminal matter and a personal injury case in litigation stops being
+folklore and becomes a number. Separate pipeline funnels per practice area, each showing the
+firm's own named stages in order. Then the aging lists, oldest open files first, flagged as high
+risk, each row linking straight into the matter in Clio.
+
+**Financial report.** Accrual and cash side by side, which for a contingency practice are
+genuinely different questions. Cash received this month from case distributions, revenue earned
+this month on open cases and not yet paid, and total outstanding revenue across all unpaid
+cases, each plotted month over month with gross and net together. Toggles switch between gross
+only, net only and both, and between practice areas. Total and average estimated value against
+total and average actual value as headline cards. And at the bottom, average settlement by lead
+source, ranked, which is the chart the whole project was built to make possible.
+
+<!-- OPEN: the tab names in the deployed nav are "Lawmatics: Intake Overview", "Clio: Matters
+Overview", "Financial Dashboard", "Task Tracker" and "Lawmatics Monthly". The source performance
+and intake detail blocks above are unlabelled in the screenshots, so I do not know which tab
+they sit on, and I have never seen the Task Tracker or Lawmatics Monthly tabs. Confirm the
+mapping and say what those two carry, and I will rename these sections to the real tabs. -->
+
+## How the pages relate
+
+One lead record carries the whole chain, and that is the point of the rebuild rather than a
+feature of the reporting. A lead arrives in the CRM with a source, a campaign and an ad group on
+it. If it signs, it becomes a matter in the case management system. When that matter settles,
+its value comes back to the CRM and lands on the original lead. When the firm drops it, that
+comes back too and the lead stops counting as a win.
+
+So source is not a marketing field sitting on the marketing page. It is a dimension the whole
+model shares, and every page answers a different question about the same one.
+
+```mermaid
+flowchart LR
+  subgraph model["One shared model"]
+    src(["Source · campaign · ad group"])
+    lead["Lead"]
+    matter["Matter"]
+    value["Settled value"]
+  end
+
+  src --> lead --> matter --> value
+  value -.->|"carried back onto the lead"| lead
+
+  lead --> q1["Intake overview<br/>how many, at what rate"]
+  src --> q2["Source performance<br/>which channels produce"]
+  lead --> q3["Intake detail<br/>why the rest were lost"]
+  matter --> q4["Matters overview<br/>what the work looks like"]
+  value --> q5["Financials<br/>what it was worth"]
+```
+
+Because it is one model, filters cross the whole thing. Click the largest rejection reason and
+the sources that produced it appear. Click a source and its rejection profile, its conversion
+rate and its average settlement all move together. Drill through any aggregate and the
+individual matters behind it are listed, each linking into the record in the source system, so a
+number the owner distrusts takes about four clicks to resolve into the actual cases behind it.
+
+That is what the CRM's native reporting cannot do, and it is why the reporting layer sits
+outside the CRM at all. The ROI data itself is unified in the CRM by this point and needs no
+help to answer the ROI question. Cross-filtering is what turns it from a figure into an
+argument.
+
+## What it exists to do
+
+Three questions, none of which the firm could answer before.
+
+**Which spend produces cases worth having.** Not leads. Not signed cases. Settled value per
+source against what that source costs. A vendor selling pre-signed cases converts at close to a
+hundred per cent on paper and can still be the worst line item in the budget, which is exactly
+what the average-settlement-by-source chart showed once dropped cases flowed back from Clio.
+
+**Where the losses actually come from.** Roughly twenty reason codes rolled into three
+categories separate the firm's own decisions from the market's. The largest single reason for
+losing a lead is that the firm does not offer the service asked for, which is a media buying
+problem wearing an intake costume, and it is invisible until reason codes are counted against
+the sources that produced them.
+
+**Whether the firm is being told the truth by its suppliers.** The agency owned the landing
+pages, the ad account and the reporting on its own performance. This dashboard is the firm's
+independent read of the same question, built from its own records.
 
 ## What the numbers had to mean
 
@@ -53,15 +132,17 @@ A report over a CRM inherits the CRM's definitions unless someone decides otherw
 those decisions changed what the client saw.
 
 **Conversion rate excludes anything still in intake.** A lead that has not resolved yet is not a
-lead the firm failed to sign. Counting it as one, which is what the native report did, understates
-conversion by however many cases happen to be in flight on the day you look. Excluding intake
-means the dashboard's headline conversion rate deliberately disagrees with the number the same
-people had been reading in the CRM, so the first walkthrough spent time on why.
+lead the firm failed to sign. Counting it as one, which is what the native report did,
+understates conversion by however many cases happen to be in flight on the day you look. The
+denominator here is hired plus did-not-hire, and everything sitting in an intake stage is out of
+it. That makes the dashboard's headline conversion rate deliberately disagree with the number
+the same people had been reading in the CRM, so the first walkthrough spent time on why.
 
 **Qualification rate depends on what counts as a lead at all.** Wrong numbers, current clients
-calling about an open case, and enquiries for work the firm does not do all sit in the
-denominator and hold the rate down. The owner had a benchmark in mind that the firm's own rate
-came nowhere near, and part of that gap was definitional rather than performance.
+calling about an open case, internal test records and enquiries for work the firm does not do
+all sit in the denominator and hold the rate down. The owner had a benchmark in mind that the
+firm's own rate came nowhere near, and part of that gap was definitional rather than
+performance.
 
 **A target only means something next to what the source costs.** The client wanted goal lines on
 the dashboard, per channel. Word of mouth converts on its own and costs nothing to run, so
@@ -71,21 +152,27 @@ the real data for a while and could set ones that meant something.
 
 ## Design decisions
 
-- **Everything cross-filters, and every aggregate drills to the matters underneath it.** Click a
-  rejection reason and the sources that produced it appear. Click again and the individual
-  matters are listed, each linking straight into its record in the CRM. The alternative is
-  finding a number you distrust and then going to search for the cases by hand.
+- **Everything cross-filters, and every aggregate drills to the matters underneath it.** The
+  alternative is finding a number you distrust and then going to search for the cases by hand.
+- **Median case value next to total, rather than average.** A single large settlement moves an
+  average enough to make a channel look like something it is not, and with per-source volumes
+  this small it happens often.
+- **Loss reasons keep their full granularity and get a rollup on top.** Twenty codes are what
+  intake staff actually record and what makes a fix actionable. Three categories are what the
+  owner reads. Collapsing to three at the source would have thrown away the first.
 - **Show the practice areas the firm does not take.** Lead volume is split by practice area
-  including the ones the firm rejects on sight, because that view is the only place unmet demand
-  shows up. Another firm looked at the same page and found a steady stream of medical
-  malpractice enquiries it had been turning away without ever counting.
+  including the ones rejected on sight, because that view is the only place unmet demand shows
+  up. Another firm looked at the same page and found a steady stream of medical malpractice
+  enquiries it had been turning away without ever counting.
+- **Gross and net on the same axis.** The previous financial report put them on separate pages,
+  so comparing the firm's fee against the settlement that generated it meant remembering a
+  number while scrolling.
 - **Scheduled extracts, not just a screen.** Weekly and monthly cuts go out to the people who
   need them on a schedule. The report they replace was a staff member exporting from the CRM and
   doing the arithmetic in a spreadsheet every week.
 - **Fold the financial reporting in rather than leaving it where it was.** The firm's financial
   report already existed in Looker Studio, and moving it onto the same model made settlement
-  value joinable to lead source, which is what makes ROI per source a real number instead of two
-  reports side by side. Gross and net sit on one page here rather than on two.
+  value joinable to lead source.
 - **Ship V1 with a known hole.** Personal injury case value was missing at launch, because the
   settled-value backflow from Clio was not finished. Waiting would have delayed everything else
   the client could already use, and the gap was named out loud rather than left to be discovered.
@@ -97,32 +184,33 @@ the real data for a while and could set ones that meant something.
   targets exist, since without them it can only report that a number moved.
 
 <!-- OPEN: still needed for this page.
-  - The screenshots. You mentioned a PDF with altered pictures. It did not survive into this
-    session, since uploads never do, so please re-attach it and I will build an evidence
-    section around it: one redacted image per page above, each captioned with the question that
-    page answers.
-    Redaction check before anything is committed: firm name, staff names in slicers, client
-    names and contact details, referral partner and vendor names, campaign names containing the
-    city or state, tracking phone numbers, real spend and settlement figures.
-    Note from the firm-ops dashboard work: blur in a client-supplied export is not redaction.
-    Previous "pre-anonymized" PDFs still carried legible names under partial blur. Substitute at
-    source or crop to aggregates.
+  - The screenshots. Confirmed 2026-08-16 as not safe to publish as they stand. Every page
+    carries the firm name and logo in the header. Beyond that: client full names, emails and
+    phone numbers in the lead detail table; case display numbers built from client surnames;
+    attorney and intake staff names in the responsible-attorney and created-by columns;
+    referral partner firms and individuals by name; both marketing vendors by name, one of them
+    inside a source name; area codes that place the firm; and real settlement and case value
+    figures. A redaction pass has to substitute at source or crop to the aggregate visuals,
+    since blur over a name is not redaction.
   - How ROI is defined when a PI case settles months or years after the spend that bought it.
   - Whether the default view opens at source or at campaign level.
   - The refresh cadence the client sees, and whether that is a Skyvia scheduling constraint.
   - The Clio half: custom connector too, or does Skyvia ship one for Clio?
   - The marketing dashboard you had already built natively in Lawmatics and shown the team.
-    Did this replace it outright, or do both still run? Worth a sentence either way, since
-    "I built the cheap version first and then outgrew it" is a better story than not
-    mentioning it. -->
+    Did this replace it outright, or do both still run? -->
+
+<!-- OPEN: the Clio pages. The V1 walkthrough covered the CRM pages and the financials, and Clio
+was still hypothetical at that point ("same thing if we ever did a dashboard for Clio"). Were
+the two Clio-fed pages yours, or did they land after the account moved to a colleague? §6 of the
+main case study currently claims the whole dashboard. -->
 
 <!-- OPEN: sourced from the V1 walkthrough call of 2026-03-23 (Fireflies), verified against the
-transcript rather than the AI summary. Everything in "What the numbers had to mean" and "Design
-decisions" is from that call. Nothing here comes from the later biweeklies, which a colleague
-ran after the account transitioned. -->
+transcript rather than the AI summary, plus the five dashboard screenshots Lara supplied on
+2026-08-16. Nothing here comes from the later biweeklies, which a colleague ran after the
+account transitioned. -->
 
 ## Evidence
 
-<!-- Redacted screenshots from the PDF, once re-attached. Assets belong in ./assets/. -->
+<!-- Redacted screenshots, once the redaction pass above is done. Assets belong in ./assets/. -->
 
 Not yet added.
