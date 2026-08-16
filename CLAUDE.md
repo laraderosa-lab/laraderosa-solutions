@@ -25,6 +25,18 @@ redacted code excerpts where they prove something.
 - **Code: illustrative excerpts only.** Redacted snippets of the interesting parts (a prompt,
   a schema, a scoring rule). No client source, no credentials, no PHI/PII, no real schema
   prefixes, table names or flow names.
+- **Label an excerpt for what it is** (2026-08-16, Lara). Most of this work is built in Power
+  Automate, Make and similar, so an excerpt is usually **the logic of a flow written out as
+  code**, not source lifted from a repo. Rendering it as code is fine and beats a screenshot of
+  a designer canvas. **Calling it "redacted" is not**, because that word tells the reader it is
+  the real artifact with identifiers swapped, and it invites an interview question Lara would
+  have to correct mid-answer. `medical-provider-selection`'s batch-gate excerpt was caught this
+  way: it was written from the handover docs plus Lara's verbal account, the underlying thing is
+  a cloud flow, and the label claimed otherwise. It now opens "Not source code."
+  **The other entries' excerpts have not been audited.** Sessions after this one wrote them and
+  their provenance is unknown, so before treating the repo as publication-ready, check each
+  against its real artifact and relabel any that are reconstructions. Ask Lara rather than
+  inferring, since only she knows which excerpts came from something she pasted.
 - **Depth is tiered.** 3 flagship deep dives, 4 short entries.
 - **Length follows the project. The rule is concision, not a word count** (2026-08-15, Lara).
   A bigger project earns a longer entry. `marketing-attribution` rebuilt five layers across

@@ -67,6 +67,13 @@ budget. Systems built in a vacuum aren't interesting, so name the real ones.
 The one piece of the implementation that's genuinely interesting: a prompt, a schema, a
 scoring rule, a validation gate. Redacted. One block, not a code dump.
 
+**Say what the block actually is.** Much of this work is built in Power Automate, Make and
+other low-code tools, so an excerpt is often the logic of a flow written out rather than
+source lifted from a repo. Writing it as code is fine and usually clearer than a screenshot of
+a designer canvas. Calling it "redacted" when it was reconstructed is not, because that word
+tells a reader it is the real thing with identifiers swapped. Label a reconstruction as one.
+An interviewer who asks "is this your code?" should get the same answer the page already gave.
+
 ```
 ```
 
