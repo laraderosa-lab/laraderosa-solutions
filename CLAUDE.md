@@ -110,7 +110,7 @@ corrected, so none of the original guesses survive.
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
-| `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iteration 1 done.** Timeline, status and role settled; §4 restructured into the six-step chain; dashboard split into `dashboard.md`. Outstanding: the dashboard PDF, what the ~50 sources collapsed into, whether the cost sheet feeds the CRM or BigQuery, and a business outcome for §7 |
+| `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1 and 1b done.** See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in `dashboard.md`, and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 3 done**, and the most finished entry in the repo. Seven sections: §8 is deliberately absent until Lara writes it. Outstanding: in-production-since date and user count, handover-doc authorship, §8, and the identifier scan against Lara's real blocklist |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
@@ -173,6 +173,11 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   criminal defense (the larger book) plus personal injury (the growth bet), roughly six people
   known by role. It runs **Lawmatics** for intake and **Clio Manage** for case management, and
   Lara has confirmed both may be named. Do not conflate it with the FNOL firm.
+  **Its source material is gone from every session but recoverable.** The entry was built from a
+  90-minute client-handover transcript, a client walkthrough PDF, and a connector definition and
+  replication config Lara pasted. Uploads never survive, so to go deeper than the committed
+  entry, search **Fireflies** for the handover call rather than asking Lara to re-explain the
+  system. The dashboard PDF has to come from her.
 - **Naming Clio is settled: yes** (2026-08-15). Software vendors including the CRM and the CMS
   can be named, see the standing decisions. `firm-ops-dashboard` keeps Clio Manage and Clio Grow.
 - **Raw source material from Lara arrives unredacted, including material she describes as
@@ -515,8 +520,9 @@ One line per session, newest last.
   says so. Also: call it **the Google Ads account**, never "the ad account".
   **Length rule corrected**: concision, not a word count. The entry was briefly cut against the
   old target and then restored in full, since the project is a large one and the cuts were
-  serving a number rather than the reader. Also ported into this file: the `petergyang/no-ai-slop` pin, the loosened anonymization rule,
-  the retirement of the blocklist ritual, and a no-swagger rule.
+  serving a number rather than the reader. Also ported into this file: the
+  `petergyang/no-ai-slop` pin, the loosened anonymization rule, the retirement of the blocklist
+  ritual, and a no-swagger rule.
   **Process failure worth recording.** This session was handed `claude/marketing-attribution-
   iteration-nca1jd`, worked on it for four commits, and only discovered `origin/main` existed
   when a push was rejected. The clone had two branches in it, so `git branch -a` looked like the
