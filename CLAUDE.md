@@ -112,7 +112,7 @@ corrected, so none of the original guesses survive.
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done. One `OPEN` left (measured after-state) |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 exists with one item, Lara's, and may gain more. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in `dashboard.md`, and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
-| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 3 done**, and the most finished entry in the repo. Seven sections: §8 is deliberately absent until Lara writes it. Outstanding: in-production-since date and user count, handover-doc authorship, and §8 |
+| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 3b done**, and the most finished entry in the repo. Seven sections: §8 is deliberately absent until Lara writes it. Outstanding: in-production-since date and user count, handover-doc authorship, and §8 |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 | `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | Drafted and confirmed. Only `OPEN`s left are timeline, status, and what the rework covered |
@@ -386,7 +386,8 @@ One line per session, newest last.
   of the four-project version, and duplicate stale rows removed. CLAUDE.md is the union of all
   seven branches' findings, with the progress log put back in date order. **Two things need
   Lara.** First, `main` still is not the GitHub default, so the landing page shows the old
-  branch until she flips it in repo settings. Second, **two remote branch names carry client
+  branch until she flips it in repo settings. (**Done 2026-08-16: Lara switched the default to
+  `main`.**) Second, **two remote branch names carry client
   identifiers** (`claude/citrine-marketing-mme404` and `claude/clio-manage-life-dashboard-e1rdm5`)
   and branch names are public, so they should be deleted; both are fully merged, so nothing is
   lost. All nine `claude/*` branches are now redundant.
@@ -617,8 +618,12 @@ One line per session, newest last.
   none of them. Lara saw an empty-looking portfolio and reasonably concluded nothing had been
   pushed.
   `git pull --rebase` before pushing, since another session may be running.
-  **Check whether `main` is actually the repo default before trusting the landing page.**
-  Repo-settings writes are blocked by the sandbox proxy, so only Lara can set it, at
+  **`main` is the GitHub default as of 2026-08-16**, so a fresh clone lands on it and the
+  landing page is correct. Before that it was not, and sessions were handed branches cut from a
+  stale 2026-08-13 default, which is how one session read a three-line stub and told Lara the
+  provider case study did not exist. If a checkout ever looks impossibly old again, run
+  `git remote show origin` and `git fetch origin main` before concluding anything is missing.
+  Repo-settings writes are blocked by the sandbox proxy, so only Lara can change the default, at
   <https://github.com/laraderosa-lab/laraderosa-solutions/settings>. Nothing is broken if it is
   wrong, so do not "fix" it by re-pushing or re-branching, just say so.
 - Per-project assets in `<slug>/assets/`.
