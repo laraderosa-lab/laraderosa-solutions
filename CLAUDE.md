@@ -601,6 +601,31 @@ One line per session, newest last.
   3. The connector replicating SSN, driver licence and date of birth into the warehouse.
      Rejected, she would not say that is true.
   4. The throttle configured above the API's published ceiling. Rejected.
+  **`dashboard.md` filled out from Fireflies**, which worked and should be the first move next
+  time a gap needs source material. The **V1 dashboard walkthrough is `01KKXZYVJSF7XZVY53CE7BEE5R`,
+  2026-03-23, organised by Lara**, and she demos the dashboard herself from ~10:40 to ~32:00.
+  **Read the transcript, not the AI summary**: the summary garbles "Lawmatics" as "Nomadics" and
+  "Clio" as "Kio", and a summary is not a source. What it yielded, all verified against her own
+  words: conversion rate **excludes anything still in intake** (an unresolved lead is not a lost
+  one, so the dashboard deliberately disagrees with the CRM's native figure); qualification rate
+  is hostage to invalid leads in the denominator; **targets have to be per source and weighed
+  against source cost**, so goal lines were deferred until the client had used real data;
+  cross-filter to drill from a rejection reason to sources to the individual matters, each
+  deep-linked into the CRM; a **practice-area view including the work the firm rejects**, to
+  expose unmet demand; scheduled extracts replacing a staff member's weekly spreadsheet;
+  the **financial report migrated in from Looker Studio**, which is what makes settlement value
+  joinable to lead source; **V1 shipped with PI case value missing** because the backflow was not
+  finished; **Power BI Pro per viewer**; and an **AI query layer asked for by the owner and
+  deferred**, because there is nothing to flag before targets exist.
+  **Two things to check with Lara.** The Clio-fed pages were still hypothetical on 2026-03-23
+  ("same thing if we ever did a dashboard for Clio") and **the account transitioned to a
+  colleague over the following month**, so §6's claim to the whole dashboard may be overclaiming
+  the same way provider selection did. And she had **already built a marketing dashboard natively
+  in Lawmatics** before this one.
+  **Later biweeklies are a colleague's, not hers.** The 2026-07-13 sync shows the dashboard in
+  use and the owner winding down the marketing agency on the back of ad-spend-versus-hires
+  analysis, which is the business outcome §7 is missing, but it happened post-handover. Do not
+  put it in §6 or §7 without her ruling.
   Also cut this round, all Lara's: the ROI-data-is-unified opening of the Power BI decision row
   (it survives once in §4 step 6, and the row now argues cross-filtering only), "and had already
   declined to help" from the landing-page row, **the whole "On the connector" paragraph in §6**
