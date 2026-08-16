@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demand letter, level by level</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface-0: #f4f3f0;
+  --surface-1: #fcfcfb;
+  --surface-2: #edece8;
+  --border:    #dcdad4;
+  --text-1:    #0b0b0b;
+  --text-2:    #52514e;
+  --text-3:    #7b7a75;
+  --l1: #86b6ef;
+  --l2: #5598e7;
+  --l3: #2a78d6;
+  --l4: #1c5cab;
+  --l5: #104281;
+  --tint: 0.09;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface-0: #121211;
+    --surface-1: #1a1a19;
+    --surface-2: #242423;
+    --border:    #383835;
+    --text-1:    #ffffff;
+    --text-2:    #c3c2b7;
+    --text-3:    #8f8e86;
+    --l1: #184f95;
+    --l2: #256abf;
+    --l3: #3987e5;
+    --l4: #6da7ec;
+    --l5: #9ec5f4;
+    --tint: 0.16;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-0: #121211;
+  --surface-1: #1a1a19;
+  --surface-2: #242423;
+  --border:    #383835;
+  --text-1:    #ffffff;
+  --text-2:    #c3c2b7;
+  --text-3:    #8f8e86;
+  --l1: #184f95;
+  --l2: #256abf;
+  --l3: #3987e5;
+  --l4: #6da7ec;
+  --l5: #9ec5f4;
+  --tint: 0.16;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--surface-0);
+  color: var(--text-1);
+  font: 15px/1.55 ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  padding: 28px 20px 64px;
+}
+.wrap { max-width: 1180px; margin: 0 auto; }
+
+header h1 { font-size: 22px; margin: 0 0 6px; letter-spacing: -0.01em; }
+header p  { margin: 0 0 4px; color: var(--text-2); max-width: 68ch; }
+.synthetic {
+  display: inline-block; margin-top: 12px; padding: 5px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--surface-2); color: var(--text-2);
+  font-size: 12.5px;
+}
+
+.legend {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 22px 0 18px; padding: 0; list-style: none;
+}
+.legend button {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 11px 7px 8px;
+  background: var(--surface-1); color: var(--text-1);
+  border: 1px solid var(--border); border-radius: 8px;
+  font: inherit; font-size: 13px; cursor: pointer; text-align: left;
+}
+.legend button:hover { border-color: var(--text-3); }
+.legend button[aria-pressed="true"] { border-color: var(--text-1); }
+.legend .chip {
+  width: 12px; height: 12px; border-radius: 3px; flex: none;
+}
+.legend .num { font-variant-numeric: tabular-nums; color: var(--text-3); }
+
+.cols { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; align-items: start; }
+@media (max-width: 900px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+
+.panel {
+  background: var(--surface-1); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 18px;
+}
+.panel + .panel { margin-top: 16px; }
+.panel h2 {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em;
+  color: var(--text-3); margin: 0 0 12px; font-weight: 600;
+}
+.sticky { position: sticky; top: 20px; }
+
+.fields { margin: 0; font-size: 13.5px; }
+.fields dt { color: var(--text-3); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 12px; }
+.fields dt:first-child { margin-top: 0; }
+.fields dd { margin: 4px 0 0; color: var(--text-2); }
+.fields code {
+  font: 12.5px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: var(--surface-2); border-radius: 4px; padding: 1px 5px;
+  color: var(--text-1);
+}
+
+.letter { padding: 22px 24px; }
+.block {
+  display: block; width: 100%; text-align: left;
+  font: inherit; color: var(--text-1);
+  background: transparent; border: 0;
+  border-left: 3px solid var(--rail);
+  background-color: color-mix(in srgb, var(--rail) calc(var(--tint) * 100%), transparent);
+  padding: 10px 12px 10px 13px;
+  margin: 0 0 5px; border-radius: 0 6px 6px 0;
+  cursor: pointer; position: relative;
+}
+.block:hover { background-color: color-mix(in srgb, var(--rail) calc(var(--tint) * 190%), transparent); }
+.block[aria-pressed="true"] { outline: 2px solid var(--text-1); outline-offset: 1px; }
+.block.dim { opacity: 0.24; }
+.block .badge {
+  float: right; margin-left: 12px;
+  font: 600 10.5px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.04em;
+  color: var(--text-2); background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 0 5px;
+}
+.block p { margin: 0; font-size: 14px; }
+.block p + p { margin-top: 8px; }
+.block .ph { color: var(--text-2); font-style: italic; }
+.block .mf {
+  font: 12.5px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: var(--surface-2); border-radius: 3px; padding: 0 4px;
+}
+.letter table { border-collapse: collapse; font-size: 13px; margin-top: 6px; width: 100%; }
+.letter th, .letter td { text-align: left; padding: 3px 10px 3px 0; border-bottom: 1px solid var(--border); }
+.letter th { color: var(--text-3); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; }
+.letter td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+
+#detail .lvl { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+#detail .chip { width: 13px; height: 13px; border-radius: 3px; flex: none; }
+#detail .lvl strong { font-size: 14px; }
+#detail dt { color: var(--text-3); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 13px; }
+#detail dd { margin: 4px 0 0; color: var(--text-2); font-size: 13.5px; }
+#detail .empty { color: var(--text-3); font-size: 13.5px; margin: 0; }
+
+footer { margin-top: 26px; color: var(--text-3); font-size: 12.5px; max-width: 78ch; }
+</style>
+</head>
+<body data-palette="#86b6ef,#5598e7,#2a78d6,#1c5cab,#104281">
+<div class="wrap">
+
+<header>
+  <h1>Demand letter, level by level</h1>
+  <p>One page of a personal injury demand letter, with every block shaded by the automation
+     level that fills it. Most of the letter is filled deterministically. Two blocks are
+     written by a model, and those are the two a reviewer has to read closely.</p>
+  <p class="synthetic">Synthetic throughout. No client, party, carrier or matter on this page is real.</p>
+</header>
+
+<ul class="legend" id="legend"></ul>
+
+<div class="cols">
+
+  <div>
+    <section class="panel">
+      <h2>What the system already has</h2>
+      <dl class="fields">
+        <dt>System of record</dt>
+        <dd>
+          <code>claimant.full_name</code> Jordan Avery<br>
+          <code>claimant.pronoun_subject</code> they<br>
+          <code>incident.date_of_loss</code> 4 March 2026<br>
+          <code>incident.type</code> Motor vehicle<br>
+          <code>carrier.name</code> Example Mutual Insurance<br>
+          <code>carrier.claim_no</code> SYN-0000000<br>
+          <code>adjuster.full_name</code> Sample Adjuster<br>
+          <code>policy.limits</code> $100,000<br>
+          <code>claimant.has_derivative_claim</code> false
+        </dd>
+        <dt>Billing ledger</dt>
+        <dd>Four providers, eleven months of treatment, itemized charges</dd>
+        <dt>Case documents</dt>
+        <dd>Police report, four sets of medical records, employer wage statement, claimant questionnaire</dd>
+        <dt>Option library</dt>
+        <dd>Nine liability paragraphs, each written by an attorney at the firm</dd>
+      </dl>
+    </section>
+
+    <section class="panel sticky" id="detail-panel">
+      <h2>What fills this block</h2>
+      <div id="detail"><p class="empty">Select a block in the letter.</p></div>
+    </section>
+  </div>
+
+  <section class="panel letter" id="letter"></section>
+
+</div>
+
+<footer>
+  Part of the document automation framework case study. The levels run from 1, language that
+  never changes, to 5, prose a model writes from scoped inputs. The design rule is to use the
+  lowest level that will fill the block.
+</footer>
+
+</div>
+
+<script>
+const LEVELS = [
+  { n: 1, name: "Boilerplate",          var: "--l1" },
+  { n: 2, name: "Merge fields",         var: "--l2" },
+  { n: 3, name: "Conditional logic",    var: "--l3" },
+  { n: 4, name: "AI classification",    var: "--l4" },
+  { n: 5, name: "AI narrative",         var: "--l5" }
+];
+
+const BLOCKS = [
+  {
+    level: 1,
+    html: `<p><strong>VIA CERTIFIED MAIL, RETURN RECEIPT REQUESTED</strong></p>
+           <p>This correspondence is submitted for settlement purposes only and is inadmissible
+           under the applicable rules of evidence. It is not an admission of any fact.</p>`,
+    fills: "Fixed text in the template.",
+    why: "Nothing about it changes case to case, so nothing decides it.",
+    inputs: "None.",
+    risk: "None. It cannot be wrong unless someone edits the template."
+  },
+  {
+    level: 2,
+    html: `<p>Re: Claimant <span class="mf">Jordan Avery</span> &nbsp;·&nbsp;
+           Your insured <span class="mf">Sample Insured</span><br>
+           Claim no. <span class="mf">SYN-0000000</span> &nbsp;·&nbsp;
+           Date of loss <span class="mf">4 March 2026</span><br>
+           Policy limits <span class="mf">$100,000</span></p>`,
+    fills: "Mapped merge fields.",
+    why: "Every value is a field the system of record already holds. A model asked to write this line would be doing lookup work that a mapping does exactly.",
+    inputs: "claimant.full_name, insured.full_name, carrier.claim_no, incident.date_of_loss, policy.limits",
+    risk: "None from the model. The mapping is checked once, then it is right every time."
+  },
+  {
+    level: 3,
+    html: `<p>This firm represents Jordan Avery in connection with injuries
+           <span class="mf">they</span> sustained in the above incident.
+           <span class="mf">They have</span> authorized us to
+           resolve this claim on <span class="mf">their</span> behalf.</p>`,
+    fills: "Pre-written language selected by a rule.",
+    why: "Pronouns and verb agreement branch off a field that exists, and so does the second sentence, which is replaced entirely when a spouse brings a derivative claim. A rule that reads a field cannot pick wrong.",
+    inputs: "claimant.pronoun_subject, claimant.has_derivative_claim",
+    risk: "None from the model. Test the branches once."
+  },
+  {
+    level: 5,
+    html: `<p><span class="ph">On the afternoon of 4 March 2026, Jordan Avery was stopped at a
+           signalized intersection when the insured vehicle struck the rear of their vehicle
+           without braking. The impact pushed their vehicle into the crosswalk. Emergency
+           services attended and transported them to hospital the same evening.</span></p>`,
+    fills: "A model, writing from the police report and the claimant questionnaire.",
+    why: "The facts of every loss are different, so there is nothing to select from and nothing to template. This is what Level 5 exists for.",
+    inputs: "Police report and claimant questionnaire only. The model is not given the medical records or the billing ledger, because nothing in this paragraph should come from them.",
+    risk: "Full. A fluent sentence can assert something that did not happen, so a person reads this before the letter leaves the firm."
+  },
+  {
+    level: 4,
+    html: `<p>Liability rests with your insured. A driver approaching stopped traffic has a duty
+           to maintain a safe following distance and to keep a proper lookout. A rear-end
+           collision with a stationary vehicle establishes a breach of that duty, and your
+           insured has offered no evidence of a sudden emergency.</p>`,
+    fills: "An attorney wrote this paragraph. A model chose it from nine.",
+    why: "No field in the system of record says the impact was a rear-end. A model reads the case and returns one key from a closed list, and the paragraph that lands on the page was written by a lawyer in advance.",
+    inputs: "Police report narrative and incident.type. The model returns a key, a confidence and a one-line basis. It is never asked for prose.",
+    risk: "Wrong choice, right prose. The letter would argue a true rule about the wrong kind of accident, which a reviewer catches by reading one line. Low confidence routes the block to a person instead."
+  },
+  {
+    level: 2,
+    html: `<p>Jordan Avery treated with the following providers:</p>
+           <table>
+             <tr><th>Provider</th><th>Course</th><th class="num">Billed</th></tr>
+             <tr><td>Emergency department</td><td>4 Mar 2026</td><td class="num">$4,180.00</td></tr>
+             <tr><td>Orthopedic clinic</td><td>Mar to Jul 2026</td><td class="num">$9,640.00</td></tr>
+             <tr><td>Physical therapy</td><td>Apr to Nov 2026</td><td class="num">$11,275.00</td></tr>
+             <tr><td>Diagnostic imaging</td><td>Mar, Jun 2026</td><td class="num">$3,410.00</td></tr>
+           </table>`,
+    fills: "A table generated from the billing ledger.",
+    why: "This is the block clients most often assume needs AI. It does not. Provider, date range and billed amount are rows in a ledger, and a model summarizing them can only introduce an error the ledger does not have.",
+    inputs: "Billing ledger, grouped by provider.",
+    risk: "None from the model. The figures are the ledger's."
+  },
+  {
+    level: 2,
+    html: `<p>Special damages to date:</p>
+           <table>
+             <tr><td>Medical charges</td><td class="num">$28,505.00</td></tr>
+             <tr><td>Lost earnings, 11 weeks</td><td class="num">$9,240.00</td></tr>
+             <tr><td>Out of pocket</td><td class="num">$612.00</td></tr>
+             <tr><td><strong>Total specials</strong></td><td class="num"><strong>$38,357.00</strong></td></tr>
+           </table>`,
+    fills: "Arithmetic over the ledger and the wage statement.",
+    why: "Computed, not written. A model doing this arithmetic would be slower, more expensive and occasionally wrong.",
+    inputs: "Billing ledger, employer wage statement.",
+    risk: "None from the model."
+  },
+  {
+    level: 5,
+    html: `<p><span class="ph">Jordan Avery has worked as a veterinary technician for nine years, a
+           role that requires them to lift and restrain animals through most of a shift. They were
+           out of work for eleven weeks and returned on restricted duties, which they remain on.
+           They have stopped the weekend hiking they describe as the main thing they did outside
+           work, and they report sleeping through the night roughly twice a week.</span></p>`,
+    fills: "A model, writing from the claimant questionnaire and the therapy notes.",
+    why: "How an injury changed a particular person's life is the one thing in this letter that no template can hold and no option list can cover.",
+    inputs: "Claimant questionnaire and physical therapy notes. Not the police report, and not the billing ledger.",
+    risk: "Full. This is the second of the two blocks a reviewer reads word by word."
+  },
+  {
+    level: 2,
+    html: `<p>Demand is hereby made in the amount of <span class="mf">$100,000.00</span>,
+           the available policy limit. Please respond in writing on or before
+           <span class="mf">15 January 2027</span>, being thirty days from the date of this letter.</p>`,
+    fills: "Computed values in a fixed sentence.",
+    why: "The demand figure and the response date are derived, and the sentence around them never changes.",
+    inputs: "policy.limits, specials total, letter date plus the firm's standard response window.",
+    risk: "None from the model."
+  },
+  {
+    level: 1,
+    html: `<p>Enclosed please find the records and billing supporting the above. We look forward
+           to your response.</p>`,
+    fills: "Fixed text in the template.",
+    why: "The closing has been the same for years.",
+    inputs: "None.",
+    risk: "None."
+  }
+];
+
+const letter = document.getElementById("letter");
+const detail = document.getElementById("detail");
+const legend = document.getElementById("legend");
+const counts = {};
+
+BLOCKS.forEach((b, i) => {
+  counts[b.level] = (counts[b.level] || 0) + 1;
+  const el = document.createElement("button");
+  el.type = "button";
+  el.className = "block";
+  el.dataset.level = b.level;
+  el.setAttribute("aria-pressed", "false");
+  el.style.setProperty("--rail", `var(${LEVELS[b.level - 1].var})`);
+  el.innerHTML = `<span class="badge">L${b.level}</span>` + b.html;
+  el.addEventListener("click", () => select(i, el));
+  letter.appendChild(el);
+});
+
+LEVELS.forEach(l => {
+  const li = document.createElement("li");
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.setAttribute("aria-pressed", "false");
+  btn.dataset.level = l.n;
+  btn.innerHTML = `<span class="chip" style="background: var(${l.var})"></span>` +
+                  `<span>${l.n}. ${l.name}</span>` +
+                  `<span class="num">${counts[l.n] || 0}</span>`;
+  btn.addEventListener("click", () => filter(l.n, btn));
+  li.appendChild(btn);
+  legend.appendChild(li);
+});
+
+function select(i, el) {
+  const b = BLOCKS[i];
+  const wasOn = el.getAttribute("aria-pressed") === "true";
+  document.querySelectorAll(".block").forEach(x => x.setAttribute("aria-pressed", "false"));
+  if (wasOn) {
+    detail.innerHTML = `<p class="empty">Select a block in the letter.</p>`;
+    return;
+  }
+  el.setAttribute("aria-pressed", "true");
+  const l = LEVELS[b.level - 1];
+  detail.innerHTML = `
+    <div class="lvl">
+      <span class="chip" style="background: var(${l.var})"></span>
+      <strong>Level ${l.n}. ${l.name}</strong>
+    </div>
+    <dl>
+      <dt>What fills it</dt><dd>${b.fills}</dd>
+      <dt>Why this level and not a higher one</dt><dd>${b.why}</dd>
+      <dt>What it is allowed to read</dt><dd>${b.inputs}</dd>
+      <dt>How it can be wrong</dt><dd>${b.risk}</dd>
+    </dl>`;
+}
+
+function filter(n, btn) {
+  const on = btn.getAttribute("aria-pressed") === "true";
+  legend.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false"));
+  if (on) {
+    document.querySelectorAll(".block").forEach(x => x.classList.remove("dim"));
+    return;
+  }
+  btn.setAttribute("aria-pressed", "true");
+  document.querySelectorAll(".block").forEach(x => {
+    x.classList.toggle("dim", Number(x.dataset.level) !== n);
+  });
+}
+</script>
+</body>
+</html>

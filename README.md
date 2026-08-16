@@ -15,16 +15,20 @@ worth fixing**, what I built, and what changed as a result.
 | ★ **[Liability dispute agent](./liability-dispute-agent)** | A chat agent that helps claims staff answer an insurance carrier's liability denial and drafts the reply into the adjuster's email thread, reasoning only from the firm's own reviewed playbooks and verified Vehicle Code sections | Getting liability accepted is **the biggest single measure of a claims rep's performance**, and the firm had no reliable way to make reps better at it. The knowledge was scattered across contradictory documents, the people who could apply it kept leaving, and juniors were filling the gap with public consumer AI. | Copilot Studio, Claude Opus 4.1, SharePoint knowledge set, Power Automate, MS Graph, MCP |
 | ★ **[Marketing attribution](./marketing-attribution)** | Rebuilds a law firm's marketing attribution from ad-account structure through lead capture to settled case value, surfacing ROI per source, campaign and ad group in Power BI | A small criminal-defense and PI firm was spending **well over $500k a year** buying cases and could not attribute a paid search lead at all, because its agency ran one landing page across many ad groups. Its only ROI reporting came from that same agency. | Lawmatics, Clio Manage, Make, Skyvia, BigQuery, Power BI, CallRail, Google Ads |
 | [Firm operating dashboards](./firm-ops-dashboard) | Replicates a $50M PI firm's case management and intake systems into a warehouse hourly, and serves leadership, per-team, intake/marketing and financial reports off one shared model | The firm's data was complete and unreadable. Every question spanning two objects was a manual export, so questions that needed asking weekly stopped being asked. Teams could not see progress toward the bonus they were working for. Shipped as a data-first pilot in place of the AI project the client came in asking about. | Clio Manage/Grow, Skyvia, Azure SQL, Power BI |
-| **[Document generation](./document-generation)** | Assesses each section of a legal template for the least powerful technique that will fill it, then assembles the document from five levels: boilerplate, merge fields, conditional logic, AI classification, AI narrative | Firms want long documents drafted automatically. Merge-field tooling cannot finish the document, and whole-document AI generation costs more, breaks Word formatting, and puts a review burden on every line. Deciding **per section** is what lets a reviewer know which parts of the page could not have come out wrong. Applied at ~a dozen US PI firms, four directly. | Power Automate, Make.com, SharePoint / Drive, Word field logic, CMS APIs, LLM nodes |
+| **[Document automation](./document-generation)** | A framework for automating any document that is mostly the same every time. Assess each block for the least powerful technique that will fill it, then assemble from five levels: boilerplate, merge fields, conditional logic, AI classification, AI narrative. Includes a working demand letter, block by block | Firms want long documents drafted automatically. Merge-field tooling cannot finish the document, and whole-document AI generation costs more, breaks Word formatting, and puts a review burden on every line. Deciding **per block** is what lets a reviewer know which parts of the page could not have come out wrong. Applied at ~a dozen US PI firms, four directly. | Power Automate, Make.com, SharePoint / Drive, Word field logic, system-of-record APIs, LLM nodes |
 | [Lien reduction letters](./lien-reduction-letters) | Turns one settlement form submission into a letter per lienholder, checking whether the lien pool covers the claims and running the statutory 50/50 pro-rata split when it doesn't, so every letter on the matter reconciles | A Missouri PI firm's case management system couldn't compute the lien split, so settlement figures lived in Excel, the pro-rata math was done on a calculator, and totals were hand-typed into a Word template **once per medical provider** | Fillout, Make, Microsoft 365 Word merge, OneDrive |
 
 ★ = flagship deep dive.
-<!-- OPEN: is document generation a flagship? It has the strongest reusable idea of the seven
-and the weakest measured impact. Add ★ and bold the row if yes. -->
+<!-- OPEN: is document automation a flagship? It has the strongest reusable idea of the seven
+and the weakest measured impact. Add ★ and bold the row if yes. Also open: the folder is still
+`document-generation` while the entry is now titled document automation, which is Lara's own
+phrasing. Rename the folder and these links, or retitle the entry. -->
 
-**Document generation is a method, not a build.** It is the approach used whenever one of the
-other solutions has to produce a document, so it appears inside several of the entries above.
-It has its own page because the reusable part is the assessment.
+**Document automation is a framework, not a build.** It is the approach used whenever one of
+the other solutions has to produce a document, so it appears inside several of the entries
+above. It has its own page because the reusable part is the assessment, and that page is
+written as a method rather than a case study. Every application of it so far has been at legal
+firms, though nothing in the framework is specific to legal documents.
 
 Four of these came out of a **single engagement at the same firm**, where one audit produced
 roughly ten solutions and I delivered them as a program rather than as separate briefs. Each of
@@ -46,9 +50,9 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | Liability dispute agent | ✅ | ✅ | | ✅ | | |
 | Marketing attribution | ✅ | | ✅ | ✅ | ✅ | ✅ |
 | Firm operating dashboards | | | ✅ | ✅ | ✅ | ✅ |
-| Document generation | ✅ | ✅ | | ✅ | | ✅ |
+| Document automation | ✅ | ✅ | | ✅ | | ✅ |
 | Lien reduction letters | | | | ✅ | | ✅ |
-<!-- OPEN: two things to check on the document generation row.
+<!-- OPEN: two things to check on the document automation row.
   (a) "LLM agents" is the wrong column name for it. That work is prompt orchestration
       (classification nodes, scoped drafting nodes), not agents. Consider renaming the column
       to "LLM systems" so the row is honest, or tell me to blank the tick.
@@ -58,7 +62,9 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 ## How to read these
 
 Every case study follows the same eight sections, so they're comparable: context, diagnosis,
-problem, solution, architecture, my involvement, impact, what I'd do differently.
+problem, solution, architecture, my involvement, impact, what I'd do differently. Document
+automation is the exception, since it covers a framework applied at several clients rather than
+one build, and a diagnosis-to-impact arc does not fit it.
 
 The diagnosis section comes second on purpose. In most of this work the brief I was handed
 wasn't the problem that needed solving, and the reasoning that got from one to the other is

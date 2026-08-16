@@ -125,7 +125,7 @@ corrected, so none of the original guesses survive.
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 exists with one item, Lara's, and may gain more. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in `dashboard.md`, and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
 | `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. Outstanding: in-production-since date and user count, handover-doc authorship, and the evidence screenshots |
-| `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build | TBD, leaning flagship | Drafted. Awaiting impact numbers, role detail, video clearance |
+| `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build. Entry retitled "Document automation" 2026-08-16, folder not yet renamed | TBD, leaning flagship | **Restructured 2026-08-16 as a framework page**, off the eight-section template. Carries a synthetic demand-letter demo. Awaiting: the demand-letter assessment table checked, impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 | `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | **Complete except for one `OPEN`** (what Lara's rework covered). **§2 and §6 deliberately removed 2026-08-16**, so it runs six sections. ~2 weeks, completed and delivered |
 
@@ -778,6 +778,49 @@ One line per session, newest last.
   the letters exist"), a dangling quantifier ("Every lienholder cannot be paid in full" to "Not
   every lienholder can be paid in full"), and a fragment in a code comment. Bold-inside-prose
   was left alone, since it is house style across all seven entries.
+
+- **2026-08-16 (document automation, restructured as a framework page).** On `main`. Lara said
+  the eight-section template does not fit a framework, and that the approach is not legal-only.
+  Both are right, and the entry is rebuilt around it.
+  **What the misfit was.** §2 Diagnosis was not a diagnosis, it was the argument for why
+  whole-document AI and merge-fields-only both fail. §3 Problem restated it. §7 Impact had no
+  number and its table described a property of the method rather than a measured outcome. The
+  five-level table, the strongest thing on the page, sat two thirds down.
+  **New shape, eight sections but not the template's**: 1 the framework (levels table first
+  screen), 2 why the two obvious approaches fail, 3 how to assess a document (a five-step
+  procedure, previously two sentences, and the most transferable part), 4 worked example, 5
+  where the work runs, 6 the two levels that need care, 7 trade-offs and constraints, 8 my
+  involvement and what changed. **At a glance rows changed too**: Client / Timeline / Status do
+  not apply to a framework, so it is What it is / Applies to / Where it has been used / My role
+  / Provenance / Stack / Status.
+  **Generalization rule, confirmed by Lara**: she has not applied it outside legal but sees no
+  reason it would differ. So the framework is written generally ("document", "system of
+  record"), with one line saying every application so far has been US plaintiff-side PI firms,
+  and no claim it has been proven elsewhere. "The CMS" survives only inside the worked example.
+  **The worked example is a demand letter**, Lara's choice. It carries a section-by-section
+  assessment table (section, what varied between past letters, level, why not a level higher).
+  **That table is Claude's reconstruction and is flagged `OPEN` as the first thing to check.**
+  The two findings it produces: most of a demand letter is Levels 1 to 3, and the treatment
+  summary and damages blocks, which clients assume need AI, are the most mechanical on the page.
+  **A demo shipped**: `assets/demand-letter-levels.html`, self-contained, synthetic throughout,
+  every block shaded by level with a click-through panel giving what fills it, what it may read,
+  and how it can be wrong. Lara chose static-and-portfolio-facing over a runnable version with
+  real model calls, so **do not build the runnable one without asking**. Screenshots committed
+  in both themes because GitHub renders committed HTML as source, not as a page.
+  Colors are an **ordinal** ramp (levels are ordered), single blue hue, validated in both modes
+  with the dataviz skill's script. Text stays in text tokens; the rail and an L1..L5 badge carry
+  identity, so the letter stays readable and identity is never colour-alone.
+  **Structural cut**: the level-tagged `jsonc` template excerpt is gone, because the demo page
+  does that job better. The Level 4 contract excerpt stays and was **relabelled from "Redacted
+  and simplified" to "Not source code"**, matching the lien and provider fixes.
+  **`Redacted and…` labels: there are five in the repo, not the two this file recorded.**
+  `liability-dispute-agent`, `fnol-voice-agent`, and `marketing-attribution` twice, plus the one
+  fixed here. All still need Lara's ruling on which are real pasted artifacts.
+  **No "what I'd do differently" section**, per the standing rule. An `OPEN` sits where it would
+  go. Root README updated: row renamed to Document automation, the method paragraph rewritten,
+  the eight-sections line given an exception clause, capability row renamed.
+  **Open naming question**: the folder is still `document-generation` while the entry is titled
+  document automation.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
