@@ -55,7 +55,21 @@ body {
   font: 15px/1.55 ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   padding: 26px 20px 60px;
 }
-.wrap { max-width: 1060px; margin: 0 auto; }
+.wrap { max-width: 1500px; margin: 0 auto; }
+
+/* two columns: supporting panels left, the document right */
+.cols {
+  display: grid; grid-template-columns: minmax(330px, 420px) minmax(0, 1fr);
+  gap: 22px; align-items: start; margin-top: 18px;
+}
+.side { position: sticky; top: 14px; max-height: calc(100vh - 28px); overflow-y: auto; }
+@media (max-width: 1080px) {
+  .cols { grid-template-columns: minmax(0, 1fr); }
+  .side { position: static; max-height: none; overflow: visible; display: contents; }
+  .side #panel { order: 1; }
+  .paperwrap { order: 2; }
+  .side .sources { order: 3; }
+}
 
 header h1 { font-size: 22px; margin: 0 0 6px; letter-spacing: -0.01em; }
 header p { margin: 0; color: var(--text-2); max-width: 70ch; }
@@ -80,19 +94,21 @@ header p { margin: 0; color: var(--text-2); max-width: 70ch; }
 
 /* ---------- detail panel, top ---------- */
 #panel {
-  position: sticky; top: 14px; z-index: 20;
-  margin: 16px 0 22px; padding: 14px 18px;
+  padding: 14px 18px;
   background: var(--chrome); border: 1px solid var(--border);
   border-radius: 10px; min-height: 104px;
-  box-shadow: 0 6px 22px -14px rgba(0,0,0,.5);
+}
+/* stays put while the source data scrolls beneath it */
+@media (min-width: 1081px) {
+  #panel { position: sticky; top: 0; z-index: 5; box-shadow: 0 8px 16px -12px rgba(0,0,0,.45); }
 }
 #panel .hint { color: var(--text-3); font-size: 13.5px; margin: 0; padding: 10px 0; }
 #panel .head { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; flex-wrap: wrap; }
 #panel .head .chip { width: 13px; height: 13px; border-radius: 3px; flex: none; box-shadow: 0 0 0 1px rgba(0,0,0,.28) inset; }
 #panel .head strong { font-size: 14.5px; }
 #panel .head .what { color: var(--text-2); font-size: 13.5px; }
-#panel .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 22px; }
-@media (max-width: 820px) { #panel .grid { grid-template-columns: minmax(0, 1fr); } }
+#panel .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@media (min-width: 1081px) and (min-height: 1200px) { #panel .grid { gap: 14px; } }
 #panel dt { color: var(--text-3); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
 #panel dd { margin: 4px 0 0; color: var(--text-2); font-size: 13.5px; }
 #panel dl { margin: 0; }
@@ -167,19 +183,18 @@ header p { margin: 0; color: var(--text-2); max-width: 70ch; }
 .sig .line { width: 190px; border-bottom: 1px solid var(--paper-ink-2); height: 26px; margin: 6px 0 4px; }
 
 /* ---------- source data, bottom ---------- */
-.sources { margin-top: 30px; padding: 20px 22px; background: var(--chrome); border: 1px solid var(--border); border-radius: 10px; }
-.sources > h2 { font-size: 15px; margin: 0 0 4px; }
-.sources > p { margin: 0 0 18px; color: var(--text-2); font-size: 13.5px; max-width: 76ch; }
-.sgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
-@media (max-width: 940px) { .sgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 560px) { .sgrid { grid-template-columns: minmax(0, 1fr); } }
+.sources { margin-top: 16px; padding: 18px 20px; background: var(--chrome); border: 1px solid var(--border); border-radius: 10px; }
+.sources > h2 { font-size: 14px; margin: 0 0 4px; }
+.sources > p { margin: 0 0 16px; color: var(--text-2); font-size: 13px; }
+.sgrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+@media (max-width: 1080px) { .sgrid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; } }
 .sgrid h3 {
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
   color: var(--text-3); margin: 0 0 9px; font-weight: 600;
   padding-bottom: 7px; border-bottom: 1px solid var(--border);
 }
 .src {
-  padding: 5px 8px; margin: 0 -8px 2px; border-radius: 5px;
+  padding: 4px 8px; margin: 0 -8px 1px; border-radius: 5px;
   border-left: 2px solid transparent; font-size: 13px; color: var(--text-2);
   transition: background-color .12s, border-color .12s, opacity .12s;
 }
@@ -209,16 +224,62 @@ footer { margin-top: 24px; color: var(--text-3); font-size: 12.5px; max-width: 8
   <h1>Demand letter, level by level</h1>
   <p>A personal injury demand letter with every filled block marked by the automation level
      behind it. Click a marker in the margin, a highlighted field, or a generated paragraph.
-     The panel says what fills it, and the case management data it reads lights up at the
-     bottom of the page.</p>
+     The panel says what fills it, and the case management data that block reads lights up
+     alongside.</p>
   <p class="synthetic">Synthetic throughout. No firm, client, party, carrier or matter on this page is real.</p>
 </header>
 
 <ul class="legend" id="legend"></ul>
 
+<div class="cols">
+<div class="side">
+
 <section id="panel" aria-live="polite">
   <p class="hint">Select a marker, a highlighted field, or a generated paragraph in the letter.</p>
 </section>
+
+<section class="sources">
+  <h2>What the case management system already has</h2>
+  <p>Everything the letter is built from. Select anything in the letter and the data behind it
+     lights up here.</p>
+  <div class="sgrid">
+    <div>
+      <h3>Case fields</h3>
+      <div class="src" data-src="s.claimant"><span class="used">used</span><code>claimant.full_name</code><span class="v">Jordan Avery</span></div>
+      <div class="src" data-src="s.pronoun"><span class="used">used</span><code>claimant.pronoun_subject</code><span class="v">they</span></div>
+      <div class="src" data-src="s.derivative"><span class="used">used</span><code>claimant.has_derivative_claim</code><span class="v">false</span></div>
+      <div class="src" data-src="s.dol"><span class="used">used</span><code>incident.date_of_loss</code><span class="v">4 March 2026</span></div>
+      <div class="src" data-src="s.itype"><span class="used">used</span><code>incident.type</code><span class="v">Motor vehicle</span></div>
+      <div class="src" data-src="s.insured"><span class="used">used</span><code>insured.full_name</code><span class="v">Sample Insured</span></div>
+      <div class="src" data-src="s.carrier"><span class="used">used</span><code>carrier.name</code><span class="v">Example Mutual Insurance</span></div>
+      <div class="src" data-src="s.adjuster"><span class="used">used</span><code>adjuster.full_name</code><span class="v">Sample Adjuster</span></div>
+      <div class="src" data-src="s.claimno"><span class="used">used</span><code>carrier.claim_no</code><span class="v">SYN-0000000</span></div>
+      <div class="src" data-src="s.limits"><span class="used">used</span><code>policy.limits</code><span class="v">$100,000.00</span></div>
+    </div>
+    <div>
+      <h3>Billing ledger</h3>
+      <div class="src" data-src="s.ledger"><span class="used">used</span><code>ledger.charges</code><span class="v">Four providers, eleven months, itemized charges with dates</span></div>
+      <div class="src" data-src="s.wage"><span class="used">used</span><code>employment.wage_statement</code><span class="v">Employer statement, eleven weeks off work</span></div>
+      <div class="src" data-src="s.oop"><span class="used">used</span><code>ledger.out_of_pocket</code><span class="v">Claimant receipts</span></div>
+    </div>
+    <div>
+      <h3>Case documents</h3>
+      <div class="src" data-src="s.police"><span class="used">used</span><code>docs.police_report</code><span class="v">Narrative, diagram, citation</span></div>
+      <div class="src" data-src="s.records"><span class="used">used</span><code>docs.medical_records</code><span class="v">Four sets, one per provider</span></div>
+      <div class="src" data-src="s.therapy"><span class="used">used</span><code>docs.therapy_notes</code><span class="v">Restrictions and progress notes</span></div>
+      <div class="src" data-src="s.quest"><span class="used">used</span><code>docs.claimant_questionnaire</code><span class="v">Occupation, activities, sleep, daily impact</span></div>
+    </div>
+    <div>
+      <h3>Written by the firm</h3>
+      <div class="src" data-src="s.template"><span class="used">used</span><code>template.fixed_text</code><span class="v">Letterhead, notice, settlement recital, closing, signature block</span></div>
+      <div class="src" data-src="s.liabilitylib"><span class="used">used</span><code>library.liability_paragraphs</code><span class="v">Nine paragraphs, each written by an attorney</span></div>
+      <div class="src" data-src="s.window"><span class="used">used</span><code>firm.response_window</code><span class="v">Thirty days</span></div>
+    </div>
+  </div>
+</section>
+
+</div>
+
 
 <div class="paperwrap">
 <div class="paper" id="paper">
@@ -363,45 +424,7 @@ footer { margin-top: 24px; color: var(--text-3); font-size: 12.5px; max-width: 8
 </div>
 </div>
 
-<section class="sources">
-  <h2>What the case management system already has</h2>
-  <p>Everything the letter is built from. Select anything in the letter above and the data behind
-     it lights up here.</p>
-  <div class="sgrid">
-    <div>
-      <h3>Case fields</h3>
-      <div class="src" data-src="s.claimant"><span class="used">used</span><code>claimant.full_name</code><span class="v">Jordan Avery</span></div>
-      <div class="src" data-src="s.pronoun"><span class="used">used</span><code>claimant.pronoun_subject</code><span class="v">they</span></div>
-      <div class="src" data-src="s.derivative"><span class="used">used</span><code>claimant.has_derivative_claim</code><span class="v">false</span></div>
-      <div class="src" data-src="s.dol"><span class="used">used</span><code>incident.date_of_loss</code><span class="v">4 March 2026</span></div>
-      <div class="src" data-src="s.itype"><span class="used">used</span><code>incident.type</code><span class="v">Motor vehicle</span></div>
-      <div class="src" data-src="s.insured"><span class="used">used</span><code>insured.full_name</code><span class="v">Sample Insured</span></div>
-      <div class="src" data-src="s.carrier"><span class="used">used</span><code>carrier.name</code><span class="v">Example Mutual Insurance</span></div>
-      <div class="src" data-src="s.adjuster"><span class="used">used</span><code>adjuster.full_name</code><span class="v">Sample Adjuster</span></div>
-      <div class="src" data-src="s.claimno"><span class="used">used</span><code>carrier.claim_no</code><span class="v">SYN-0000000</span></div>
-      <div class="src" data-src="s.limits"><span class="used">used</span><code>policy.limits</code><span class="v">$100,000.00</span></div>
-    </div>
-    <div>
-      <h3>Billing ledger</h3>
-      <div class="src" data-src="s.ledger"><span class="used">used</span><code>ledger.charges</code><span class="v">Four providers, eleven months, itemized charges with dates</span></div>
-      <div class="src" data-src="s.wage"><span class="used">used</span><code>employment.wage_statement</code><span class="v">Employer statement, eleven weeks off work</span></div>
-      <div class="src" data-src="s.oop"><span class="used">used</span><code>ledger.out_of_pocket</code><span class="v">Claimant receipts</span></div>
-    </div>
-    <div>
-      <h3>Case documents</h3>
-      <div class="src" data-src="s.police"><span class="used">used</span><code>docs.police_report</code><span class="v">Narrative, diagram, citation</span></div>
-      <div class="src" data-src="s.records"><span class="used">used</span><code>docs.medical_records</code><span class="v">Four sets, one per provider</span></div>
-      <div class="src" data-src="s.therapy"><span class="used">used</span><code>docs.therapy_notes</code><span class="v">Restrictions and progress notes</span></div>
-      <div class="src" data-src="s.quest"><span class="used">used</span><code>docs.claimant_questionnaire</code><span class="v">Occupation, activities, sleep, daily impact</span></div>
-    </div>
-    <div>
-      <h3>Written by the firm</h3>
-      <div class="src" data-src="s.template"><span class="used">used</span><code>template.fixed_text</code><span class="v">Letterhead, notice, settlement recital, closing, signature block</span></div>
-      <div class="src" data-src="s.liabilitylib"><span class="used">used</span><code>library.liability_paragraphs</code><span class="v">Nine paragraphs, each written by an attorney</span></div>
-      <div class="src" data-src="s.window"><span class="used">used</span><code>firm.response_window</code><span class="v">Thirty days</span></div>
-    </div>
-  </div>
-</section>
+</div>
 
 <footer>
   Part of the document automation framework case study. The levels run from 1, language that never
@@ -647,7 +670,20 @@ function select(id) {
       <dl><dt>Why this level and not a higher one</dt><dd>${it.why}</dd></dl>
       <dl><dt>How it can be wrong</dt><dd>${it.risk}</dd></dl>
     </div>
-    ${reads.length ? `<dl style="margin-top:12px"><dt>Reading</dt><dd>${reads.length} source${reads.length > 1 ? "s" : ""} highlighted below</dd></dl>` : ""}`;
+    ${reads.length ? `<dl style="margin-top:12px"><dt>Reading</dt><dd>${reads.length} source${reads.length > 1 ? "s" : ""} highlighted in the case data</dd></dl>` : ""}`;
+
+  scrollFirstLitIntoView();
+}
+
+// The left column scrolls on its own, so bring the first lit source under the
+// pinned panel rather than leaving it below the fold.
+function scrollFirstLitIntoView() {
+  const side = document.querySelector(".side");
+  const lit = document.querySelector(".src.lit");
+  if (!side || !lit || side.scrollHeight <= side.clientHeight) return;
+  const pad = panel.offsetHeight + 14;
+  const top = lit.getBoundingClientRect().top - side.getBoundingClientRect().top;
+  if (top < pad || top > side.clientHeight - 40) side.scrollTop += top - pad;
 }
 
 function filter(n, btn) {

@@ -136,14 +136,15 @@ browser** to click through the letter. GitHub shows committed HTML as source rat
 rendering it, so use the **Download raw file** button on that page and open the saved file. One
 file, nothing to install.
 
-Click a marker in the letter's margin, a highlighted field or a generated paragraph, and the
-panel at the top names the level, what fills the block, why not a level higher, and how it can
-be wrong. The case management data that block reads lights up at the bottom of the page.
+The letter sits on the right. Click a marker in its margin, a highlighted field or a generated
+paragraph, and the panel on the left names the level, what fills the block, why not a level
+higher, and how it can be wrong. The case management data that block reads lights up in the
+column beneath the panel, so every block maps back to its source.
 Synthetic throughout, so no firm, client, party, carrier or matter on it is real.
 
 The letter with the liability paragraph selected, showing the three sources it reads:
 
-![A synthetic personal injury demand letter laid out as a Word document. Each block carries a level marker in the left margin, merge fields are highlighted inline, and the two model-written paragraphs are tinted. The liability paragraph is selected, and three of the case management data points listed below the letter are lit as its sources](./assets/demand-letter-levels.png)
+![A synthetic personal injury demand letter laid out as a Word document on the right. Each block carries a level marker in the left margin, merge fields are highlighted inline, and the two model-written paragraphs are tinted. The liability paragraph is selected, and in the left column the detail panel explains it while three case management data points are lit as its sources](./assets/demand-letter-levels.png)
 
 ## 5. Where the work runs
 
@@ -348,10 +349,10 @@ regret, a client who wanted more AI than the document justified, a platform that
 <summary>Evidence</summary>
 
 **[`demand-letter-levels.html`](./assets/demand-letter-levels.html)**, a synthetic personal
-injury demand letter laid out as a document, with a level marker in the margin of every block,
-merge fields highlighted where they are actually filled, and the case management data behind
-each block listed underneath. Download it with the **Download raw file** button and open it in
-a browser. Static screenshots are committed alongside for reading in place:
+injury demand letter laid out as a document on the right, with a level marker in the margin of
+every block and merge fields highlighted where they are actually filled. The detail panel and
+the case management data behind each block sit in a column on the left. Download it with the
+**Download raw file** button and open it in a browser. Static screenshots are committed alongside for reading in place:
 [light](./assets/demand-letter-levels.png), [dark](./assets/demand-letter-levels-dark.png).
 
 <!-- Still to add:
