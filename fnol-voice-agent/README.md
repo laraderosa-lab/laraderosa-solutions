@@ -334,18 +334,54 @@ it's your section. -->
 ---
 
 <details>
-<summary>Evidence</summary>
+<summary>Evidence: four screenshots of the working system</summary>
 
-<!-- Candidates, all needing a redaction pass before they go in:
-     - Review app screenshot with the carrier list (client/party names blurred)
-     - Accuracy check: field-by-field comparison view, green/yellow/red
-     - A Teams outcome card
-     - A sanitized call transcript excerpt (best single artifact, since it shows the agent
-       handling a real carrier interview; needs heavy redaction: no party names, no policy
-       or claim numbers, no carrier name)
-     Check every image for: firm name, party names, claim/policy numbers, dollar figures,
-     dates of loss, adjuster names, PHI. -->
+All four are the deployed system running on a **test record**. The parties, policy numbers and
+incident details in them are fabricated, which is why two of the four carriers on the case are
+called "Test Insurance Company".
 
-Not yet added.
+**One card per party per carrier.** The case here has three parties and four carriers between
+them. The client's own carrier is open, showing the three fields the call needs, and each
+defendant collapses to its own carrier count.
+
+![The review app's carrier section. The client's first-party carrier is expanded with carrier name, phone number and policy number filled in. Below it, two defendants are collapsed, one listing two carriers and one listing a single carrier](./assets/review-app-carriers.png)
+
+**Incident data is checked once for the whole batch.** Every carrier on the case gets asked the
+same questions about the accident, so facts of loss, location, weather and police details are
+one form rather than four. The footer counts what will be called, what will be skipped, and
+what is still missing.
+
+![The Incident and case details form, headed "The same across every carrier call. Verify and edit once here; changes apply to all calls in the batch". Date of loss, time, a paragraph of facts of loss, cross street, city, weather and police agency are pre-filled and editable. The footer reads "0 selected, 4 will be skipped, 1 required field missing"](./assets/review-app-incident-fields.png)
+
+**Nothing dials until someone confirms it.** The reviewer picks carriers, and the confirmation
+lists both what will be called and what will not, because a carrier left unticked is a claim
+that does not get opened.
+
+![A modal titled "Confirm before opening claims", reading "Only the selected carriers will be called. The rest are skipped and won't trigger a call". One carrier is listed under "Will be called" and three under "Will be skipped". The action button reads "Call 1 carrier"](./assets/review-app-confirm-calls.png)
+
+**The outcome arrives in Teams.** The card carries whether the claim was opened, how long the
+call ran, how it ended and a summary of what happened on the line, so staff can see how a call
+went without opening the transcript.
+
+![A Teams card from the FNOL Agent bot titled "FNOL Call Summary". A call information table lists client, claim type, defendant, carrier called, number called and matter ID. A second block reports the claim was filed successfully, caller sentiment, duration of 309 seconds and how the call ended, followed by a paragraph summarising the call, including several transfers before reaching a person](./assets/teams-call-summary.png)
+
+<!-- OPEN: three things on this evidence section.
+  1. I have written these up as a test record, on the basis that two of the carriers are named
+     "Test Insurance Company" and the number dialled in the Teams card is not the carrier's
+     number shown in the app. Confirm that, because the page now says so publicly. If any of
+     it is a real matter, these come straight back out.
+  2. The carriers screenshot has an "+ Add involved party" button in it, and §5 says carriers
+     can only be added in the case management system, never in the app. A reader who looks at
+     both will ask. Which is it: a party can be added in the app but never a carrier, or does
+     that button also predate the rule?
+  3. Still missing the best artifact, the accuracy check. The call-results view you sent shows
+     the field-by-field comparison working, 96%, 27 correct and 1 incorrect, with the date of
+     loss caught as a key-field discrepancy. That is §4 step 7 and the §5 evaluation row
+     demonstrated in one image, and I have not committed it, because it is a real matter: a
+     matter number, a partly-visible claim number, the client's full date of birth, the real
+     date of loss, the street and city of the accident, two real carriers, a carrier rep's
+     first name, a case rep's first name and a raw option-set integer all survive the blur
+     pass on it. Re-run that view against the same test record and send it again and it goes
+     straight in. -->
 
 </details>
