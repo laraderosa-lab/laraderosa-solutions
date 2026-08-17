@@ -1,5 +1,7 @@
 # Firm operating dashboards
 
+One of the two builds behind [how I decide what goes on a dashboard](./README.md).
+
 > A reporting layer over a plaintiff-side personal injury firm's case management system,
 > replicating case and intake data into a warehouse every hour so leadership, each case team
 > and finance run the business off shared live numbers instead of manual exports.

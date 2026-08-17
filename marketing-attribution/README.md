@@ -255,8 +255,8 @@ thirteen objects, with auth, paging, throttling, retry and incremental-sync rule
 hourly into BigQuery. It is the second excerpt in §5.
 
 The dashboard runs to five pages and is covered separately, in
-[`dashboard.md`](./dashboard.md). It is the only part of the system anyone opens after
-handover.
+[the marketing ROI dashboard](../dashboards/marketing-roi-dashboard.md). It is the only part of
+the system anyone opens after handover.
 
 ## 5. Architecture
 
@@ -289,7 +289,7 @@ flowchart TB
   subgraph bi["Reporting"]
     sky["Skyvia replication, hourly<br/>custom REST connector, 13 objects<br/>incremental, throttled, retrying"]
     bq[("BigQuery<br/>one table per object")]
-    pbi["Power BI<br/>five pages, see dashboard.md"]
+    pbi["Power BI<br/>five pages"]
   end
 
   alert(["Alert to me"])
@@ -482,7 +482,7 @@ itself.
 | Personal injury revenue visible to ROI reporting | None. Only criminal defense, priced at intake | Settled PI value synced back from Clio daily on an explicit final-value gate |
 | Conversion rates | Overstated. A case dropped in Clio stayed hired in Lawmatics permanently, since nothing carried the drop back | Corrected daily, with drops carried back from Clio |
 | Cost per source | Known only for paid search | Every source carries a cost, including organic ones costed at the time they consume |
-| Reporting | The agency's monthly report, on impressions and clicks | Power BI over an hourly warehouse: ROI and conversion by source, campaign and ad group, plus rejection reasons. [The five pages](./dashboard.md) |
+| Reporting | The agency's monthly report, on impressions and clicks | Power BI over an hourly warehouse: ROI and conversion by source, campaign and ad group, plus rejection reasons. [The five pages](../dashboards/marketing-roi-dashboard.md) |
 | Basis for evaluating the agency and the lead vendor | The vendors' own reports | The firm's own data |
 
 The firm went from being unable to attribute a paid search lead at all to attributing it down
@@ -542,7 +542,10 @@ If none of it was measured, say so and I will write one honest qualitative line 
 
 ---
 
-The dashboard, in detail: [`dashboard.md`](./dashboard.md).
+The dashboard, in detail: [the marketing ROI dashboard](../dashboards/marketing-roi-dashboard.md).
+It is one of the two builds behind
+[how I decide what goes on a dashboard](../dashboards), which sets out the strategic and
+operations layers and the data work both of them need underneath.
 
 <details>
 <summary>Evidence</summary>
@@ -552,7 +555,7 @@ The dashboard, in detail: [`dashboard.md`](./dashboard.md).
      - The Make scenario canvas showing the campaign routers (redact campaign names, which
        contain the practice area and the state)
      - The monthly cost sheet (redact vendor names, or redact spend, not neither)
-     Dashboard screenshots live in dashboard.md.
+     Dashboard screenshots live in ../dashboards/marketing-roi-dashboard.md.
      Check every image for: firm name, staff names, vendor names, campaign names containing
      the city or state, tracking phone numbers, real spend figures, client names. -->
 

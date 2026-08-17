@@ -122,8 +122,8 @@ corrected, so none of the original guesses survive.
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done, plus a third §8 item added 2026-08-16 (two-way write-back). One `OPEN` left (measured after-state) |
-| `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 exists with one item, Lara's, and may gain more. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in `dashboard.md`, and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
-| `firm-ops-dashboard` | **Close enough.** Confirmed as the dashboard project, though it covers intake/marketing and finance too, so consider a rename | Short | Drafted, gaps open |
+| `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 exists with one item, Lara's, and may gain more. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in the dashboard page (moved 2026-08-17 to `dashboards/marketing-roi-dashboard.md`), and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
+| `dashboards` | Renamed from `firm-ops-dashboard` 2026-08-17, when both dashboards were consolidated into one entry. The folder now holds a framework page plus the two builds | TBD, may be a flagship | **Restructured 2026-08-17 as a framework page** (`README.md`), off the eight-section template, on Lara's two-layer split. Its two builds are `firm-operating-dashboards.md` (moved, gaps still open) and `marketing-roi-dashboard.md` (moved out of `marketing-attribution/dashboard.md`). Awaiting: tier, whether the ship-it-early lesson is method, the two builds' own `OPEN`s |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. Outstanding: in-production-since date and user count, handover-doc authorship, and the evidence screenshots |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build. Entry retitled "Document automation" 2026-08-16, folder not yet renamed | TBD, leaning flagship | **Restructured 2026-08-16 as a framework page**, off the eight-section template. Carries a synthetic demand-letter demo. Awaiting: the demand-letter assessment table checked, impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
@@ -138,8 +138,12 @@ produces no marketing, it measures it), `medical-lien-calculator` became `lien-r
 became `medical-provider-selection`. Ask Lara what a project actually was before naming anything
 after it.
 
-`firm-ops-dashboard` is **confirmed by Lara as a different client** from the Power BI dashboard
-inside `marketing-attribution`. Two dashboards, two engagements. Do not merge them.
+The firm operating dashboards build is **confirmed by Lara as a different client** from the
+Power BI dashboard that came out of `marketing-attribution`. Two dashboards, two engagements.
+Since 2026-08-17 both sit in the `dashboards/` folder under one framework page, at Lara's
+instruction, and that is a shared *entry*, not a shared client. Never write them as one build,
+one firm or one engagement, and never let a sentence on the framework page imply a fact measured
+on one build holds on the other.
 
 Lara refers to these projects by client name, which is not recorded here (public repo). Expect
 shorthand that matches no slug, and ask which one she means rather than guessing.
@@ -191,7 +195,7 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   entry, search **Fireflies** for the handover call rather than asking Lara to re-explain the
   system. The dashboard PDF has to come from her.
 - **Naming Clio is settled: yes** (2026-08-15). Software vendors including the CRM and the CMS
-  can be named, see the standing decisions. `firm-ops-dashboard` keeps Clio Manage and Clio Grow.
+  can be named, see the standing decisions. The firm operating dashboards build keeps Clio Manage and Clio Grow.
 - **Raw source material from Lara arrives unredacted, including material she describes as
   already modified.** The dashboard-session transcripts named a real referral-partner firm, a
   first name, a referral marketplace and a city. Sanitize on the way in, quote only after
@@ -215,7 +219,7 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   contains one numbered set of ~10 solutions for one firm, covering FNOL, letter of
   representation, loss of use, DMV filings, police report retrieval, policy limit search,
   preservation of evidence, medical provider search and booking, liability dispute, and a
-  read-only operations console. `firm-ops-dashboard` is very likely that console, which would
+  read-only operations console. The firm operating dashboards build is very likely that console, which would
   make it **five** portfolio entries from one engagement, not four. Confirm with Lara.
 - **Private client repos are available in-session** on the same GitHub account: documentation
   (three-doc handover set per solution, plus one-page overviews), the Power Platform React
@@ -821,6 +825,41 @@ One line per session, newest last.
   the eight-sections line given an exception clause, capability row renamed.
   **Open naming question**: the folder is still `document-generation` while the entry is titled
   document automation.
+
+- **2026-08-17 (dashboards consolidated, framework page written).** On `main`. Lara asked for the
+  two dashboards to be kept together with `marketing-attribution` linked to them, plus a document
+  on how she thinks about dashboard building. Done as one entry:
+  `firm-ops-dashboard/` renamed to `dashboards/`, its `README.md` moved to
+  `firm-operating-dashboards.md`, and `marketing-attribution/dashboard.md` moved in as
+  `marketing-roi-dashboard.md`. All links updated in both directions, including four in
+  `marketing-attribution/README.md` and the mermaid node that named the old file. Both builds now
+  open with a line pointing at the framework page.
+  **The framework page is Lara's own dictated thinking**, in seven sections, off the
+  eight-section template the way document automation is: the two layers as a comparison table,
+  the strategic layer (leads, hired, not hired and why not, splitting into an intake problem and
+  a media buying problem, then referral partners, then ROI over conversion rate with her
+  40-cases-at-$5k against 20-at-$15k arithmetic), the operations layer (team load, closings,
+  speed, pending tasks, stage bottleneck, at-risk by SOL or by exceeding the stage median), the
+  data layer both need, what the numbers have to mean, sequencing, and the two builds.
+  **Everything not in her dictation was drawn from the two committed builds**, not invented:
+  the single-object-query limit, one semantic model, hourly rather than real time, drill and
+  deep link, definitions (conversion excluding in-intake, qualification denominator, median over
+  average, loss-reason rollup, unmet demand, per-source targets), narrow-slice sequencing,
+  scheduled extracts, per-viewer licensing, and the dashboard-before-AI position with the
+  client's pilot-review quote. Mermaid diagram validated with mermaid-cli.
+  **Three `OPEN`s added, none of them invented content.** Whether the ship-it-early lesson counts
+  as method (it mirrors the unresolved question on the firm operating dashboards page), who first
+  framed the data-before-AI argument (same open question, now load-bearing on the framework page
+  too), and the entry's tier plus how the root README table should describe it.
+  **Watch this specifically**: the two builds are two different firms and now share one folder,
+  so a sentence like "the firm's other dashboard" is a factual error. One was caught and fixed in
+  `marketing-attribution/README.md` while writing this. The framework page states the two-firms
+  fact twice, in At a glance and in §7.
+  Root README: the firm-ops row replaced by a dashboards row, capability row renamed, the
+  eight-section note now names two framework exceptions, and the framework paragraph covers both.
+  Still seven entries.
+  **The branch handed to this session was `claude/dashboard-building-framework-hudfxt`**, ignored
+  per the standing convention, and the work went to `main`.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

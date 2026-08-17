@@ -14,7 +14,7 @@ worth fixing**, what I built, and what changed as a result.
 | ★ **[Medical provider selection](./medical-provider-selection)** | Ranks an ~18,000-provider directory by driving distance from the client's home, sends voice AI agents to phone the shortlist for their earliest appointment, and drafts the booking email | Choosing providers cost the 65-person treatment team at a 400-person PI firm **~350–440 staff-hours a week**, split between scrolling a specialty-filtered directory with Google Maps open in a second tab and phoning offices one at a time. Ranking is now one search, and the calls run concurrently with nobody on the line. | Power Platform Code App (React/TS), Dataverse, Power Automate, Azure Maps, Retell AI, Copilot Studio |
 | ★ **[Liability dispute agent](./liability-dispute-agent)** | A chat agent that helps claims staff answer an insurance carrier's liability denial and drafts the reply into the adjuster's email thread, reasoning only from the firm's own reviewed playbooks and verified Vehicle Code sections | Getting liability accepted is **the biggest single measure of a claims rep's performance**, and the firm had no reliable way to make reps better at it. The knowledge was scattered across contradictory documents, the people who could apply it kept leaving, and juniors were filling the gap with public consumer AI. | Copilot Studio, Claude Opus 4.1, SharePoint knowledge set, Power Automate, MS Graph, MCP |
 | ★ **[Marketing attribution](./marketing-attribution)** | Rebuilds a law firm's marketing attribution from ad-account structure through lead capture to settled case value, surfacing ROI per source, campaign and ad group in Power BI | A small criminal-defense and PI firm was spending **well over $500k a year** buying cases and could not attribute a paid search lead at all, because its agency ran one landing page across many ad groups. Its only ROI reporting came from that same agency. | Lawmatics, Clio Manage, Make, Skyvia, BigQuery, Power BI, CallRail, Google Ads |
-| [Firm operating dashboards](./firm-ops-dashboard) | Replicates a $50M PI firm's case management and intake systems into a warehouse hourly, and serves leadership, per-team, intake/marketing and financial reports off one shared model | The firm's data was complete and unreadable. Every question spanning two objects was a manual export, so questions that needed asking weekly stopped being asked. Teams could not see progress toward the bonus they were working for. Shipped as a data-first pilot in place of the AI project the client came in asking about. | Clio Manage/Grow, Skyvia, Azure SQL, Power BI |
+| [Dashboards](./dashboards) | How I decide what a firm's reporting carries, in two layers. A strategic layer on where cases come from, which sources and referral partners produce signed cases worth having, and what each costs against the case value it returns. An operations layer on team load, stage bottlenecks, and cases at risk from an approaching statute of limitations or from sitting longer than the firm's median for their stage. Both over one warehouse-backed model. Includes the two builds it came from, at two different firms | A firm's data is complete and unreadable. A case management system answers single-object questions, so every question spanning two of them becomes a manual export and the weekly ones stop being asked. Both engagements arrived asking about AI and got the data layer first, on the argument that a firm cannot evaluate AI against a process it cannot see | Power BI, Azure SQL, BigQuery, Skyvia, Clio Manage/Grow, Lawmatics |
 | **[Document automation](./document-generation)** | A framework for automating any document that is mostly the same every time. Assess each block for the least powerful technique that will fill it, then assemble from five levels: boilerplate, merge fields, conditional logic, AI classification, AI narrative. Includes a working demand letter, block by block | Firms want long documents drafted automatically. Merge-field tooling cannot finish the document, and whole-document AI generation costs more, breaks Word formatting, and puts a review burden on every line. Deciding **per block** is what lets a reviewer know which parts of the page could not have come out wrong. Applied at ~a dozen US PI firms, four directly. | Power Automate, Make.com, SharePoint / Drive, Word field logic, system-of-record APIs, LLM nodes |
 | [Lien reduction letters](./lien-reduction-letters) | Turns one settlement form submission into a letter per lienholder, checking whether the lien pool covers the claims and running the statutory 50/50 pro-rata split when it doesn't, so every letter on the matter reconciles | A Missouri PI firm's case management system couldn't compute the lien split, so settlement figures lived in Excel, the pro-rata math was done on a calculator, and totals were hand-typed into a Word template **once per medical provider** | Fillout, Make, Microsoft 365 Word merge, OneDrive |
 
@@ -24,11 +24,17 @@ and the weakest measured impact. Add ★ and bold the row if yes. Also open: the
 `document-generation` while the entry is now titled document automation, which is Lara's own
 phrasing. Rename the folder and these links, or retitle the entry. -->
 
-**Document automation is a framework, not a build.** It is the approach used whenever one of
-the other solutions has to produce a document, so it appears inside several of the entries
-above. It has its own page because the reusable part is the assessment, and that page is
-written as a method rather than a case study. Every application of it so far has been at legal
-firms, though nothing in the framework is specific to legal documents.
+**Two of these are frameworks rather than single builds.** Document automation is the approach
+used whenever one of the other solutions has to produce a document, so it appears inside several
+of the entries above. It has its own page because the reusable part is the assessment. Every
+application of it so far has been at legal firms, though nothing in the framework is specific to
+legal documents.
+
+Dashboards is the same shape. The page sets out the two layers I scope reporting in and the
+data work both of them need underneath, and it carries the two builds it came from as separate
+pages, at two different firms on two different stacks. The marketing ROI dashboard sits there
+too, since the [marketing attribution](./marketing-attribution) work is what made the numbers on
+it true.
 
 Four of these came out of a **single engagement at the same firm**, where one audit produced
 roughly ten solutions and I delivered them as a program rather than as separate briefs. Each of
@@ -36,8 +42,14 @@ those entries carries its own diagnosis, so they can be read in any order.
 
 <!-- OPEN: confirm the exact list of four and that "roughly ten" is the number you want to
      use publicly. Evidence says: FNOL, liability dispute, medical provider, document
-     generation. Also confirm whether the firm-ops dashboard is the same client's operations
-     console, which would make it five. -->
+     generation. Also confirm whether the firm operating dashboards build, now inside the
+     dashboards entry, is the same client's operations console, which would make it five. -->
+
+<!-- OPEN: two things about the dashboards entry, now that both builds sit under one framework
+page. (a) Tier: it carries two production builds and the reusable part is the two-layer scoping,
+so it may belong with the flagships rather than here. (b) The row above and the capability row
+below describe the framework, and the two builds' own detail lives on their pages. Say if you
+want either build named in the table instead. -->
 
 ## Capabilities, by project
 
@@ -49,7 +61,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | Medical provider selection | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Liability dispute agent | ✅ | ✅ | | ✅ | | |
 | Marketing attribution | ✅ | | ✅ | ✅ | ✅ | ✅ |
-| Firm operating dashboards | | | ✅ | ✅ | ✅ | ✅ |
+| Dashboards | | | ✅ | ✅ | ✅ | ✅ |
 | Document automation | ✅ | ✅ | | ✅ | | ✅ |
 | Lien reduction letters | | | | ✅ | | ✅ |
 <!-- OPEN: two things to check on the document automation row.
@@ -62,9 +74,10 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 ## How to read these
 
 Every case study follows the same eight sections, so they're comparable: context, diagnosis,
-problem, solution, architecture, my involvement, impact, what I'd do differently. Document
-automation is the exception, since it covers a framework applied at several clients rather than
-one build, and a diagnosis-to-impact arc does not fit it.
+problem, solution, architecture, my involvement, impact, what I'd do differently. The two
+framework pages, document automation and dashboards, are the exceptions, since a
+diagnosis-to-impact arc does not fit a method applied across clients. The builds linked from the
+dashboards page follow the sections as usual.
 
 The diagnosis section comes second on purpose. In most of this work the brief I was handed
 wasn't the problem that needed solving, and the reasoning that got from one to the other is

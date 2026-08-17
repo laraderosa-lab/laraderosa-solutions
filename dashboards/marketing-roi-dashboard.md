@@ -1,7 +1,8 @@
 # The Marketing ROI Dashboard
 
-Companion to [Marketing Attribution](./README.md). That case study covers the five layers that
-had to be rebuilt before any number was true. This one covers the surface built on top of them.
+One of the two builds behind [how I decide what goes on a dashboard](./README.md). Companion to
+[Marketing Attribution](../marketing-attribution), which covers the five layers that had to be
+rebuilt before any number here was true. This page covers the surface built on top of them.
 
 ## Why this piece carries the project
 
