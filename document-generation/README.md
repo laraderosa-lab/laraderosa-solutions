@@ -16,7 +16,6 @@
 | **Where it has been used** | Around a dozen US plaintiff-side personal injury firms across the practice, **four of them by me**, several documents each. Every application so far has been legal, though nothing in the framework is |
 | **My role** | Co-developed the framework with the team, then applied it client-side across four engagements <!-- OPEN: for your four, sole builder or splitting work? Which parts were yours: template authoring, field mapping, flow build, prompt design, option libraries? --> |
 | **Provenance** | The five levels came out of a group working session. I co-developed them and someone else on the team wrote them up |
-| **Timeline** | <!-- OPEN: when was the framework settled, and over what period were the four clients delivered? --> |
 | **Stack** | Power Automate, Make.com, SharePoint / Google Drive for template storage, Word field logic, system-of-record APIs, LLM classification and drafting nodes |
 | **Status** | Shipped for multiple clients. The standing approach whenever a solution has to produce a document |
 
@@ -132,11 +131,19 @@ section list, the level calls, and anything the firms actually did differently. 
 did the treatment summary really come off the ledger as a table, or did someone want prose
 there? And how many liability paragraphs were in a typical option library? -->
 
-**[See the letter with every block colour-coded by level](./assets/demand-letter-levels.html)**,
-including what fills each block, what it is allowed to read, and how it can be wrong. Synthetic
-throughout, so no client, party, carrier or matter on that page is real.
+**[Download `demand-letter-levels.html`](./assets/demand-letter-levels.html) and open it in a
+browser** to click through the letter. GitHub shows committed HTML as source rather than
+rendering it, so use the **Download raw file** button on that page and open the saved file. One
+file, nothing to install.
 
-![A synthetic personal injury demand letter with each block shaded by its automation level, and a panel explaining what fills the selected block](./assets/demand-letter-levels.png)
+Click a marker in the letter's margin, a highlighted field or a generated paragraph, and the
+panel at the top names the level, what fills the block, why not a level higher, and how it can
+be wrong. The case management data that block reads lights up at the bottom of the page.
+Synthetic throughout, so no firm, client, party, carrier or matter on it is real.
+
+The letter with the liability paragraph selected, showing the three sources it reads:
+
+![A synthetic personal injury demand letter laid out as a Word document. Each block carries a level marker in the left margin, merge fields are highlighted inline, and the two model-written paragraphs are tinted. The liability paragraph is selected, and three of the case management data points listed below the letter are lit as its sources](./assets/demand-letter-levels.png)
 
 ## 5. Where the work runs
 
@@ -301,8 +308,7 @@ assumes a document that is always laid out the same way. Correct me if it was th
 
 ## 8. My involvement, and what changed
 
-**The framework.** Co-developed in a group working session with the team. Someone else wrote up
-the version that gets shown to clients, so I am not claiming sole authorship of the five levels.
+**The framework.** Co-developed in a group working session with the team.
 
 **The application.** Four client engagements, all US plaintiff-side personal injury firms,
 several documents each. Assessing their existing templates block by block, deciding which level
@@ -317,9 +323,6 @@ each piece belonged to, picking the deployment shape their system allowed, and b
   - Who trained the drafters, and how did adoption go?
   - Handed off to the client, or still maintained by you?
   - Anything that was clearly someone else's work, say so and I will attribute it. -->
-
-Nothing here was measured in a form I can quote, so what follows is what changed structurally
-rather than a number.
 
 | | Before | After |
 |---|---|---|
@@ -344,12 +347,12 @@ regret, a client who wanted more AI than the document justified, a platform that
 <details>
 <summary>Evidence</summary>
 
-**[Demand letter, level by level](./assets/demand-letter-levels.html)**, a synthetic personal
-injury demand letter with every block shaded by the level that fills it. Click any block for
-what fills it, what it is allowed to read, and how it can be wrong. Self-contained HTML, so it
-opens locally with nothing to install. Screenshots of it are committed alongside for reading
-in place: [light](./assets/demand-letter-levels.png),
-[dark](./assets/demand-letter-levels-dark.png).
+**[`demand-letter-levels.html`](./assets/demand-letter-levels.html)**, a synthetic personal
+injury demand letter laid out as a document, with a level marker in the margin of every block,
+merge fields highlighted where they are actually filled, and the case management data behind
+each block listed underneath. Download it with the **Download raw file** button and open it in
+a browser. Static screenshots are committed alongside for reading in place:
+[light](./assets/demand-letter-levels.png), [dark](./assets/demand-letter-levels-dark.png).
 
 <!-- Still to add:
      - The Ontario Statement of Claim walkthrough video. OPEN before it can go in a public
