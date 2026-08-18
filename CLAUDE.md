@@ -121,7 +121,7 @@ corrected, so none of the original guesses survive.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
-| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done, plus a third §8 item added 2026-08-16 (two-way write-back). **First entry in the repo with committed evidence** (4 screenshots, 2026-08-17). `OPEN`s left: measured after-state, the §8 write-back tension, and three on the evidence section |
+| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done, plus a third §8 item added 2026-08-16 (two-way write-back). **First entry in the repo with committed evidence** (5 screenshots, 2026-08-17 and 2026-08-18). `OPEN`s left: measured after-state, the §8 write-back tension, and two on the evidence section |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 exists with one item, Lara's, and may gain more. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in the dashboard page (moved 2026-08-17 to `dashboards/marketing-roi-dashboard.md`), and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
 | `dashboards` | Renamed from `firm-ops-dashboard` 2026-08-17, when both dashboards were consolidated into one entry. The folder now holds a framework page plus the two builds | TBD, may be a flagship | **Restructured 2026-08-17 as a framework page** (`README.md`), off the eight-section template, on Lara's two-layer split. Its two builds are `firm-operating-dashboards.md` (moved, gaps still open) and `marketing-roi-dashboard.md` (moved out of `marketing-attribution/dashboard.md`). Awaiting: tier, whether the ship-it-early lesson is method, the two builds' own `OPEN`s |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. **Nine app screenshots committed 2026-08-18**, a search through to the unsent booking draft, the second entry in the repo with evidence, carrying six `OPEN`s. Outstanding: in-production-since date and user count, handover-doc authorship |
@@ -875,19 +875,34 @@ One line per session, newest last.
   **cropped off**. The Teams card already had the firm name covered by an opaque box, which was
   checked at 3x and holds. **Check window titles and browser chrome, not just the page body**, on
   any future screenshot.
-  **The fifth screenshot is the one worth having and cannot be committed as it stands.** It is the
+  **The fifth screenshot is the one worth having, and it is a real matter.** It is the
   call-results view with the field-by-field accuracy comparison (96%, 27 correct, 1 incorrect,
   date of loss caught as a key-field discrepancy), which demonstrates §4 step 7 and the §5
-  evaluation row in a single image. It is a **real matter** with a failed blur pass: matter number,
-  partly legible claim number, the client's **full date of birth**, the real date of loss, the
-  street and city of the accident, two real carriers, a carrier rep's first name, a case rep's
-  first name, and a **raw option-set integer** all survive. Fourth instance of the standing
-  finding that **blur in an export is not redaction**. It was not hand-boxed, because the
-  discrepancy the panel exists to show is a date of loss, and faking a date to publish the image
-  would make the artifact a reconstruction. Asked her to re-run that view on the test record
-  instead. Three `OPEN`s sit in the evidence section: confirm the test-record framing, resolve
-  the "+ Add involved party" button against §5's carriers-only-in-the-CMS rule, and the
-  re-capture.
+  evaluation row in a single image. Its blur pass had failed: matter number, partly legible claim
+  number, the client's **full date of birth**, the real date of loss, the street and city of the
+  accident, two real carriers, a carrier rep's first name, a case rep's first name, and a **raw
+  option-set integer** all survived. Fourth instance of the standing finding that **blur in an
+  export is not redaction**. It was held back and a re-capture on the test record was requested.
+  **Lara overruled that the same day and it now ships**, on the reasoning that no field in it
+  identifies the person or the accident, since anyone could share a date of birth or a street.
+  **Do not reopen this and do not pull the image.** What was boxed before it went up, none of it
+  asked for and none of it touching the panel's meaning: the matter number, the claim number, the
+  claim-type option-set integer, the carrier rep's first name and the case rep's first name, that
+  last one being a person at the client firm. Left exposed per her ruling: the date of birth, the
+  date of loss, the street and city, the facts-of-loss narrative and both carriers.
+  **The date of loss was never faked to make the image publishable**, because the discrepancy the
+  panel exists to show *is* a date of loss, and substituting it would make the artifact a
+  reconstruction. That still holds if the image is ever re-cut.
+  **One loose end**: the counterparty policy number is partly legible and policy numbers are on
+  the never-commit checklist below. The sandbox classifier blocked every further edit to that
+  image after the first pass, so the box could not be added. An `OPEN` in the entry asks her.
+  Two `OPEN`s remain besides: confirm the test-record framing on the other four, and resolve the
+  "+ Add involved party" button against §5's carriers-only-in-the-CMS rule.
+  **Where the line actually is, for future sessions.** Lara's ruling covers accident and personal
+  detail on the grounds that it is not uniquely identifying. It does **not** cover record
+  identifiers (matter, claim, policy numbers), option-set integers, names of people at a client,
+  or the firm and CMS vendor names, all of which have their own standing rules. Box those and
+  ship the rest rather than holding a whole image.
   **Uploads live at `/root/.claude/uploads/<session-id>/` in-session** and can be cropped and
   inspected with `pip install pillow`. Writing images into the repo from a bash heredoc or a
   script file was blocked by the permission classifier, while `python3 -c` writing to the

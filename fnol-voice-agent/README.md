@@ -334,11 +334,12 @@ it's your section. -->
 ---
 
 <details>
-<summary>Evidence: four screenshots of the working system</summary>
+<summary>Evidence: five screenshots of the working system</summary>
 
-All four are the deployed system running on a **test record**. The parties, policy numbers and
-incident details in them are fabricated, which is why two of the four carriers on the case are
-called "Test Insurance Company".
+The first four are the deployed system running on a **test record**. The parties, policy numbers
+and incident details in them are fabricated, which is why two of the four carriers on the case
+are called "Test Insurance Company". The last one is a live matter with its record identifiers
+and staff names removed.
 
 **One card per party per carrier.** The case here has three parties and four carriers between
 them. The client's own carrier is open, showing the three fields the call needs, and each
@@ -365,23 +366,39 @@ went without opening the transcript.
 
 ![A Teams card from the FNOL Agent bot titled "FNOL Call Summary". A call information table lists client, claim type, defendant, carrier called, number called and matter ID. A second block reports the claim was filed successfully, caller sentiment, duration of 309 seconds and how the call ended, followed by a paragraph summarising the call, including several transfers before reaching a person](./assets/teams-call-summary.png)
 
-<!-- OPEN: three things on this evidence section.
-  1. I have written these up as a test record, on the basis that two of the carriers are named
-     "Test Insurance Company" and the number dialled in the Teams card is not the carrier's
-     number shown in the app. Confirm that, because the page now says so publicly. If any of
-     it is a real matter, these come straight back out.
+**The accuracy check, field by field.** The evaluator compares what the agent said on the call
+against what the reviewer approved, and scores this one at 96%: 27 fields right, one wrong. The
+one it caught is a key field, a date of loss the agent gave the carrier as April 6th when the
+record says June 23rd, which is the kind of mismatch that raises an urgent alert instead of
+sitting in a report. The score counts only the 28 fields the agent actually stated, so the 18 it
+withheld and the 23 the reviewer left blank do not drag it down. Withholding is by design here,
+since a plaintiff firm does not volunteer everything to a defendant's carrier.
+
+This one is a live matter rather than the test record, so the matter and claim numbers, the
+claim-type option value and two staff first names are boxed out.
+
+![The call results view. A header strip shows claim opened, human reached, call initiated and IVR passed, followed by the call summary, next steps, call duration and attempt count. Below, a red banner reads "Transcript accuracy: 96%" and flags the date of loss as a key field, showing the record's June date against the April date the agent said. A field-by-field comparison grid follows, with counts of 27 correct, 1 incorrect, 18 not disclosed by the voice agent and 23 not provided by the user, then individual fields for the claim, the parties and the incident](./assets/review-app-accuracy-check.png)
+
+<!-- OPEN: two things on this evidence section.
+  1. I have written the first four up as a test record, on the basis that two of the carriers
+     are named "Test Insurance Company" and the number dialled in the Teams card is not the
+     carrier's number shown in the app. Confirm that, because the page now says so publicly.
   2. The carriers screenshot has an "+ Add involved party" button in it, and §5 says carriers
      can only be added in the case management system, never in the app. A reader who looks at
      both will ask. Which is it: a party can be added in the app but never a carrier, or does
      that button also predate the rule?
-  3. Still missing the best artifact, the accuracy check. The call-results view you sent shows
-     the field-by-field comparison working, 96%, 27 correct and 1 incorrect, with the date of
-     loss caught as a key-field discrepancy. That is §4 step 7 and the §5 evaluation row
-     demonstrated in one image, and I have not committed it, because it is a real matter: a
-     matter number, a partly-visible claim number, the client's full date of birth, the real
-     date of loss, the street and city of the accident, two real carriers, a carrier rep's
-     first name, a case rep's first name and a raw option-set integer all survive the blur
-     pass on it. Re-run that view against the same test record and send it again and it goes
-     straight in. -->
+
+  DECIDED, do not reopen: the accuracy-check screenshot is a live matter and Lara ruled on
+  2026-08-18 that it ships. Her reasoning is that no field in it identifies the person or the
+  accident, since anyone could share a date of birth or a street. What was boxed before it went
+  up, none of which she asked for and none of which touches the panel's meaning: the matter
+  number, the claim number, the claim-type option-set integer (banned outright by CLAUDE.md),
+  a carrier claims rep's first name, and a case rep's first name, the last of which is a person
+  at the client firm. What is still exposed and was left deliberately, per her ruling: the
+  client's date of birth, the real date of loss, the street and city of the accident, the facts
+  of loss narrative, and both carriers by name.
+  One loose end for Lara: the counterparty policy number is partly legible, and policy numbers
+  are on the never-commit checklist in CLAUDE.md's conventions. I could not box it because the
+  sandbox blocked further edits to the image. Say the word and it goes. -->
 
 </details>
