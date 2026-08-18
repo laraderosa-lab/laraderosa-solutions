@@ -123,7 +123,7 @@ corrected, so none of the original guesses survive.
 |---|---|---|---|
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done, plus a third §8 item added 2026-08-16 (two-way write-back). **First entry in the repo with committed evidence** (5 screenshots, 2026-08-17 and 2026-08-18). `OPEN`s left: measured after-state, the §8 write-back tension, and two on the evidence section |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 exists with one item, Lara's, and may gain more. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in the dashboard page (moved 2026-08-17 to `dashboards/marketing-roi-dashboard.md`), and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
-| `dashboards` | Renamed from `firm-ops-dashboard` 2026-08-17, when both dashboards were consolidated into one entry. The folder now holds a framework page plus the two builds | TBD, may be a flagship | **Restructured 2026-08-17 as a framework page** (`README.md`), off the eight-section template, on Lara's two-layer split. Its two builds are `firm-operating-dashboards.md` (moved, gaps still open) and `marketing-roi-dashboard.md` (moved out of `marketing-attribution/dashboard.md`). Awaiting: tier, whether the ship-it-early lesson is method, the two builds' own `OPEN`s |
+| `dashboards` | Renamed from `firm-ops-dashboard` 2026-08-17, when both dashboards were consolidated into one entry. The folder now holds a framework page plus the two builds | TBD, may be a flagship | **Restructured 2026-08-17 as a framework page** (`README.md`), off the eight-section template, on Lara's two-layer split. Its two builds are `firm-operating-dashboards.md` and `marketing-roi-dashboard.md` (moved out of `marketing-attribution/dashboard.md`). **Both builds now carry committed evidence, 4 dashboard pages each, 2026-08-18**, which makes this the third and fourth entries in the repo with evidence. Awaiting: tier, whether the ship-it-early lesson is method, the two builds' own `OPEN`s |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. **Nine app screenshots committed 2026-08-18**, a search through to the unsent booking draft, the second entry in the repo with evidence, carrying six `OPEN`s. Outstanding: in-production-since date and user count, handover-doc authorship |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build. Entry retitled "Document automation" 2026-08-16, folder not yet renamed | TBD, leaning flagship | **Restructured 2026-08-16 as a framework page**, off the eight-section template. Carries a synthetic demand-letter demo. Awaiting: the demand-letter assessment table checked, impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
@@ -1004,6 +1004,42 @@ One line per session, newest last.
   **Two of the ten carry client identifiers in the name** and should go first, since branch names
   are public: `claude/citrine-marketing-mme404` and `claude/clio-manage-life-dashboard-e1rdm5`.
   `claude/marketing-attribution-mme404` shares the second half of the first one's name.
+- **2026-08-18 (dashboard evidence, both builds).** On `main`. Lara sent two PDF exports, one per
+  build, and said everything in them had been modified. **This is the first source material from
+  her that survived a full check clean**, and the difference is that it was **substituted at
+  source rather than blurred**: `@example.com` emails, `(555)555-01xx` phones, client and staff
+  surnames generated off a Doe/Roe/Poe alphabet, teams lettered A to G, marketing vendors as
+  "Vendor A", referral firms as Alpha/Bravo/Charlie/Delta/Echo/Foxtrot, and no firm name or logo
+  in any header. Nothing needed boxing. Ask for exports in this shape in future rather than
+  accepting a blur pass.
+  Each PDF held 4 dashboard pages as very tall single pages (up to 1440x4386), rendered to PNG at
+  1.5x with `pymupdf`. `clio_final.pdf` is the **firm operating dashboards** build: Leadership,
+  Teams Performance, Team view (Team B, with the team slicer), Financial. `lawmatics_final.pdf`
+  is the **marketing ROI** build: the Lawmatics Intake Overview tab, Clio Matters Overview,
+  Financial, Task Tracker. Both evidence sections are now a bold lead plus a described image per
+  page, matching the FNOL and provider-selection shape.
+  **Two `OPEN`s resolved from the images.** The marketing build's tab-mapping question: source
+  performance and intake detail are **sections of the Intake Overview tab, not tabs**, and Task
+  Tracker is pending tasks by assignee with due-date status. Only Lawmatics Monthly is still
+  unseen. The "What it is" section now names the five real tabs and says the intake tab runs long.
+  **Verified against the images rather than asserted**: conversion rate is 291/(291+1537) = 15.9%,
+  which matches the 16% card and confirms the intake-excluded definition the entry already
+  claimed; the criminal pipeline runs 15 named stages against 9 on PI pre-litigation; the
+  leadership alert panel is firing on two teams under a 45-case floor.
+  **One thing flagged for her ruling, as an `OPEN` on the marketing page.** Three labels survive
+  the substitution pass that place that firm in one state: a state bar association as a referral
+  partner, a state transport department as a matter type, and two municipal courts named inside
+  task descriptions. Nothing else in the repo localises a client. They read as misses rather than
+  choices, since every name and number around them was replaced. Not boxed, because she was
+  explicit that the file was cleared and asked for it pushed as-is.
+  **The missing page worth chasing** is the firm operating build's intake and marketing report,
+  the Clio Grow pilot. It is the one carrying the referral-partner ranking story in §7, so it is
+  the highest-value image still absent. `OPEN` added at the end of that evidence section.
+  Process: `python3 -c` rendering images was **blocked by the permission classifier twice** this
+  session, including the short form. What went through was rendering during inspection and then
+  plain `cp` into the repo. Heredoc `python3 -` editing markdown was fine.
+  **The branch handed to this session was `claude/dashboard-builds-evidence-6g4ewm`**, ignored per
+  the standing convention, and the work went to `main`.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

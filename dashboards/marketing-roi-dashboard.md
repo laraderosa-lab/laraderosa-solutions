@@ -19,10 +19,14 @@ firm goes back to the agency's monthly report on impressions and clicks.
 ## What it is
 
 Power BI over an hourly BigQuery warehouse fed from both Lawmatics and Clio Manage, in five
-tabs. The firm had been reading three separate things: a scorecard a staff member rebuilt by
-hand every week, a report exported out of the CRM, and a financial report living in a different
-BI tool. All three are on one model here, which is what lets a marketing source and a settlement
-figure appear in the same sentence.
+tabs: Lawmatics: Intake Overview, Clio: Matters Overview, Financial Dashboard, Task Tracker and
+Lawmatics Monthly. The firm had been reading three separate things: a scorecard a staff member
+rebuilt by hand every week, a report exported out of the CRM, and a financial report living in a
+different BI tool. All three are on one model here, which is what lets a marketing source and a
+settlement figure appear in the same sentence.
+
+The five tabs are not five screens. The intake tab runs long, so source performance and intake
+detail below are its lower two thirds rather than tabs of their own.
 
 **Intake overview.** The top of the funnel, from the CRM. Total leads, qualified leads, leads
 currently in intake, hired and did-not-hire as headline counts, with the conversion and
@@ -61,11 +65,10 @@ only, net only and both, and between practice areas. Total and average estimated
 total and average actual value as headline cards. And at the bottom, average settlement by lead
 source, ranked, which is the chart the whole project was built to make possible.
 
-<!-- OPEN: the tab names in the deployed nav are "Lawmatics: Intake Overview", "Clio: Matters
-Overview", "Financial Dashboard", "Task Tracker" and "Lawmatics Monthly". The source performance
-and intake detail blocks above are unlabelled in the screenshots, so I do not know which tab
-they sit on, and I have never seen the Task Tracker or Lawmatics Monthly tabs. Confirm the
-mapping and say what those two carry, and I will rename these sections to the real tabs. -->
+<!-- OPEN: mostly resolved by the exports of 2026-08-18. Source performance and intake detail
+are sections of the Lawmatics: Intake Overview tab, not tabs, and the Task Tracker tab is pending
+tasks by assignee with due-date status. Still unseen: Lawmatics Monthly. Say what that one
+carries and it gets a paragraph of its own. -->
 
 ## How the pages relate
 
@@ -185,14 +188,11 @@ the real data for a while and could set ones that meant something.
   targets exist, since without them it can only report that a number moved.
 
 <!-- OPEN: still needed for this page.
-  - The screenshots. Confirmed 2026-08-16 as not safe to publish as they stand. Every page
-    carries the firm name and logo in the header. Beyond that: client full names, emails and
-    phone numbers in the lead detail table; case display numbers built from client surnames;
-    attorney and intake staff names in the responsible-attorney and created-by columns;
-    referral partner firms and individuals by name; both marketing vendors by name, one of them
-    inside a source name; area codes that place the firm; and real settlement and case value
-    figures. A redaction pass has to substitute at source or crop to the aggregate visuals,
-    since blur over a name is not redaction.
+  - Three labels in the committed export place the firm in one state, which nothing else in the
+    repo does: a state bar association named as a referral partner, a state transport department
+    as a matter type, and two municipal courts named in task descriptions. They read as survivors
+    of the substitution pass rather than deliberate choices, since every name and number around
+    them was replaced. Say the word and they get boxed out.
   - How ROI is defined when a PI case settles months or years after the spend that bought it.
   - Whether the default view opens at source or at campaign level.
   - The refresh cadence the client sees, and whether that is a Skyvia scheduling constraint.
@@ -212,6 +212,41 @@ account transitioned. -->
 
 ## Evidence
 
-<!-- Redacted screenshots, once the redaction pass above is done. Assets belong in ./assets/. -->
+Four of the five tabs, exported with every value substituted at source. Lead and client names,
+case display numbers, emails, phone numbers and staff names are synthetic, marketing vendors are
+lettered, and referral partners carry placeholder names. The structure, measures and layout are
+the deployed ones.
 
-Not yet added.
+**Intake overview.** The whole top-of-funnel tab, and the longest page in the report. The
+headline row carries total leads, qualified, in intake, hired and did-not-hire, with the
+conversion and qualification rates derived from them, and the 16% conversion figure is the
+definition described above: hired over hired plus did-not-hire, with everything still in intake
+out of the denominator. Below that, the status and qualification breakdowns, the funnel, lead
+volume by practice area and by day of week, and the source and referral partner tables with
+total leads, hired, conversion rate, qualification rate, median value and total value on every
+row. The intake details half of the page carries the consultation counts, the roughly twenty
+loss reasons prefixed to say who ended it, the three-way rollup into firm rejected / did not hire
+/ invalid, and the full lead list with source, campaign, stage and owner.
+
+![Lawmatics intake overview tab: headline lead counts with conversion and qualification rates, status and qualification breakdowns, pipeline funnel, six-month trend, lead volume by practice area and weekday, source and referral partner performance tables with rates and case values, consultation status by practice area, the loss reason breakdown and its three-category rollup, and the full lead detail table](./assets/marketing-roi-01-intake-overview.png)
+
+**Matters overview**, from Clio. Open matters, closed cases per month, open cases by practice
+area, and the pipeline funnels showing the firm's own named stages in order, fifteen of them on
+the criminal side against nine on personal injury pre-litigation. The aging lists underneath are
+flagged high risk and each row links straight into the matter.
+
+![Clio matters overview tab: open matter counts by practice area, criminal and personal injury pipeline funnels using the firm's own named stages, closed cases per month, median days to close by practice area, and high risk aging case lists linking into Clio](./assets/marketing-roi-02-matters-overview.png)
+
+**Financial report.** Cash received, revenue earned but unpaid, and total outstanding balance,
+each month over month with gross and net on the same axis. At the bottom is average settlement
+by lead source, ranked, where the vendor selling pre-signed cases comes last at $0.25K against
+$4.8K at the top.
+
+![Financial report tab: monthly cash received, accrued revenue and outstanding balance with gross and net together, total and average estimated against actual case value, case value by practice area, and average settlement ranked by lead source](./assets/marketing-roi-03-financial-report.png)
+
+**Task tracker.** Pending tasks by assignee with due-date status, overdue and due-today counts,
+and the task description each one carries.
+
+![Task tracker tab: pending task detail by assignee with created and due dates, due-date status and task descriptions, plus overdue, due-today and all-pending counts](./assets/marketing-roi-04-task-tracker.png)
+
+The fifth tab, Lawmatics Monthly, is not in this set.

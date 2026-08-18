@@ -318,12 +318,42 @@ first build should ship deliberately incomplete so the client fills the gaps? --
 <details>
 <summary>Evidence</summary>
 
-<!-- OPEN: screenshots are held back pending a clean anonymization pass. The exports reviewed
-in session still carried client emails and phone numbers in the intake detail table, legible
-client names in the case detail tables, a staff name in a slicer, and referral partner and
-lead source lists that read as real firms rather than substitutes. Team labels also differed
-between exports, suggesting two separate scrub passes. Re-export with substituted values at
-source, or crop to the aggregate visuals only. The financial report is aggregate throughout
-and is safe as-is. -->
+Four of the five reports, exported with every value substituted at source. Client and staff
+names, case display numbers, emails and phone numbers are synthetic, teams are lettered, and
+referral partners carry placeholder firm names. The structure, measures and layout are the
+deployed ones.
+
+**Leadership.** Open matters split litigation and pre-litigation with the median days to close
+for each, caseload and estimated case value by team, and each team's top matter types and
+referral partners. The two aging tables under them list active cases open more than 50% longer
+than the company median for their own stage, which is the rule in the excerpt above. The
+alerts panel at the bottom is firing on two teams under the caseload floor. Every row in the
+case table carries an **Open in Clio** link.
+
+![Leadership dashboard: open matter counts, median days to close by stage, caseload and case value by team, top matter types and referral partners per team, two stage-relative aging tables, a caseload alert panel, and a linked case detail table](./assets/firm-ops-01-leadership.png)
+
+**Teams performance.** Each team against its net fee goal and its closed case goal, quarter by
+quarter, as the met / missed grid. Progress to the current quarter's goal shows the target and
+the amount over it separately. The caseload charts run each team against its capacity band, with
+pre-litigation on a chart of its own because it carries an order of magnitude more cases.
+
+![Teams performance dashboard: met and missed grids against net fee and closed case goals by quarter, progress-to-goal bars for the current quarter, historical actual against goal per team, and average open caseload per team per month against capacity bands](./assets/firm-ops-02-teams-performance.png)
+
+**Team view.** The same model scoped to one team, with a slicer at the top to switch between
+them: one team's goal gauge and percentage to bonus, its own aging list, its own matter types and
+referral partners.
+
+![Team view dashboard scoped to one team: open matters, trials completed and median days to close, a net fee goal gauge, quarterly actual against goal, cases closed by month with net and average settlement, an aging list, and matter types and referral partners for that team](./assets/firm-ops-03-team-view.png)
+
+**Financial.** Cash received per month from case distributions, revenue accrued on open cases
+not yet paid, and total outstanding accrued balance, each with gross and net on the same axis
+and a toggle between gross only, net only and both.
+
+![Financial report: monthly cash received from case distributions, monthly accrued revenue on unpaid cases, and total outstanding accrued balance, each plotted gross and net together with a view toggle](./assets/firm-ops-04-financial-report.png)
+
+<!-- OPEN: the intake and marketing report, the Clio Grow pilot described in section 4, is not
+in this set. It is the one that carries the referral-partner ranking story in section 7, so it
+is the most useful page still missing. Send an export of it on the same substituted data and it
+goes in as a fifth image. -->
 
 </details>
