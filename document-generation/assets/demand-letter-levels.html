@@ -151,6 +151,16 @@ header p { margin: 0; color: var(--text-2); max-width: 70ch; }
 .f:hover { background: color-mix(in srgb, var(--rail) 32%, transparent); }
 .f[aria-pressed="true"], .f.kin { background: color-mix(in srgb, var(--rail) 40%, transparent); outline: 1px solid var(--paper-ink); }
 
+/* a generated table row: provider, dates and amount all come from one ledger row */
+tr.frow { cursor: pointer; }
+tr.frow > td { background: color-mix(in srgb, var(--rail) 13%, transparent); }
+tr.frow:hover > td { background: color-mix(in srgb, var(--rail) 26%, transparent); }
+tr.frow[aria-pressed="true"] > td {
+  background: color-mix(in srgb, var(--rail) 36%, transparent);
+  border-top: 1px solid var(--paper-ink); border-bottom: 1px solid var(--paper-ink);
+}
+tr.frow:focus-visible > td { outline: 2px solid var(--paper-ink); outline-offset: -2px; }
+
 /* whole-paragraph block, for the two AI levels */
 .gen {
   display: block; width: 100%; text-align: left; font: inherit; color: inherit;
@@ -363,10 +373,10 @@ footer { margin-top: 24px; color: var(--text-3); font-size: 12.5px; max-width: 8
            following providers:</p>
         <table class="data">
           <tr><th>Provider</th><th>Course</th><th class="r">Billed</th></tr>
-          <tr><td>Emergency department</td><td>4 Mar 2026</td><td class="r">$4,180.00</td></tr>
-          <tr><td>Orthopedic clinic</td><td>Mar to Jul 2026</td><td class="r">$9,640.00</td></tr>
-          <tr><td>Physical therapy</td><td>Apr to Nov 2026</td><td class="r">$11,275.00</td></tr>
-          <tr><td>Diagnostic imaging</td><td>Mar, Jun 2026</td><td class="r">$3,410.00</td></tr>
+          <tr class="frow" data-item="t.ed"><td>Emergency department</td><td>4 Mar 2026</td><td class="r">$4,180.00</td></tr>
+          <tr class="frow" data-item="t.ortho"><td>Orthopedic clinic</td><td>Mar to Jul 2026</td><td class="r">$9,640.00</td></tr>
+          <tr class="frow" data-item="t.pt"><td>Physical therapy</td><td>Apr to Nov 2026</td><td class="r">$11,275.00</td></tr>
+          <tr class="frow" data-item="t.img"><td>Diagnostic imaging</td><td>Mar, Jun 2026</td><td class="r">$3,410.00</td></tr>
         </table>
       </div>
     </div>
@@ -378,10 +388,10 @@ footer { margin-top: 24px; color: var(--text-3); font-size: 12.5px; max-width: 8
       <div>
         <p>Special damages to date:</p>
         <table class="data">
-          <tr><td>Medical charges</td><td class="r">$28,505.00</td></tr>
-          <tr><td>Lost earnings, 11 weeks</td><td class="r">$9,240.00</td></tr>
-          <tr><td>Out of pocket</td><td class="r">$612.00</td></tr>
-          <tr><td><strong>Total specials</strong></td><td class="r"><strong>$38,357.00</strong></td></tr>
+          <tr class="frow" data-item="sp.medical"><td>Medical charges</td><td class="r">$28,505.00</td></tr>
+          <tr class="frow" data-item="sp.wage"><td>Lost earnings, 11 weeks</td><td class="r">$9,240.00</td></tr>
+          <tr class="frow" data-item="sp.oop"><td>Out of pocket</td><td class="r">$612.00</td></tr>
+          <tr class="frow" data-item="sp.total"><td><strong>Total specials</strong></td><td class="r"><strong>$38,357.00</strong></td></tr>
         </table>
       </div>
     </div>
@@ -534,6 +544,48 @@ const ITEMS = {
     why: "This is the block clients most often assume needs AI. It does not. Provider, date range and amount are rows in a ledger, and a model summarizing them can only introduce an error the ledger does not have.",
     risk: "None from a model. Every figure in the table is a ledger row, unchanged.",
     reads: ["s.led.ed", "s.led.ortho", "s.led.pt", "s.led.img", "s.records"] },
+  "t.ed": { lvl: 2, t: "Emergency department row", what: "One ledger row, three cells",
+    fills: "Provider, date and billed amount, straight off the charge.",
+    why: "The whole row is stored data. Nothing about it needs deciding, so nothing about it needs a model.",
+    risk: "None from a model. The amount is the ledger's.",
+    reads: ["s.led.ed"] },
+  "t.ortho": { lvl: 2, t: "Orthopedic clinic row", what: "One ledger row, three cells",
+    fills: "Provider, the span of treatment dates, and the total billed across the course.",
+    why: "Stored data, with the date span derived from the first and last charge.",
+    risk: "None from a model.",
+    reads: ["s.led.ortho"] },
+  "t.pt": { lvl: 2, t: "Physical therapy row", what: "One ledger row, three cells",
+    fills: "Provider, the span of treatment dates, and the total billed across the course.",
+    why: "Stored data. This is the largest figure in the letter and no model touches it.",
+    risk: "None from a model.",
+    reads: ["s.led.pt"] },
+  "t.img": { lvl: 2, t: "Diagnostic imaging row", what: "One ledger row, three cells",
+    fills: "Provider, the two dates imaging was taken, and the total billed.",
+    why: "Stored data.",
+    risk: "None from a model.",
+    reads: ["s.led.img"] },
+
+  "sp.medical": { lvl: 2, t: "Medical charges", what: "The four ledger charges summed",
+    fills: "$4,180.00 plus $9,640.00 plus $11,275.00 plus $3,410.00, giving $28,505.00.",
+    why: "Addition. A model asked to total four numbers is slower, costs more, and can get it wrong.",
+    risk: "None from a model. Select the treatment rows above to see the four charges this adds up.",
+    reads: ["s.led.ed", "s.led.ortho", "s.led.pt", "s.led.img"] },
+  "sp.wage": { lvl: 2, t: "Lost earnings", what: "Computed from the wage statement",
+    fills: "Eleven weeks off work at the rate on the employer's statement, $9,240.00.",
+    why: "The weeks and the rate are both stored, so the figure is arithmetic.",
+    risk: "None from a model.",
+    reads: ["s.wage"] },
+  "sp.oop": { lvl: 2, t: "Out of pocket", what: "Merge field",
+    fills: "The out-of-pocket total the firm has receipts for, $612.00.",
+    why: "A stored value.",
+    risk: "None from a model.",
+    reads: ["s.oop"] },
+  "sp.total": { lvl: 2, t: "Total specials", what: "The sum of every figure above it",
+    fills: "$28,505.00 plus $9,240.00 plus $612.00, giving $38,357.00.",
+    why: "The number the whole letter is arguing toward, and it is arithmetic over stored data from end to end. Nothing in this figure was written by a model.",
+    risk: "None from a model. Every input traces to a row in the case management system.",
+    reads: ["s.led.ed", "s.led.ortho", "s.led.pt", "s.led.img", "s.wage", "s.oop"] },
+
   "b.specials": { lvl: 2, t: "Special damages", what: "Arithmetic over the ledger",
     fills: "The four ledger charges summed to $28,505.00, plus lost earnings and out of pocket, totalled to $38,357.00.",
     why: "Computed, not written. A model doing this arithmetic would be slower, more expensive and occasionally wrong.",
@@ -587,13 +639,23 @@ const counts = {};
 
 function railFor(lvl) { return `var(${LEVELS[lvl - 1].v})`; }
 
+// Buttons and generated table rows are both selectable.
+const isPickable = el => el.tagName === "BUTTON" || el.classList.contains("frow");
+
 document.querySelectorAll("[data-item]").forEach(el => {
   const it = ITEMS[el.dataset.item];
   if (!it) return;
   el.style.setProperty("--rail", railFor(it.lvl));
-  if (el.tagName === "BUTTON") {
-    el.setAttribute("aria-pressed", "false");
-    el.addEventListener("click", e => { e.stopPropagation(); select(el.dataset.item); });
+  if (!isPickable(el)) return;
+  el.setAttribute("aria-pressed", "false");
+  el.addEventListener("click", e => { e.stopPropagation(); select(el.dataset.item); });
+  if (el.tagName !== "BUTTON") {
+    el.setAttribute("role", "button");
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("aria-label", `Level ${it.lvl}, ${it.t}`);
+    el.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(el.dataset.item); }
+    });
   }
 });
 
@@ -648,7 +710,7 @@ function select(id) {
 
   // Mark every occurrence of this item in the letter.
   const hits = document.querySelectorAll(`[data-item="${id}"]`);
-  hits.forEach(h => { if (h.tagName === "BUTTON") h.setAttribute("aria-pressed", "true"); });
+  hits.forEach(h => { if (isPickable(h)) h.setAttribute("aria-pressed", "true"); });
   if (hits.length > 1) hits.forEach(h => { if (h.classList.contains("f")) h.classList.add("kin"); });
 
   // Light up the data it reads.
