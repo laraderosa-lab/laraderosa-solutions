@@ -1073,6 +1073,32 @@ One line per session, newest last.
   plain `cp` into the repo. Heredoc `python3 -` editing markdown was fine.
   **The branch handed to this session was `claude/dashboard-builds-evidence-6g4ewm`**, ignored per
   the standing convention, and the work went to `main`.
+  **Then the missing page arrived**, same session: `grow_final.pdf`, the Clio Grow intake report,
+  so the firm operating build now carries **all five reports** and it is committed first in the
+  section because the pilot shipped first (`firm-ops-00-intake-marketing.png`).
+  **This one's substitution pass is partial, unlike the other two, and that is the finding.** The
+  referral partner lists mix placeholders following the set's own pattern (Bravo, Charlie, Delta,
+  plus Roe/Boe/Coe surnames) with around eleven entries that read as real firms: BC Legal Group,
+  The Aspen Law Firm, Ridge Law Firm, "Foster Law, APC - Main office.", Coe Cardinal Inc., CEDAR
+  LAW FIRM PC, AB Injury Law Group, ANDERS LAW FIRM APC, Alta Awan Law P C, Ace Auto, and "Law
+  offices of Hale". **The tell is the APC and PC suffixes plus inconsistent casing**, which is what
+  user-entered picklist data looks like next to a generated substitution set. The name column is
+  boxed in all three visuals (the partner chart's axis labels, the performance table's Referred By
+  column, and the same column in the matter list), keeping every bar, count and rate. `OPEN` asks
+  Lara to confirm; if they are substitutes the boxes come off. **Lesson: a substitution pass can be
+  partial within one file, so the top of a list being clean says nothing about its tail.**
+  Lead source labels were left alone: AttorneyShare, Textline and Meta are vendors, which the
+  standing decision permits.
+  **Two things verified off the image, one of which corrected the entry.** §4 said the pilot's
+  conversion rate was "over total leads". It is not: 506/3951 is 12.8% while the card reads 19.8%,
+  which is 506/(506+2053), so **in-intake leads are out of the denominator here too**, the same
+  definition as the marketing ROI build. §4 now says so. And the ranking-by-hired story in §7 is
+  visible in one frame: **the top referral partner by volume has 200 leads and 12 hired, while the
+  partner at 51 leads has 38 hired.**
+  A second `OPEN` flags that §4's five declination reasons (declined on criteria, lost contact,
+  retained other counsel, pending evaluation, co-counsel pending) are **not** the labels on the
+  committed page, which uses rejected client, non-responsive, hired other attorney, two
+  referred-out states, settled and other. Either the export is a later state or §4 is wrong.
 - **2026-08-18 (provider selection, the notifier is an agent and not Teams).** Lara's correction on
   the new evidence: the booking-draft card is posted by **a Copilot agent built for that purpose,
   which messages the coordinator through Teams**, so writing "Teams says when the draft is ready"

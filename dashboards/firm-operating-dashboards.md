@@ -107,9 +107,10 @@ build.
 Five reports came out of it, sharing one semantic model so leadership and the teams cannot end
 up quoting different numbers. The first was shipped alone as the pilot.
 
-**Intake and marketing** (the pilot, off Clio Grow). Conversion rate over total leads, split
-into hired, in-intake and did-not-hire, with the declination reason broken out (declined on
-criteria, lost contact, retained other counsel, pending evaluation, co-counsel pending). Lead
+**Intake and marketing** (the pilot, off Clio Grow). Total leads split into hired, in-intake and
+did-not-hire, with the declination reason broken out (declined on criteria, lost contact,
+retained other counsel, pending evaluation, co-counsel pending). Conversion rate is measured over
+the resolved leads only, so anything still sitting in intake is out of the denominator. Lead
 sources and referral partners are ranked by total leads *and* by hired count, conversion rate
 and case value, which is what separates a partner worth investing in from one sending volume
 the firm never signs. Intake staff appear on the same hired / intake / did-not-hire split, so
@@ -318,10 +319,25 @@ first build should ship deliberately incomplete so the client fills the gaps? --
 <details>
 <summary>Evidence</summary>
 
-Four of the five reports, exported with every value substituted at source. Client and staff
-names, case display numbers, emails and phone numbers are synthetic, teams are lettered, and
-referral partners carry placeholder firm names. The structure, measures and layout are the
-deployed ones.
+All five reports, exported with the values substituted at source. Client and staff names, case
+display numbers, emails and phone numbers are synthetic, teams are lettered, and most referral
+partners carry placeholder firm names. The structure, measures and layout are the deployed ones.
+
+**Intake and marketing**, the pilot, off Clio Grow and the first thing shipped. Total leads
+split into hired, in intake and did-not-hire, with the conversion rate over the resolved ones.
+The status breakdown expands each of those three into the stages underneath, so "did not hire"
+resolves into rejected, non-responsive, referred out and hired-other-attorney rather than
+sitting as one bucket. Lead sources and referral partners each get a chart ranked by volume and
+a table carrying hired count, conversion rate, median and total value beside it, which is the
+pairing the ranking-by-hired story in section 7 turns on: the top referral partner by volume at
+200 leads converted 12, while the one at 51 converted 38. Staff member performance runs the same
+hired / intake / did-not-hire split per intake staffer.
+
+Referral partner names are boxed out in three places on this page. Some entries in those lists
+are placeholders and some read as real firms, so the safe read was to cover the column and keep
+every count, rate and bar.
+
+![Clio Grow intake report: total leads split into hired, in intake and did-not-hire with conversion rate, a status breakdown expanding each status into its stages, weekly lead volume, a six-month trend, staff member performance by hired and intake and did-not-hire, and matter type, lead source and referral partner charts each paired with a table of hired counts, conversion rates and case values](./assets/firm-ops-00-intake-marketing.png)
 
 **Leadership.** Open matters split litigation and pre-litigation with the median days to close
 for each, caseload and estimated case value by team, and each team's top matter types and
@@ -351,9 +367,20 @@ and a toggle between gross only, net only and both.
 
 ![Financial report: monthly cash received from case distributions, monthly accrued revenue on unpaid cases, and total outstanding accrued balance, each plotted gross and net together with a view toggle](./assets/firm-ops-04-financial-report.png)
 
-<!-- OPEN: the intake and marketing report, the Clio Grow pilot described in section 4, is not
-in this set. It is the one that carries the referral-partner ranking story in section 7, so it
-is the most useful page still missing. Send an export of it on the same substituted data and it
-goes in as a fifth image. -->
+<!-- OPEN: the referral partner names on the intake page. The lists mix placeholders that follow
+the same pattern as the rest of the set (Bravo, Charlie, Delta, plus Roe/Boe/Coe surnames) with
+around eleven entries that read as real firms rather than substitutes: BC Legal Group, The Aspen
+Law Firm, Ridge Law Firm, "Foster Law, APC - Main office.", Coe Cardinal Inc., CEDAR LAW FIRM PC,
+AB Injury Law Group, ANDERS LAW FIRM APC, Alta Awan Law P C, Ace Auto, and "Law offices of Hale"
+in the matter list. The APC and PC suffixes and the inconsistent casing are what user-entered
+picklist data looks like, so the whole name column is boxed in all three visuals. Say they are
+substitutes and the boxes come off. -->
+
+<!-- OPEN: the five declination reasons named in section 4 (declined on criteria, lost contact,
+retained other counsel, pending evaluation, co-counsel pending) are not the labels on the
+committed intake page, which breaks did-not-hire into rejected client, non-responsive, hired
+other attorney, referred out pending engagement, referred out fee agreement completed, settled
+and other. Either the export is a later state than the source the section was written from, or
+the section has the wrong labels. Confirm which and section 4 gets corrected. -->
 
 </details>
