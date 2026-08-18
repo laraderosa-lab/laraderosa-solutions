@@ -386,10 +386,16 @@ claim-type option value and two staff first names are boxed out.
      agents on the current case, and the Copilot agent's "CRM Review Intake" card in Teams
      that tells the reviewer a case is ready. You sent both on 2026-08-18 but they did not
      reach the session's filesystem, only the chat, so there was nothing to commit. Send them
-     again as file attachments. On the intake card I will box the matter number, since it is a
-     record identifier on a matter I cannot confirm is a test one, and nothing else in that
-     card needs touching. On the extension shot I will crop the browser chrome, because the
-     profile avatar carries an initial.
+     again as file attachments, since a Windows path from your own machine is not reachable
+     from a session. On the intake card I will box the matter number, since it is a record
+     identifier on a matter I cannot confirm is a test one, and nothing else in that card needs
+     touching.
+     **The extension shot needs its whole top band removed before it can ship.** The second
+     send of it shows the client's logo and name to the left of "Claims Agents Launcher", where
+     the first send showed that area empty, and the browser profile avatar next to it carries an
+     initial. Same fix as the review app's title bar: crop the band, keep the panel. Nothing
+     below it is a problem, and the agent list is worth having, since it names seven of the
+     engagement's solutions and corroborates the ten-solution story in §2.
   1. I have written the first four up as a test record, on the basis that two of the carriers
      are named "Test Insurance Company" and the number dialled in the Teams card is not the
      carrier's number shown in the app. Confirm that, because the page now says so publicly.

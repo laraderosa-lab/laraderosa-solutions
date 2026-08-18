@@ -912,9 +912,14 @@ One line per session, newest last.
   of the carriers screen. **Steps 01 and 02 are still missing**: Lara sent the extension's agent
   list and the "CRM Review Intake" Teams card, but **images pasted into chat do not always reach
   `/root/.claude/uploads/`**, and those two never landed on disk, so there was nothing to commit.
-  Ask for them as file attachments. When they arrive: crop the browser chrome on the extension
-  shot, because the profile avatar carries an initial, and box the matter number on the intake
-  card. The extension shot is worth having for a second reason, since its agent list names seven
+  Ask for them as file attachments, and note that **a local Windows path pasted into chat is not
+  reachable from a session**, which was the second attempt. When they arrive: box the matter
+  number on the intake card, and **crop the entire top band off the extension shot, because it
+  carries the client firm's logo and name** to the left of "Claims Agents Launcher", with the
+  browser profile avatar and its initial beside it. **The two sends of that same screenshot did
+  not show the same thing**: the first rendered that area empty and the second showed the
+  branding, so assess every send on its own rather than trusting an earlier read of "the same"
+  image. The extension shot is worth having for a second reason, since its agent list names seven
   of the engagement's solutions and corroborates the ten-solution story §2 already tells.
   **Where the line actually is, for future sessions.** Lara's ruling covers accident and personal
   detail on the grounds that it is not uniquely identifying. It does **not** cover record
