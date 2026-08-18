@@ -960,6 +960,36 @@ One line per session, newest last.
   on the filenames did not survive either upload. Committed in app order with an `OPEN` offering to
   reorder. **Ask for the order in the message, not in filenames.**
 
+- **2026-08-18 (branch audit, safe to delete all ten).** Lara asked whether every branch except
+  `main` can go without losing anything. **Answer: yes, all ten `claude/*` remote branches are
+  superseded and nothing on them is needed.** Verified rather than assumed:
+  1. **No open pull requests**, so no branch is a PR head.
+  2. **Only two files exist on a branch and not on `main`, and both were renamed rather than
+     lost.** `firm-ops-dashboard/README.md` (327 lines, on `claude/clio-manage-life-dashboard-e1rdm5`)
+     is now `dashboards/firm-operating-dashboards.md` at 329 lines with identical headings, and
+     `marketing-attribution/dashboard.md` (64 lines, on `claude/marketing-attribution-iteration-nca1jd`)
+     is now `dashboards/marketing-roi-dashboard.md` at 217 lines. Every other branch-only file is
+     a three-line scaffold stub under a superseded slug (`marketing-engine`,
+     `medical-lien-calculator`, `medical-provider-agent`, `firm-ops-dashboard`) or a `.gitkeep`.
+     **No branch holds an asset, image or HTML file that `main` lacks.**
+  3. Substantive prose lines that appear on a branch and nowhere in `main` are **earlier drafts
+     and content Lara later had cut**, sampled to confirm: the "pitched the work unasked" role
+     row, the "what I did not own: change management" paragraph, the old seven-projects table.
+     Nothing distinct.
+  **Only two of the ten are ancestors of `main`** (`liability-dispute-agent-47nyuw`,
+  `lien-calculator-rvt3yv`). The other eight are not, because the 2026-08-15 consolidation
+  reconciled them **by hand** and wrote commits whose messages say "Merge remote-tracking branch"
+  while carrying a single parent. So `git branch --merged` and `git merge-base --is-ancestor`
+  both under-report here, and a file-level comparison is the check that actually answers the
+  question. Do not conclude a branch has unmerged work from ancestry alone.
+  **Deletion is still Lara's to do**, at
+  <https://github.com/laraderosa-lab/laraderosa-solutions/branches>. The 2026-08-15 finding
+  stands and was not retried: the session's credentials create and update refs but cannot remove
+  them, and there is no branch-deletion tool on the GitHub MCP server.
+  **Two of the ten carry client identifiers in the name** and should go first, since branch names
+  are public: `claude/citrine-marketing-mme404` and `claude/clio-manage-life-dashboard-e1rdm5`.
+  `claude/marketing-attribution-mme404` shares the second half of the first one's name.
+
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
   client, in a branch name. If a session is handed one that does, say so before pushing and
