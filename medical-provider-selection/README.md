@@ -317,12 +317,17 @@ More may come. Do not add any without her. -->
 ---
 
 <details>
-<summary>Evidence: five screenshots of the working app</summary>
+<summary>Evidence: nine screenshots of the working app</summary>
 
-The deployed app, in the order a coordinator moves through it. No client name, matter or case
-number appears on any of these screens. One client address, typed into the search box on two of
-them, is boxed out, and so are its pin on the street-level map and a provider's staff email
-address on the results screen.
+The deployed app, in the order a coordinator moves through it, from a search to an unsent booking
+email. The last four run on a test record, whose date of birth is 01/01/2000 and whose phone
+number is also a clinic's number elsewhere in the same app.
+
+Five things are boxed out. The client address typed into the search box on the second and third
+screens, and its pin on the one map that is zoomed to street level. An email address that recurs
+on the last four screens. A provider's named staff email. The matter ID. And the case management
+vendor's name, which appears in one field's helper text on the booking modal and which this entry
+keeps out of its prose.
 
 **A specialty on its own returns the catalog.** Every provider of that specialty is on the map, and
 the list is unranked, because there is no address to rank it against.
@@ -357,24 +362,58 @@ Booking starts from this list.
 
 ![The My Requests tab, with tabs for Pending (2) and Past (0) and a line explaining that pending requests are awaiting a booking and move to Past once one is made. The first request, for an Open MRI, holds two providers: one marked Success with an earliest slot of 06/26/2026 09:00 AM, a line of further availability and a note about bringing ID, with a "Book with this provider" button; the other marked "Not offered" with the text "This provider doesn't perform the procedure" and a note referring the request to a sister office. A second request below holds one provider, marked Success at 06/29/2026 11:00 AM](./assets/05-results-and-booking.png)
 
-<!-- OPEN: four things on this evidence section.
-  1. Order. These run in the order the app is used, search through to result. The numbering you
-     put on the files did not survive the upload, since filenames are stripped, and the order
-     they arrived in was the reverse of this one. Say the word if the numbers meant something
-     else and I will reorder.
-  2. The search address. A street address was sitting in the client address box on two of these
-     screens, so I boxed it out, and boxed the map pin with it on the one where the map is zoomed
-     to street level, because a pin at that zoom gives the block. If it was a demo address, say
-     so and the boxes come off, which makes both screens better. If it was a real client's, tell
-     me and I will crop the map out of that screen instead of leaving the origin readable to a
-     few blocks.
-  3. Provider names. Around fifteen clinics are legible across the five images. They are real
-     businesses and no client is named by any of them, but together they place the firm in one
-     state, which no other part of this entry does. An earlier note on this section called real
-     clinic names the specific risk here. Your call: leave them, or blank them and lose some of
-     what makes the screens read as a working system.
-  4. Two artifacts still missing. A do-not-use provider sitting at the bottom of a result list in
-     black, which is the payoff of the fix in section 4, and a booking draft in the coordinator's
-     Outlook. Both on a record you are happy to publish. -->
+**Booking takes the slot and a matter ID.** The matter ID is how the flow finds the client and case
+details, and the modal says up front that the draft takes a minute or two rather than appearing on
+submit. This provider had no email address in the catalog, so the coordinator adds one here.
+
+![A modal headed "Book with" the chosen provider, reading "Confirm the details below. This drafts an email to the provider in your Outlook. It isn't instant: you'll be notified when the draft is ready (usually 1-2 minutes), then you review and send it." It shows the earliest availability found, a provider email field that is boxed out under the note "No email on file for this provider, add one to draft the email", a boxed-out matter ID with helper text saying it is 7 digits and where to find it, the procedure, and a free-text box for anything the draft should mention](./assets/06-book-with-provider.png)
+
+**Teams says when the draft is ready.** The card repeats the provider booked, the slot and the case
+details the flow pulled, and opens either the draft or the app.
+
+![A Teams chat with a bot called "Medical Provider Booking Agent". Its card is headed "Booking draft ready" for an Open MRI, with a "Provider booked" block giving the provider, phone, earliest availability of 06/26/2026 09:00 AM and a draft status of success, then a "Client & case" block giving the client name, phone, a boxed-out email, address, date of birth and date of loss. Two buttons read "Open draft" and "Open App". Above it, an earlier card from the same bot is partly visible](./assets/07-teams-draft-ready.png)
+
+**The request moves to Past carrying what happened on it.** The provider booked, the slot, and
+below that the other office that was called and could not offer the procedure. A coordinator
+picking the case up weeks later can see who was tried.
+
+![The My Requests tab with Pending (1) and Past (1), and the Past tab open. The request is badged "Draft created" and carries a "Client & case" block giving client name, phone, a boxed-out email, address, date of birth, date of loss and procedure. Below it, a "Booked:" heading naming the provider, with a "Draft created" badge, the slot of 06/26/2026 09:00 AM, further availability, a note about bringing ID and an "Open draft" button. Under a heading "Also confirmed availability with", a second provider is listed with a red "Not offered" badge](./assets/08-request-moved-to-past.png)
+
+**The draft sits unsent in the coordinator's own Outlook.** It carries the case details the flow
+pulled, the slot to confirm, and a request that the office keep referrals, liens, reports and bills
+on this thread, which is what the coordinator will be following up on weeks later. They read it
+and send it.
+
+![An Outlook draft, marked "[Draft] This message hasn't been sent", with the subject "Appointment Request - Client" followed by the client name and the procedure. The body asks the office to contact the client and book an Open MRI on Friday, June 26 at 9:00 AM and to notify the firm once it is confirmed, then lists the client's name, date of loss, date of birth, address, phone and a boxed-out email. A closing line asks that referrals, pending attorney liens, reports and bills come back on the same thread](./assets/09-booking-draft-in-outlook.png)
+
+<!-- OPEN: six things on this evidence section.
+  1. Order. These run in the order the app is used, search through to draft. The numbering you put
+     on the files did not survive either upload, since filenames are stripped, and both batches
+     arrived in the reverse of this order. Say the word if the numbers meant something else and I
+     will reorder. Easiest next time is to say the order in the message.
+  2. Confirm the test record on the last four screens, because the page now says so publicly. The
+     tells are a 01/01/2000 date of birth, a client phone number that is also a clinic's number
+     elsewhere in the app, and the email address I boxed out, which was not a person's. If any of
+     it is a real matter, those four come straight back out.
+  3. The search address on screens 2 and 3. A street address was sitting in the client address box,
+     so it is boxed out on both, and on the street-level map its pin is boxed too, because a pin at
+     that zoom gives the block. If it was a demo address, say so and the boxes come off, which
+     makes both screens better. If it was a real client's, tell me and I will crop the map out of
+     that screen instead of leaving the origin readable to a few blocks.
+  4. The case management vendor's name is in the matter ID helper text on the booking modal, and I
+     boxed it, because this entry says "the case management system" throughout. Naming software
+     vendors is fine by the standing decision, so the box can come off, but then the prose should
+     name it too rather than the screenshot doing it alone. Your call, and the same call applies to
+     the FNOL entry.
+  5. Provider names. Around fifteen real clinics are legible across the nine images. No client is
+     named by any of them, but together they place the firm in one state, which no other part of
+     this entry does. An earlier note on this section called real clinic names the specific risk
+     here. Leave them, or blank them and lose some of what makes the screens read as a working
+     system.
+  6. Two things the screenshots show that the entry does not. Teams announces the booking draft,
+     which neither section 4 step 4 nor the section 5 diagram mentions, and a booked request keeps
+     the other offices' results under "Also confirmed availability with". Both are worth a line if
+     you want them there. Still missing: a do-not-use provider sitting at the bottom of a result
+     list in black, which is the payoff of the fix in section 4. -->
 
 </details>

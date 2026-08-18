@@ -124,7 +124,7 @@ corrected, so none of the original guesses survive.
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done, plus a third §8 item added 2026-08-16 (two-way write-back). **First entry in the repo with committed evidence** (4 screenshots, 2026-08-17). `OPEN`s left: measured after-state, the §8 write-back tension, and three on the evidence section |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 exists with one item, Lara's, and may gain more. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in the dashboard page (moved 2026-08-17 to `dashboards/marketing-roi-dashboard.md`), and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
 | `dashboards` | Renamed from `firm-ops-dashboard` 2026-08-17, when both dashboards were consolidated into one entry. The folder now holds a framework page plus the two builds | TBD, may be a flagship | **Restructured 2026-08-17 as a framework page** (`README.md`), off the eight-section template, on Lara's two-layer split. Its two builds are `firm-operating-dashboards.md` (moved, gaps still open) and `marketing-roi-dashboard.md` (moved out of `marketing-attribution/dashboard.md`). Awaiting: tier, whether the ship-it-early lesson is method, the two builds' own `OPEN`s |
-| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. **Five app screenshots committed 2026-08-18**, the second entry in the repo with evidence, carrying four `OPEN`s. Outstanding: in-production-since date and user count, handover-doc authorship |
+| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. **Nine app screenshots committed 2026-08-18**, a search through to the unsent booking draft, the second entry in the repo with evidence, carrying six `OPEN`s. Outstanding: in-production-since date and user count, handover-doc authorship |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build. Entry retitled "Document automation" 2026-08-16, folder not yet renamed | TBD, leaning flagship | **Restructured 2026-08-16 as a framework page**, off the eight-section template. Carries a synthetic demand-letter demo. Awaiting: the demand-letter assessment table checked, impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 | `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | **Complete except for one `OPEN`** (what Lara's rework covered). **§2 and §6 deliberately removed 2026-08-16**, so it runs six sections. ~2 weeks, completed and delivered |
@@ -929,6 +929,36 @@ One line per session, newest last.
   **The branch handed to this session was `claude/medical-record-agent-evidence-ycng80`**, ignored
   per the standing convention, and the work went to `main`. Note the handed name calls this the
   medical *record* agent, which is not what the project is.
+
+- **2026-08-18 (provider selection evidence, four more screenshots).** Same day, second batch, on
+  `main`. Lara sent the booking half of the journey and all four went in, so the section now runs
+  nine images end to end: the booking modal, the Teams card announcing the draft, the request moved
+  to Past, and **the unsent draft in Outlook**, which was one of the two artifacts the previous
+  round asked for. Two facts the images carry that the entry does not, now `OPEN` 6: **Teams
+  announces the booking draft** (neither §4 step 4 nor the §5 diagram mentions it), and **a booked
+  request keeps the other offices' results** under "Also confirmed availability with", so the next
+  person can see who was tried. Still missing: a do-not-use provider shown in black.
+  **The case management vendor is named in the booking modal**, in the matter ID helper text, which
+  tells the user where to find the ID in their case URL. Boxed, since this entry says "the case
+  management system" throughout. `OPEN` 4 puts the choice to Lara, and it is the same choice on the
+  FNOL entry. **Any future screenshot of this modal carries the vendor name.** Sixth instance of
+  the standing lesson that the leak is in the chrome, the helper text and the form fields rather
+  than the page body.
+  **New finding, and the useful one: redact by field across the whole set, not per image.** Lara
+  blurred one email field in two of the four screenshots and left the same field legible in a
+  third, so her own blur pass told us what she wanted hidden and another image in the same batch
+  gave it away. It is boxed on all four now. The corollary of "blur in an export is not redaction"
+  is that **a field hidden in one capture is usually readable in another from the same session.**
+  Also boxed: the matter ID, and a provider's named staff email where it reappeared behind the
+  modal.
+  **The last four screens are a test record**, and the section says so, the way the FNOL one does.
+  The tells left visible are a 01/01/2000 date of birth and a client phone number that is also a
+  clinic's number elsewhere in the same app. The boxed-out email was a company address rather than
+  a person's, which is the third tell and is no longer visible. `OPEN` 2 asks Lara to confirm,
+  since the page now asserts it publicly.
+  **Both batches arrived in the reverse of the order the app is used**, and the numbering Lara put
+  on the filenames did not survive either upload. Committed in app order with an `OPEN` offering to
+  reorder. **Ask for the order in the message, not in filenames.**
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
