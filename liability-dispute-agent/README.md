@@ -356,12 +356,13 @@ Otherwise the section stands as written, which is honest. -->
 ---
 
 <details>
-<summary>Evidence: five screenshots of one session</summary>
+<summary>Evidence: nine screenshots of one session</summary>
 
-Five frames from a single run, in the order they happened: the carrier's email arrives, a staff
-member hands the thread to the agent, the agent says what it still needs, and it comes back with
-the case read, the dispute classified and the playbook's diagnostics answered. Party names, the
-matter number, the date of loss, the carrier and the location are covered over.
+Nine frames from a single run, in the order they happened: the carrier's email arrives, a staff
+member hands the thread to the agent, the agent reads the case and classifies the dispute, it
+asks for what it could not resolve, it reads the police report it is given, and it leaves a draft
+sitting unsent in the staff member's Drafts folder. Party names, the matter and claim numbers, the
+date of loss, the police report number, the carriers and the location are covered over.
 
 **The carrier's position arrives as an email.** An adjuster answers a coverage query with a
 witness statement from the police report, an allegation that the client was driving with no
@@ -394,6 +395,38 @@ staff member is left with only the questions nobody could answer for them.
 
 ![The reply continues under a step 2 classification heading: unprotected left turn, third party, with a headlights-off comparative negligence counter, currently 50/50. It names mechanism playbook 02, comparative negligence rebuttals 11, third-party posture, and a percentage grind negotiation pattern. Under a step 3 diagnostics heading, labelled with the playbook and two California Vehicle Code sections, a table of numbered questions gives an answer and a source for each, with the first two sourced to the facts of loss and marked SELF-ANSWER](./assets/agent-step2-step3.png)
 
+**What it cannot resolve, it asks in one go.** The diagnostics are tiered, and this is the last
+tier: seven questions the agent says it cannot answer from the materials it has, batched so the
+staff member answers once rather than being interviewed. Two of them ask for the claim number,
+the defendant and the carrier, which is what it found missing in the case management system a
+few steps earlier.
+
+![A numbered list of seven questions under a heading saying these are unknowns the agent cannot resolve from the materials and asking for all of them at once. They cover whether the defendant turned on a green circle rather than a protected arrow, the lighting conditions, whether the client's vehicle has daytime running lights, whether the reporting officer assigned fault and cited any Vehicle Code sections, the claim number and defendant and carrier names, whether damage photos exist, and what is known about the witness's vantage point and relationship to the insured](./assets/agent-tier3-questions.png)
+
+**Given the police report, it reads it and answers its own questions.** The staff member attaches
+the traffic collision report and the agent extracts the liability-relevant fields, each row citing
+the report's own labels rather than paraphrasing. The primary collision factor comes back assigned
+to the defendant with the Vehicle Code section the officer cited, which is the answer to question 4
+above and the spine of the argument that follows.
+
+![The agent's reply to an attached police report, headed as a police report extraction with a Key Findings table. Columns read Element, Detail and Source. Rows cover the primary collision factor, assigned to party 2, the defendant, for a cited Vehicle Code section, plus the defendant driver, the vehicle owner and the defendant's carrier and policy, each sourced to the report's own field labels](./assets/agent-police-report-extraction.png)
+
+**It writes the draft and hands the human their part of the job.** The reply confirms the draft is
+in Outlook, marks it ready for review, and lists what a person still has to do: attach the damage
+photos, consider attaching the report's coding page and narrative, sign it, and decide whether to
+put a counter-percentage on the table.
+
+![The agent confirming a draft was created, with a link to open it in Outlook and a summary block giving thread, recipient, copied party and a status reading draft, ready for your review. A Before Sending list follows with four numbered items: attach damage photos of the broadside impact, consider attaching the police report's coding page, narrative and sketch, add a signature, and optionally add a counter-percentage demand. A closing note says an earlier draft created by a backup method can be deleted](./assets/agent-draft-created.png)
+
+**The draft sits in Drafts with Send unclicked.** Every argument in it traces to something: the
+report's primary collision factor and the section the defendant was cited under, the officer's
+coding of the collision as a broadside, the client's statement that his headlights were on and
+that he turned them off after the impact, and the documented lighting and road conditions. The
+headlights allegation the carrier opened with is answered from the report rather than argued
+against in the abstract.
+
+![An Outlook draft window with the Send button untouched. A header block lists claim number, client, defendant and date of loss. The body disputes a 50/50 determination and lists supporting bullets: the collision report assigning the primary collision factor to the insured for a left turn yield violation they were cited for, the insured turning left across the client's path while the client proceeded straight on a green light, the collision coded as a broadside, the officer's coding confirming who was turning, the client's statement that his headlights were on until after the impact, handheld cell phone use by the insured, and documented lighting and weather conditions](./assets/outlook-draft-unsent.png)
+
 <!-- OPEN: four things on this evidence section.
   1. Is this a real matter or a test record? It reads real: a matter number that resolves in
      the case management system, a client name, a date of loss, the accident's cross streets
@@ -410,6 +443,9 @@ staff member is left with only the questions nobody could answer for them.
      system" throughout. Naming vendors is fine by the standing decision, so this is only a
      consistency question: name it in the prose too, or cover it in the images?
   4. The ordering here is mine, read off what each screenshot shows, because the numbers in
-     your filenames did not survive the upload. Check it against your numbering. -->
+     your filenames did not survive the upload. Check it against your numbering.
+  5. The diagnostics are tiered on screen and the entry does not say so. §4 step 4 describes
+     the agent asking only for what it cannot get on its own, which is the last tier. Is the
+     tiering worth writing into step 4 properly, and what are tiers 1 and 2 called? -->
 
 </details>

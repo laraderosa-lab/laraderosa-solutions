@@ -1102,6 +1102,23 @@ One line per session, newest last.
   **Existing white boxes in her captures held up** under 5x upscale with 4x contrast, unlike the
   five dashboard PDFs and the FNOL accuracy view. Two smudged regions were also unrecoverable.
   The failures in this repo have all been *blur*; flat white boxes have been fine.
+  **Then four more, same session, taking it to nine.** They continue the same run past the
+  diagnostics: the last tier of questions the agent cannot answer from its materials (seven, asked
+  in one batch), the police report extraction once the staff member attaches the report, the
+  draft-created confirmation with its Before Sending list, and the finished draft sitting in the
+  Drafts folder with Send unclicked. That last pair is §4 step 7 and "It never sends" demonstrated
+  together, and the draft is the best single artifact in the set, because every bullet in it
+  traces to the report or the client's statement rather than to model memory.
+  Redacted in the second batch: the **police report number** (in two frames, and it is the
+  strongest re-identification key in any of the nine, since the report is requestable and names
+  everyone involved), the **city** (twice in prose plus the attached file's name), the cross
+  streets, and the defendant's **carrier name**. Lara's own white boxes already covered the claim
+  number, client, defendant, date of loss, driver and owner names, policy number and addresses,
+  and they hold under 6x upscale at 6x contrast.
+  **Her uploads arrive in reverse narrative order**, at least in this batch, where delivery ran
+  draft, draft-created, extraction, questions and the run is the exact reverse. The first batch of
+  five was not a clean reverse, so derive the order from content each time rather than trusting
+  either the delivery order or a rule.
   The branch handed to this session was `claude/liability-dispute-evidence-pics-xozg2f`, ignored
   per the standing convention, and the work went to `main`.
 
