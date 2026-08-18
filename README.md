@@ -71,4 +71,4 @@ it wasn't, the case study says so.
 
 ---
 
-**Lara De Rosa** · [lara.d@swans.co](mailto:lara.d@swans.co)
+**Lara De Rosa** · [laraderosa@gmail.com](mailto:laraderosa@gmail.com)
