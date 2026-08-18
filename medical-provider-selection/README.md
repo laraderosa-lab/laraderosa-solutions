@@ -132,12 +132,14 @@ Then a coordinator:
 2. **Checks availability.** Select one provider or several, add one that is not in the catalog,
    ask the agent to confirm the office performs the procedure before it asks about dates, and
    attach constraints such as nothing before Monday or no morning slots.
-3. **Gets one answer.** Every selected office is phoned at the same time. The agent works the
-   IVR, holds, and asks for the earliest opening. One request returns one ranked result, once
-   every call in it has finished. Results expire after six hours, because slots go.
+3. **Gets one answer.** Every selected office is phoned at the same time. The voice agent works
+   the IVR, holds, and asks for the earliest opening. One request returns one ranked result once
+   every call in it has finished, and a Copilot agent messages the coordinator in Teams when it is
+   ready. Results expire after six hours, because slots go.
 4. **Books.** Pick a provider and enter the matter ID. A flow pulls the client and case details
    from the case management system, an LLM step composes the request, and the draft lands in the
-   coordinator's own Outlook. They read it and send it.
+   coordinator's own Outlook. The same Copilot agent says when it is there. They read it and send
+   it.
 
 If they already know which provider they want, they skip the calls and go straight to the draft.
 
@@ -163,6 +165,7 @@ flowchart TB
   voice["Voice AI agents (Retell)<br/>N calls at once"]
   offices(["Provider offices<br/>IVR · hold · earliest opening"])
   gate{"Every call in<br/>the batch done?"}
+  notify["Notification agent<br/>(Copilot Studio, in Teams)"]
   draft["Booking email drafter"]
   out(["Draft in the coordinator's<br/>own Outlook, unsent"])
 
@@ -176,9 +179,11 @@ flowchart TB
   voice <--> offices
   voice -->|"webhook per call"| gate
   gate -->|"no, batch stays open"| batch
-  gate -->|"yes, one ranked answer"| treater
+  gate -->|"yes, one ranked answer"| notify
+  notify --> treater
   treater -->|"pick + matter ID"| draft
   cms -.->|"client + case details"| draft
+  draft -->|"draft ready"| notify
   draft --> out --> treater
 ```
 
@@ -235,7 +240,7 @@ await markTerminal(call, 'success', {
 const siblings = await findCallsInBatch(call.batchId);
 if (siblings.some(isStillPending)) return;     // someone is still on hold
 
-await notifyRequester(call.batchId, siblings); // one card, all providers, ranked
+await notifyRequester(call.batchId, siblings); // agent posts one card, all providers, ranked
 ```
 
 A slow office cannot trigger a premature "here are your results", and a retry stays invisible,
@@ -368,10 +373,12 @@ submit. This provider had no email address in the catalog, so the coordinator ad
 
 ![A modal headed "Book with" the chosen provider, reading "Confirm the details below. This drafts an email to the provider in your Outlook. It isn't instant: you'll be notified when the draft is ready (usually 1-2 minutes), then you review and send it." It shows the earliest availability found, a provider email field that is boxed out under the note "No email on file for this provider, add one to draft the email", a boxed-out matter ID with helper text saying it is 7 digits and where to find it, the procedure, and a free-text box for anything the draft should mention](./assets/06-book-with-provider.png)
 
-**Teams says when the draft is ready.** The card repeats the provider booked, the slot and the case
-details the flow pulled, and opens either the draft or the app.
+**A Copilot agent says when the draft is ready.** It is the same agent that messages a coordinator
+when availability results come back, and Teams is where its messages land. Its card
+repeats the provider booked, the slot and the case details the flow pulled, and opens either the
+draft or the app.
 
-![A Teams chat with a bot called "Medical Provider Booking Agent". Its card is headed "Booking draft ready" for an Open MRI, with a "Provider booked" block giving the provider, phone, earliest availability of 06/26/2026 09:00 AM and a draft status of success, then a "Client & case" block giving the client name, phone, a boxed-out email, address, date of birth and date of loss. Two buttons read "Open draft" and "Open App". Above it, an earlier card from the same bot is partly visible](./assets/07-teams-draft-ready.png)
+![A Teams chat with the notification agent, whose name reads "Medical Provider Booking Agent". Its card is headed "Booking draft ready" for an Open MRI, with a "Provider booked" block giving the provider, phone, earliest availability of 06/26/2026 09:00 AM and a draft status of success, then a "Client & case" block giving the client name, phone, a boxed-out email, address, date of birth and date of loss. Two buttons read "Open draft" and "Open App". Above it, an earlier card from the same bot is partly visible](./assets/07-teams-draft-ready.png)
 
 **The request moves to Past carrying what happened on it.** The provider booked, the slot, and
 below that the other office that was called and could not offer the procedure. A coordinator
@@ -386,7 +393,7 @@ and send it.
 
 ![An Outlook draft, marked "[Draft] This message hasn't been sent", with the subject "Appointment Request - Client" followed by the client name and the procedure. The body asks the office to contact the client and book an Open MRI on Friday, June 26 at 9:00 AM and to notify the firm once it is confirmed, then lists the client's name, date of loss, date of birth, address, phone and a boxed-out email. A closing line asks that referrals, pending attorney liens, reports and bills come back on the same thread](./assets/09-booking-draft-in-outlook.png)
 
-<!-- OPEN: six things on this evidence section.
+<!-- OPEN: seven things on this evidence section.
   1. Order. These run in the order the app is used, search through to draft. The numbering you put
      on the files did not survive either upload, since filenames are stripped, and both batches
      arrived in the reverse of this order. Say the word if the numbers meant something else and I
@@ -410,10 +417,15 @@ and send it.
      this entry does. An earlier note on this section called real clinic names the specific risk
      here. Leave them, or blank them and lose some of what makes the screens read as a working
      system.
-  6. Two things the screenshots show that the entry does not. Teams announces the booking draft,
-     which neither section 4 step 4 nor the section 5 diagram mentions, and a booked request keeps
-     the other offices' results under "Also confirmed availability with". Both are worth a line if
-     you want them there. Still missing: a do-not-use provider sitting at the bottom of a result
-     list in black, which is the payoff of the fix in section 4. -->
+  6. The notification agent is now in section 4 steps 3 and 4 and in the architecture diagram, on
+     your correction that the Copilot agent does the notifying and Teams is only where it lands.
+     Check the diagram: both the ranked availability result and the booking draft now go through
+     the agent to the coordinator, and the Outlook draft still goes straight to them. Section 6
+     does not claim the agent, because I do not know whether you built it. If it is yours it
+     belongs in that list beside the two flows and the Retell agent.
+  7. One more thing the screenshots show that the entry does not. A booked request keeps the other
+     offices' results under "Also confirmed availability with", so the next person can see who was
+     tried. Worth a line if you want it. Still missing: a do-not-use provider sitting at the bottom
+     of a result list in black, which is the payoff of the fix in section 4. -->
 
 </details>

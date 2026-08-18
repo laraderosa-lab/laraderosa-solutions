@@ -179,6 +179,10 @@ shorthand that matches no slug, and ask which one she means rather than guessing
   run-status choice set** reused by every solution. Two solutions also share a batch-ID +
   one-row-per-call pattern with a fan-in completion gate. Name the pattern once and
   cross-reference it rather than re-explaining it per case study.
+  **Never write that Teams notifies anyone.** A Copilot agent built for the job sends the message
+  and Teams is only where it lands, so the edge is always flow to agent to staff. Lara has had to
+  correct this twice, on `fnol-voice-agent` (2026-08-16) and on `medical-provider-selection`
+  (2026-08-18).
 - **The case management system is a named commercial product and must never be committed.** The
   handover docs name it constantly. Same for the client firm name, the real Dataverse column
   prefix, the real flow-name convention, the internal repo name, Entra group names and the raw
@@ -1040,6 +1044,19 @@ One line per session, newest last.
   plain `cp` into the repo. Heredoc `python3 -` editing markdown was fine.
   **The branch handed to this session was `claude/dashboard-builds-evidence-6g4ewm`**, ignored per
   the standing convention, and the work went to `main`.
+- **2026-08-18 (provider selection, the notifier is an agent and not Teams).** Lara's correction on
+  the new evidence: the booking-draft card is posted by **a Copilot agent built for that purpose,
+  which messages the coordinator through Teams**, so writing "Teams says when the draft is ready"
+  gets the actor wrong. Same correction she made on FNOL on 2026-08-16, so it is now a rule in the
+  shared-conventions finding above. Fixed in the evidence lead and its alt text, and written into
+  the entry properly: **§4 step 3 and step 4 now say a Copilot agent messages the coordinator**
+  (step 3 also says "the voice agent" where it used to say "the agent", since the page now has two
+  kinds), and **the §5 diagram routes both the ranked availability result and the draft-ready
+  message through a notification agent node** rather than straight to the coordinator, matching
+  FNOL's diagram. Validated with mermaid-cli. The excerpt's `notifyRequester` comment now says the
+  agent posts the card. **§6 does not claim the agent**, because whether Lara built it is unknown,
+  and the `OPEN` asks: if it is hers it belongs in that list beside the two flows and the Retell
+  agent.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a
