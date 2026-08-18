@@ -249,4 +249,3 @@ and the task description each one carries.
 
 ![Task tracker tab: pending task detail by assignee with created and due dates, due-date status and task descriptions, plus overdue, due-today and all-pending counts](./assets/marketing-roi-04-task-tracker.png)
 
-The fifth tab, Lawmatics Monthly, is not in this set.
