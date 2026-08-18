@@ -124,7 +124,7 @@ corrected, so none of the original guesses survive.
 | `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done, plus a third §8 item added 2026-08-16 (two-way write-back). **First entry in the repo with committed evidence** (4 screenshots, 2026-08-17). `OPEN`s left: measured after-state, the §8 write-back tension, and three on the evidence section |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 exists with one item, Lara's, and may gain more. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in the dashboard page (moved 2026-08-17 to `dashboards/marketing-roi-dashboard.md`), and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
 | `dashboards` | Renamed from `firm-ops-dashboard` 2026-08-17, when both dashboards were consolidated into one entry. The folder now holds a framework page plus the two builds | TBD, may be a flagship | **Restructured 2026-08-17 as a framework page** (`README.md`), off the eight-section template, on Lara's two-layer split. Its two builds are `firm-operating-dashboards.md` (moved, gaps still open) and `marketing-roi-dashboard.md` (moved out of `marketing-attribution/dashboard.md`). Awaiting: tier, whether the ship-it-early lesson is method, the two builds' own `OPEN`s |
-| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. Outstanding: in-production-since date and user count, handover-doc authorship, and the evidence screenshots |
+| `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. **Five app screenshots committed 2026-08-18**, the second entry in the repo with evidence, carrying four `OPEN`s. Outstanding: in-production-since date and user count, handover-doc authorship |
 | `document-generation` | Lara's own words. **Accurate**, but it is a *method*, not one build. Entry retitled "Document automation" 2026-08-16, folder not yet renamed | TBD, leaning flagship | **Restructured 2026-08-16 as a framework page**, off the eight-section template. Carries a synthetic demand-letter demo. Awaiting: the demand-letter assessment table checked, impact numbers, role detail, video clearance |
 | `liability-dispute-agent` | Lara's own words. **Accurate**, project is understood | **Flagship** (proposed, confirm) | Drafted. OPEN on role, timeline, ruled-out alternatives, measured impact |
 | `lien-reduction-letters` | **Accurate.** Renamed from the guessed `medical-lien-calculator` once the handover doc arrived | Short entry | **Complete except for one `OPEN`** (what Lara's rework covered). **§2 and §6 deliberately removed 2026-08-16**, so it runs six sections. ~2 weeks, completed and delivered |
@@ -894,6 +894,41 @@ One line per session, newest last.
   scratchpad and then `cp` into the repo went through.
   **The branch handed to this session was `claude/fnol-readme-evidence-rvt08d`**, ignored per the
   standing convention, and the work went to `main`.
+
+- **2026-08-18 (provider selection evidence, five screenshots).** On `main`. Lara sent five app
+  screenshots and all five went in, as a `<details>` evidence block at the end of the entry, one
+  bold lead plus a described image each, in the order the app is used: specialty-only search with
+  the whole catalog on the map, the same search ranked by driving distance once a client address
+  is in, three providers ticked, the confirm-availability modal, and the My Requests view where a
+  request holds one row per provider called. The last one is the best single artifact in the set,
+  because it shows the "ask first if they do this procedure" check paying off: one provider came
+  back with an earliest slot and the other with "Not offered, this provider doesn't perform the
+  procedure".
+  **Three redactions.** A street address was sitting in the **client address** search box on two
+  screens, so it is boxed out on both, and on the street-level map its pin is boxed too, since a
+  pin at that zoom gives the block. A provider's **named staff email** on the results screen is
+  boxed. The Teams notify field was already empty, and the window title says only "Medical
+  Provider Search", so unlike the FNOL captures there was no vendor name in the chrome. Fifth
+  instance of checking chrome and form fields rather than only the page body.
+  **Provider names were left legible and that needs Lara's ruling**, which is `OPEN` 3 on the
+  section. Around fifteen real clinics are readable across the five images. No client is named by
+  them, but together they place the firm in one state, which nothing else in the repo does, and
+  the placeholder comment this section replaced had already flagged real clinic names as this
+  project's specific risk.
+  **Lara's numbering did not survive the upload.** She said each picture carried a number giving
+  the order; filenames are stripped before a session sees them, and the images arrived in the
+  reverse of the order the app is used. They are committed in app order, with an `OPEN` offering
+  to reorder. **Ask for the order in the message next time rather than in filenames.**
+  **Uploads are recoverable from the session transcript, which matters because
+  `/root/.claude/uploads/` did not exist this session.** They sit base64-encoded in
+  `/root/.claude/projects/-home-user-laraderosa-solutions/<session-id>.jsonl`, as `image` blocks
+  inside the user message: parse the line with `json`, `base64.b64decode(b['source']['data'])`,
+  and write out with the block's `media_type` extension. Four of these five arrived as webp and
+  one as png. Redacting and converting with `pillow` in the scratchpad and then `cp` into the repo
+  worked, as it did last session.
+  **The branch handed to this session was `claude/medical-record-agent-evidence-ycng80`**, ignored
+  per the standing convention, and the work went to `main`. Note the handed name calls this the
+  medical *record* agent, which is not what the project is.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

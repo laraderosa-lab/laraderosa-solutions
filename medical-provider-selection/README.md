@@ -317,15 +317,64 @@ More may come. Do not add any without her. -->
 ---
 
 <details>
-<summary>Evidence</summary>
+<summary>Evidence: five screenshots of the working app</summary>
 
-<!-- Candidates, needing redaction first: the search screen (ranked list beside the map) is the
-     best single artifact, since the diagnosis is "they could not see this"; a do-not-use
-     provider at the bottom in black; a multi-provider result; a booking draft. Use a demo
-     address. Check every image for firm name, provider names, client names and addresses,
-     matter IDs, dates of loss, dollar figures, PHI. Provider names are this project's specific
-     risk, since a real clinic name is identifying even though it is not the client. -->
+The deployed app, in the order a coordinator moves through it. No client name, matter or case
+number appears on any of these screens. One client address, typed into the search box on two of
+them, is boxed out, and so are its pin on the street-level map and a provider's staff email
+address on the results screen.
 
-Not yet added.
+**A specialty on its own returns the catalog.** Every provider of that specialty is on the map, and
+the list is unranked, because there is no address to rank it against.
+
+![The search screen with MRI Imaging chosen as the specialty and the client address box empty. The heading reads "OTHER PROVIDERS (499)" above a list of imaging centres, each with its address, phone number and the firm's open and total case count with it. The map beside the list is covered in provider pins across its whole visible area](./assets/01-search-whole-catalog.png)
+
+**With the client's address it ranks by driving distance.** Three top picks, numbered to match
+their pins, each with mileage, drive time and the firm's caseload with that provider. Every other
+active provider follows underneath. This screen replaced pasting two addresses into Google Maps,
+once per candidate.
+
+![The same search with a client address filled in, which is boxed out. The list is now headed "TOP PICKS" with three numbered providers at 5.8, 6.6 and 9.7 miles and 9, 10 and 14 minutes of driving, followed by "OTHER PROVIDERS (462)". The map shows numbered pins for the top three, a driving route to the client address, whose pin is boxed out, and a popup giving one provider's address, distance and drive time](./assets/02-ranked-by-driving-distance.png)
+
+**The coordinator picks who gets called.** Ticking a provider adds it to the request and the
+footer counts the selection.
+
+![The ranked search with all three top picks ticked and the cursor on the third checkbox. The footer reads "3 selected" with a Clear link, and a "Confirm availability" button sits in the bottom right. The map has zoomed out to hold all three providers and the client address, which is boxed out](./assets/03-select-providers-to-call.png)
+
+**The call is set up before anything dials.** One procedure for the whole request, a note the agent
+carries onto every call in it, and per provider the name, procedure, phone and address the agent
+will work from. Ticking "Ask first if they do this procedure" makes the agent confirm the office
+performs it before asking about dates. A provider missing from the catalog gets added here, for
+this request.
+
+![A modal titled "Confirm availability" reading "We'll call 3 providers to check the earliest availability. Verify each provider's details below, or add one that isn't on the list." The procedure is Open MRI and the details for the agent read "Client is available starting Monday 29". A Teams notification field is empty and fixed to the requester's own account. Below, under "PROVIDERS (3)", each provider has an editable name, procedure, phone and address, and a ticked "Ask first if they do this procedure" checkbox](./assets/04-confirm-availability.png)
+
+**One request, one answer.** A request sits in Pending until someone books off it. Each provider
+row carries what its call produced: the earliest date offered, anything else the office said about
+availability, and a note. The second provider on the first request was ruled out on the call
+because it does not perform the procedure, which is the check being ticked on the previous screen.
+Booking starts from this list.
+
+![The My Requests tab, with tabs for Pending (2) and Past (0) and a line explaining that pending requests are awaiting a booking and move to Past once one is made. The first request, for an Open MRI, holds two providers: one marked Success with an earliest slot of 06/26/2026 09:00 AM, a line of further availability and a note about bringing ID, with a "Book with this provider" button; the other marked "Not offered" with the text "This provider doesn't perform the procedure" and a note referring the request to a sister office. A second request below holds one provider, marked Success at 06/29/2026 11:00 AM](./assets/05-results-and-booking.png)
+
+<!-- OPEN: four things on this evidence section.
+  1. Order. These run in the order the app is used, search through to result. The numbering you
+     put on the files did not survive the upload, since filenames are stripped, and the order
+     they arrived in was the reverse of this one. Say the word if the numbers meant something
+     else and I will reorder.
+  2. The search address. A street address was sitting in the client address box on two of these
+     screens, so I boxed it out, and boxed the map pin with it on the one where the map is zoomed
+     to street level, because a pin at that zoom gives the block. If it was a demo address, say
+     so and the boxes come off, which makes both screens better. If it was a real client's, tell
+     me and I will crop the map out of that screen instead of leaving the origin readable to a
+     few blocks.
+  3. Provider names. Around fifteen clinics are legible across the five images. They are real
+     businesses and no client is named by any of them, but together they place the firm in one
+     state, which no other part of this entry does. An earlier note on this section called real
+     clinic names the specific risk here. Your call: leave them, or blank them and lose some of
+     what makes the screens read as a working system.
+  4. Two artifacts still missing. A do-not-use provider sitting at the bottom of a result list in
+     black, which is the payoff of the fix in section 4, and a booking draft in the coordinator's
+     Outlook. Both on a record you are happy to publish. -->
 
 </details>
