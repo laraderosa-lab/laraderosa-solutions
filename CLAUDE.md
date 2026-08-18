@@ -1071,6 +1071,34 @@ One line per session, newest last.
   agent posts the card. **§6 does not claim the agent**, because whether Lara built it is unknown,
   and the `OPEN` asks: if it is hers it belongs in that list beside the two flows and the Retell
   agent.
+- **2026-08-18 (liability dispute evidence, five screenshots).** Lara sent five M365 Copilot and
+  Outlook captures of one agent session. All five committed, in a new
+  `<details>` evidence section written in the FNOL house shape: a bold lead-in per image, then
+  descriptive alt text. Ordered by what each frame shows, because **the numbers in her filenames
+  did not survive the upload** and the delivery order ran backwards through the conversation. The
+  run reads: carrier's email arrives, staff member hands over the thread (§4 step 1), agent says
+  the matter ID is all it still needs (§4 step 4's "asks only for what it cannot get on its own"),
+  agent pulls the case (§4 step 2), agent classifies and answers the diagnostics with a Source
+  column per answer (§4 steps 3 and 4).
+  **Redactions applied, and Lara said mid-session to stop covering things**, so the covers are
+  listed in an `OPEN` for her to reverse selectively. Boxed: the client's full name (legible in
+  three places, including a faded scroll band at the bottom edge of one frame), the date of loss,
+  the matter number, the accident's cross streets, the carrier's name, a case rep's first name,
+  and two internal Teams group names in the Outlook sidebar. Left visible pending her ruling: the
+  **case management system is named on screen** while the entry's prose says "the case management
+  system" throughout, which is allowed by the vendor-naming decision and is only a consistency
+  question.
+  **Whether this is a real matter is unresolved and is the first `OPEN`.** It reads real, and the
+  only contrary signal is "Cc: DEMO ACCOUNT" on the email plus Lara playing the adjuster herself.
+  **Uploaded images did not land on disk this session.** `/root/.claude/uploads/` did not exist.
+  They were recoverable as base64 inside the session transcript at
+  `/root/.claude/projects/<project>/<session-id>.jsonl`, under `message.content[].source.data`.
+  Extract with a short `python3 -c` script. Worth knowing before telling Lara an upload is lost.
+  **Existing white boxes in her captures held up** under 5x upscale with 4x contrast, unlike the
+  five dashboard PDFs and the FNOL accuracy view. Two smudged regions were also unrecoverable.
+  The failures in this repo have all been *blur*; flat white boxes have been fine.
+  The branch handed to this session was `claude/liability-dispute-evidence-pics-xozg2f`, ignored
+  per the standing convention, and the work went to `main`.
 
 ## Conventions
 - **Branch names are public too.** Never put a client name, or the shorthand Lara uses for a

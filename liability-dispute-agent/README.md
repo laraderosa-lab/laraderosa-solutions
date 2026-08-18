@@ -356,17 +356,60 @@ Otherwise the section stands as written, which is honest. -->
 ---
 
 <details>
-<summary>Evidence</summary>
+<summary>Evidence: five screenshots of one session</summary>
 
-<!-- Candidates, each needing a redaction pass:
-     - A sanitized conversation showing the agent classifying a dispute and asking its
-       diagnostic questions (best single artifact, it shows the reasoning)
-     - A redacted drafted response with the cited codes listed
-     - The knowledge set's file index (structure only, no content)
-     - The usage view in the operations console
-     Check every image for: firm name, party names, claim/policy numbers, adjuster names,
-     dates of loss, dollar figures, matter references, PHI. -->
+Five frames from a single run, in the order they happened: the carrier's email arrives, a staff
+member hands the thread to the agent, the agent says what it still needs, and it comes back with
+the case read, the dispute classified and the playbook's diagnostics answered. Party names, the
+matter number, the date of loss, the carrier and the location are covered over.
 
-Not yet added.
+**The carrier's position arrives as an email.** An adjuster answers a coverage query with a
+witness statement from the police report, an allegation that the client was driving with no
+headlights, and a flat "liability is 50/50". That message is the input to the whole run.
+
+![An Outlook window showing a thread titled "Coverage and Liability for". The reply argues that a witness statement on the police report confirms the insured's account that the other driver was travelling with no headlights, making it difficult to see them approaching at night, and ends with the highlighted line "Liability is 50/50". Below it, the quoted original message asks whether coverage has been cleared and what the liability stance is](./assets/carrier-email-inbox.png)
+
+**The staff member names the thread and nothing else.** The agent finds the email in their
+mailbox, reads the carrier's position back as a list, and works out what is missing. This is
+step 1 of the walkthrough above, running in M365 Copilot with the agent picked from the sidebar.
+
+![The Liability Dispute Assistant in M365 Copilot. The user has typed "help me dispute the liability of this case" followed by a thread subject. The agent replies that it found both email threads and needs the facts of loss, then summarises the adjuster's position under four bullets: liability stance 50/50, a witness statement in the police report, the no-headlights allegation, and difficulty yielding to oncoming traffic](./assets/agent-first-reply.png)
+
+**It asks for one thing.** The agent has read the thread, so what it cannot get on its own is the
+matter reference, and it says so along with the format it expects. It asks for that and stops.
+
+![The same reply scrolled down to a heading "What I still need", listing one numbered item: the matter ID, so it can pull the facts of loss from the case management system, described as the client's account of the accident, defendant info, carrier and claim number. A closing line reads "Once I have the facts of loss, I can classify the dispute, run diagnostics from the correct playbook, and build the draft". The matter ID is typed into the message box below](./assets/agent-missing-matter-id.png)
+
+**Given the reference, it pulls the case.** It fetches the case details, opens the Dispute
+Classifier and the Unprotected Left Turn playbook, then finds the carrier and claim number
+missing from the case management system and goes back to the email thread for them.
+
+![The agent's next reply. It describes fetching the full case details, opening the Dispute Classifier and the Unprotected Left Turn playbook, and checking the email thread for a carrier and claim number missing from the case management system. Under a step 1 heading, context gathered, it lists the facts of loss: client, date of loss, the client travelling straight through the intersection on a green light, and the defendant attempting an unprotected left turn](./assets/agent-step1-context.png)
+
+**Classification picks the playbooks, and the diagnostics show their working.** The dispute routes
+to the unprotected left turn playbook, with the comparative negligence rebuttals opened alongside
+it for the headlights allegation. The diagnostic questions then come from that playbook. Every
+answer carries a Source, and the ones the agent answered from the case itself are marked, so the
+staff member is left with only the questions nobody could answer for them.
+
+![The reply continues under a step 2 classification heading: unprotected left turn, third party, with a headlights-off comparative negligence counter, currently 50/50. It names mechanism playbook 02, comparative negligence rebuttals 11, third-party posture, and a percentage grind negotiation pattern. Under a step 3 diagnostics heading, labelled with the playbook and two California Vehicle Code sections, a table of numbered questions gives an answer and a source for each, with the first two sourced to the facts of loss and marked SELF-ANSWER](./assets/agent-step2-step3.png)
+
+<!-- OPEN: four things on this evidence section.
+  1. Is this a real matter or a test record? It reads real: a matter number that resolves in
+     the case management system, a client name, a date of loss, the accident's cross streets
+     and a named carrier were all legible before the pass. The one contrary signal is
+     "Cc: DEMO ACCOUNT" on the email and the fact that you are playing the adjuster yourself.
+     If it is a real matter I would rather have this run again on a test record than rely on
+     covered boxes, because a box is only as good as my having spotted what was under it.
+  2. You said to stop covering things, so tell me which of these to take back off and I will
+     re-cut them from the originals in one pass: the accident's street names, the carrier's
+     name, the matter number, and the two internal Teams group names in the Outlook sidebar.
+     The client's name and the date of loss I have left covered pending your word, since this
+     repo is public and they belong to a third party.
+  3. The screenshots name the case management system and the entry says "the case management
+     system" throughout. Naming vendors is fine by the standing decision, so this is only a
+     consistency question: name it in the prose too, or cover it in the images?
+  4. The ordering here is mine, read off what each screenshot shows, because the numbers in
+     your filenames did not survive the upload. Check it against your numbering. -->
 
 </details>
