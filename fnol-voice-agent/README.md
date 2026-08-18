@@ -342,6 +342,19 @@ fabricated **test record**, which is why two of the four carriers on the case ar
 Insurance Company", and the last one is a live matter with its record identifiers and staff names
 removed.
 
+**It starts on the case file, in the browser.** The extension lists the agents that can run
+against the case in front of them, and the staff member picks FNOL. The other six on this list
+are separate solutions from the same audit, which is what the ten-solution program in §2 looks
+like from a user's desk.
+
+![The browser extension panel, headed "Run an agent" and "Pick an agent to run for the current case". Below a card naming the current case, a list of seven agents: Letter of Representation, FNOL, Preservation of Evidence, Police Report, Policy Limit Search, DMV SR1/SR19 and Loss of Use](./assets/01-extension-agent-launcher.png)
+
+**The Copilot agent says when the case is ready to review.** Intake runs on its own, then the
+agent messages the reviewer in Teams with a link straight into the review app. Nobody watches
+for it to finish.
+
+![A Teams message from the FNOL Agent reading "CRM Review Intake: A new case has been opened for review. Choose which carriers to call, edit any details, and submit". A matter and batch reference sit underneath, with the matter number boxed out, above an "Open Review" button](./assets/02-teams-review-intake.png)
+
 **The details the system pulled off the case, for checking.** Every carrier on the case gets
 asked the same questions about the accident, so facts of loss, location, weather and police
 details are one form rather than four. The reviewer corrects anything wrong here before any
@@ -380,29 +393,21 @@ claim-type option value and two staff first names are boxed out.
 
 ![The call results view. A header strip shows claim opened, human reached, call initiated and IVR passed, followed by the call summary, next steps, call duration and attempt count. Below, a red banner reads "Transcript accuracy: 96%" and flags the date of loss as a key field, showing the record's June date against the April date the agent said. A field-by-field comparison grid follows, with counts of 27 correct, 1 incorrect, 18 not disclosed by the voice agent and 23 not provided by the user, then individual fields for the claim, the parties and the incident](./assets/07-accuracy-check.png)
 
-<!-- OPEN: three things on this evidence section.
-  0. Two steps are missing from the front of the walkthrough and the asset numbering leaves
-     01 and 02 free for them: the browser extension's agent list with FNOL among the seven
-     agents on the current case, and the Copilot agent's "CRM Review Intake" card in Teams
-     that tells the reviewer a case is ready. You sent both on 2026-08-18 but they did not
-     reach the session's filesystem, only the chat, so there was nothing to commit. Send them
-     again as file attachments, since a Windows path from your own machine is not reachable
-     from a session. On the intake card I will box the matter number, since it is a record
-     identifier on a matter I cannot confirm is a test one, and nothing else in that card needs
-     touching.
-     **The extension shot needs its whole top band removed before it can ship.** The second
-     send of it shows the client's logo and name to the left of "Claims Agents Launcher", where
-     the first send showed that area empty, and the browser profile avatar next to it carries an
-     initial. Same fix as the review app's title bar: crop the band, keep the panel. Nothing
-     below it is a problem, and the agent list is worth having, since it names seven of the
-     engagement's solutions and corroborates the ten-solution story in §2.
-  1. I have written the first four up as a test record, on the basis that two of the carriers
+<!-- OPEN: two things on this evidence section.
+  1. I have written the first four app screens up as a test record, on the basis that two of the carriers
      are named "Test Insurance Company" and the number dialled in the Teams card is not the
      carrier's number shown in the app. Confirm that, because the page now says so publicly.
   2. The carriers screenshot has an "+ Add involved party" button in it, and §5 says carriers
      can only be added in the case management system, never in the app. A reader who looks at
      both will ask. Which is it: a party can be added in the app but never a carrier, or does
      that button also predate the rule?
+
+  On the two front screens, for the record: you removed the client's logo and name from the
+  extension shot yourself, and it holds at 5x with the contrast pushed 4x, with only two
+  illegible wisps left. I cropped the browser toolbar band off it as well, since the profile
+  avatar carried an initial, and boxed the matter number on the intake card. The launcher runs
+  on the same test record as the app screens; the intake card is a different matter, which is
+  why its number is boxed.
 
   DECIDED, do not reopen: the accuracy-check screenshot is a live matter and Lara ruled on
   2026-08-18 that it ships. Her reasoning is that no field in it identifies the person or the

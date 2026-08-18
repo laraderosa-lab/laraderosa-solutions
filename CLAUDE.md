@@ -121,7 +121,7 @@ corrected, so none of the original guesses survive.
 
 | Slug | Where the slug came from | Tier | Status |
 |---|---|---|---|
-| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done, plus a third §8 item added 2026-08-16 (two-way write-back). **First entry in the repo with committed evidence** (5 screenshots, 2026-08-17 and 2026-08-18). `OPEN`s left: measured after-state, the §8 write-back tension, and two on the evidence section |
+| `fnol-voice-agent` | **Accurate.** Project is understood | **Flagship** | Drafted, iteration 1 done, plus a third §8 item added 2026-08-16 (two-way write-back). **First entry in the repo with committed evidence** (7 screenshots, 2026-08-17 and 2026-08-18). `OPEN`s left: measured after-state, the §8 write-back tension, and two on the evidence section |
 | `marketing-attribution` | **Accurate.** Renamed from `marketing-engine` once the work was understood | **Flagship** | **Iterations 1, 1b and 2 done.** §8 exists with one item, Lara's, and may gain more. See the 2026-08-15 log entries for what was corrected; do not re-litigate any of it. Six `OPEN`s left in `README.md` and two in the dashboard page (moved 2026-08-17 to `dashboards/marketing-roi-dashboard.md`), and they are the whole to-do list: the dashboard PDF (re-upload needed, it never survives a session), what the ~50 sources collapsed into (N sources / M campaigns), client headcount, the ~$30k/mo lead vendor and ~$20k/mo PPC figures, the dashboard's own design decisions, and a **business outcome for §7**, which is the weakest part of the entry |
 | `dashboards` | Renamed from `firm-ops-dashboard` 2026-08-17, when both dashboards were consolidated into one entry. The folder now holds a framework page plus the two builds | TBD, may be a flagship | **Restructured 2026-08-17 as a framework page** (`README.md`), off the eight-section template, on Lara's two-layer split. Its two builds are `firm-operating-dashboards.md` and `marketing-roi-dashboard.md` (moved out of `marketing-attribution/dashboard.md`). **Both builds now carry committed evidence, 4 dashboard pages each, 2026-08-18**, which makes this the third and fourth entries in the repo with evidence. Awaiting: tier, whether the ship-it-early lesson is method, the two builds' own `OPEN`s |
 | `medical-provider-selection` | **Accurate.** Renamed from `medical-provider-agent` 2026-08-13, because the work is provider *selection* (search, ranking, booking), and the internal app path says so too | **Flagship** | **Iterations 1 to 4 done**, and the most finished entry in the repo. **§8 now exists with one item, Lara's** (two-way write-back), and may gain more. **Nine app screenshots committed 2026-08-18**, a search through to the unsent booking draft, the second entry in the repo with evidence, carrying six `OPEN`s. Outstanding: in-production-since date and user count, handover-doc authorship |
@@ -912,14 +912,24 @@ One line per session, newest last.
   of the carriers screen. **Steps 01 and 02 are still missing**: Lara sent the extension's agent
   list and the "CRM Review Intake" Teams card, but **images pasted into chat do not always reach
   `/root/.claude/uploads/`**, and those two never landed on disk, so there was nothing to commit.
-  Ask for them as file attachments, and note that **a local Windows path pasted into chat is not
-  reachable from a session**, which was the second attempt. When they arrive: box the matter
-  number on the intake card, and **crop the entire top band off the extension shot, because it
-  carries the client firm's logo and name** to the left of "Claims Agents Launcher", with the
-  browser profile avatar and its initial beside it. **The two sends of that same screenshot did
-  not show the same thing**: the first rendered that area empty and the second showed the
-  branding, so assess every send on its own rather than trusting an earlier read of "the same"
-  image. The extension shot is worth having for a second reason, since its agent list names seven
+  **Both then shipped, and the way they were recovered is the lesson.** Lara sent them five
+  times. They never landed in `/root/.claude/uploads/`, that folder held only the previous
+  session's five files, and a local Windows path pasted into chat is not reachable from a
+  session either. **Three replies told her there was nothing to push, and that was wrong.** The
+  bytes were in the session transcript the whole time, exactly as the provider-selection entry
+  below already recorded: `/root/.claude/projects/-home-user-laraderosa-solutions/<session-id>.jsonl`,
+  `image` blocks inside the user message, `base64.b64decode(b['source']['data'])`. **Check the
+  transcript before ever telling her an upload is lost.** Sizes also identify which send is
+  which: the launcher appeared at 33549, 33402 and then 31722 bytes three times, and the 31722
+  version is the one with the branding removed.
+  **The extension shot carried the client firm's logo and name** to the left of "Claims Agents
+  Launcher". **The two sends of that same screenshot did not show the same thing**: the first
+  rendered that area empty and the second showed the branding, so assess every send on its own
+  rather than trusting an earlier read of "the same" image. Lara removed it at source on the
+  third send, and it holds at 5x with contrast pushed 4x, leaving two illegible wisps. On top of
+  that: the **browser toolbar band was cropped off** (the profile avatar carries an initial), and
+  the **matter number on the intake card was boxed**, since that card is a different matter from
+  the test record the app screens run on. The extension shot is worth having for a second reason, since its agent list names seven
   of the engagement's solutions and corroborates the ten-solution story §2 already tells.
   **Where the line actually is, for future sessions.** Lara's ruling covers accident and personal
   detail on the grounds that it is not uniquely identifying. It does **not** cover record
