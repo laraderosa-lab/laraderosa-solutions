@@ -44,7 +44,7 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 |---|---|---|---|---|---|---|
 | FNOL voice agent | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Medical provider selection | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Liability dispute agent | ✅ | ✅ | | ✅ | | |
+| Liability dispute agent | ✅ | ✅ | | ✅ | | ✅ |
 | Marketing attribution | ✅ | | ✅ | ✅ | ✅ | ✅ |
 | Dashboards | | | ✅ | ✅ | ✅ | ✅ |
 | Document automation | ✅ | ✅ | | ✅ | | ✅ |
