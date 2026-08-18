@@ -19,10 +19,6 @@ worth fixing**, what I built, and what changed as a result.
 | [Lien reduction letters](./lien-reduction-letters) | Turns one settlement form submission into a letter per lienholder, checking whether the lien pool covers the claims and running the statutory 50/50 pro-rata split when it doesn't, so every letter on the matter reconciles | A Missouri PI firm's case management system couldn't compute the lien split, so settlement figures lived in Excel, the pro-rata math was done on a calculator, and totals were hand-typed into a Word template **once per medical provider** | Fillout, Make, Microsoft 365 Word merge, OneDrive |
 
 ★ = flagship deep dive.
-<!-- OPEN: is document automation a flagship? It has the strongest reusable idea of the seven
-and the weakest measured impact. Add ★ and bold the row if yes. Also open: the folder is still
-`document-generation` while the entry is now titled document automation, which is Lara's own
-phrasing. Rename the folder and these links, or retitle the entry. -->
 
 **Two of these are frameworks rather than single builds.** Document automation is the approach
 used whenever one of the other solutions has to produce a document, so it appears inside several
@@ -40,17 +36,6 @@ Four of these came out of a **single engagement at the same firm**, where one au
 roughly ten solutions and I delivered them as a program rather than as separate briefs. Each of
 those entries carries its own diagnosis, so they can be read in any order.
 
-<!-- OPEN: confirm the exact list of four and that "roughly ten" is the number you want to
-     use publicly. Evidence says: FNOL, liability dispute, medical provider, document
-     generation. Also confirm whether the firm operating dashboards build, now inside the
-     dashboards entry, is the same client's operations console, which would make it five. -->
-
-<!-- OPEN: two things about the dashboards entry, now that both builds sit under one framework
-page. (a) Tier: it carries two production builds and the reusable part is the two-layer scoping,
-so it may belong with the flagships rather than here. (b) The row above and the capability row
-below describe the framework, and the two builds' own detail lives on their pages. Say if you
-want either build named in the table instead. -->
-
 ## Capabilities, by project
 
 Filled in as case studies land, so a reader can see breadth without opening seven files.
@@ -64,12 +49,6 @@ Filled in as case studies land, so a reader can see breadth without opening seve
 | Dashboards | | | ✅ | ✅ | ✅ | ✅ |
 | Document automation | ✅ | ✅ | | ✅ | | ✅ |
 | Lien reduction letters | | | | ✅ | | ✅ |
-<!-- OPEN: two things to check on the document automation row.
-  (a) "LLM agents" is the wrong column name for it. That work is prompt orchestration
-      (classification nodes, scoped drafting nodes), not agents. Consider renaming the column
-      to "LLM systems" so the row is honest, or tell me to blank the tick.
-  (b) "Deployed & handed off" is ticked on the strength of "a lot of things were shipped".
-      Confirm the client owns and maintains them now, or I will split deployed from handed off. -->
 
 ## How to read these
 

@@ -14,16 +14,10 @@
 | **What it is** | A framework, not a single build. The approach used whenever a solution has to emit a document |
 | **Applies to** | Any high-volume document with a mostly repeated structure, a few genuinely variable passages, and a system of record holding the underlying data. Described here through personal injury documents, which is where it has been used |
 | **Where it has been used** | Around a dozen US plaintiff-side personal injury firms across the practice, **four of them by me**, several documents each. Every application so far has been legal, though nothing in the framework is |
-| **My role** | Co-developed the framework with the team, then applied it client-side across four engagements <!-- OPEN: for your four, sole builder or splitting work? Which parts were yours: template authoring, field mapping, flow build, prompt design, option libraries? --> |
+| **My role** | Co-developed the framework with the team, then applied it client-side across four engagements|
 | **Provenance** | The five levels came out of a group working session. I co-developed them and someone else on the team wrote them up |
 | **Stack** | Power Automate, Make.com, SharePoint / Google Drive for template storage, Word field logic, system-of-record APIs, LLM classification and drafting nodes |
 | **Status** | Shipped for multiple clients. The standing approach whenever a solution has to produce a document |
-
-<!-- OPEN: this page is now written as a framework rather than a case study, so it departs from
-the eight-section template on purpose. Two naming questions that follow from that. (a) The
-folder is still `document-generation` while the page is titled document automation, which is
-your phrasing. Rename the folder and the root README links, or retitle the page? (b) Root
-README still carries an OPEN asking whether this is a flagship. -->
 
 ---
 
@@ -124,12 +118,6 @@ Two things fall out of that table. Most of a demand letter sits at Levels 1 to 3
 sections clients most often assume need AI, the treatment summary and the damages, are the two
 most mechanical blocks on the page. A model summarizing a billing ledger can only introduce an
 error the ledger does not have.
-
-<!-- OPEN: this table is my reconstruction of a demand letter's sections, not yours. It is the
-first thing to check on this page, since it is the most concrete claim here. Correct the
-section list, the level calls, and anything the firms actually did differently. In particular:
-did the treatment summary really come off the ledger as a table, or did someone want prose
-there? And how many liability paragraphs were in a typical option library? -->
 
 **[Download `demand-letter-levels.html`](./assets/demand-letter-levels.html) and open it in a
 browser** to click through the letter. GitHub shows committed HTML as source rather than
@@ -280,9 +268,6 @@ Where narrative is needed, the instructions can live in the flow or in the templ
 | Weaknesses | One node per block, so long documents mean many nodes to build and maintain. Assumes the document always has the same sections | Less consistent. The model sees the whole document, so input scoping is weaker |
 
 The choice comes down to document length and how much the document's own structure varies.
-<!-- OPEN: still want to check I have this the right way round. My reading: pattern B for
-documents whose structure varies case to case, because pattern A's fixed node-per-section
-assumes a document that is always laid out the same way. Correct me if it was the reverse. -->
 
 ## 7. Trade-offs and constraints
 
@@ -315,16 +300,6 @@ assumes a document that is always laid out the same way. Correct me if it was th
 several documents each. Assessing their existing templates block by block, deciding which level
 each piece belonged to, picking the deployment shape their system allowed, and building it.
 
-<!-- OPEN: this is the section interviewers read closest and I only have the outline above.
-  - For the four clients: sole builder, or splitting work with others? Which parts were yours
-    (template authoring, field mapping, flow build, prompt design, option libraries)?
-  - Did you run the template assessments yourself, sitting with their past documents?
-  - Which document types did those four actually automate? Demand letters and statements of
-    claim are the two I know of. Retainers? Discovery responses? Medical chronologies?
-  - Who trained the drafters, and how did adoption go?
-  - Handed off to the client, or still maintained by you?
-  - Anything that was clearly someone else's work, say so and I will attribute it. -->
-
 | | Before | After |
 |---|---|---|
 | Who fills a boilerplate block | A person, re-reading it every time | Nobody. It is fixed in the template |
@@ -332,16 +307,6 @@ each piece belonged to, picking the deployment shape their system allowed, and b
 | Who selects standard language | A person, deciding case by case | A rule, or a classifier picking from human-written options |
 | Who writes case-specific narrative | A person, from scratch | A model, from scoped inputs, reviewed by a person |
 | Where review attention goes | The whole document | The Level 4 choices and the Level 5 passages |
-
-<!-- OPEN: anything measured at any of the four clients turns this from structural to real.
-Drafting hours per document, documents per week, number of templates automated, turnaround
-before and after, or even "the drafter said it went from half a day to an hour." An attributed
-anecdote beats no number. If nothing was measured, this stays as it is. -->
-
-<!-- OPEN: no "what I'd do differently" section, because it would be mine rather than yours and
-that has had to be deleted from four entries already. Yours whenever you want to write it. What
-actually went wrong on one of the four? A document that came out wrong, a level call you
-regret, a client who wanted more AI than the document justified, a platform that fought you? -->
 
 ---
 
@@ -354,16 +319,5 @@ every block and merge fields highlighted where they are actually filled. The det
 the case management data behind each block sit in a column on the left. Download it with the
 **Download raw file** button and open it in a browser. Static screenshots are committed alongside for reading in place:
 [light](./assets/demand-letter-levels.png), [dark](./assets/demand-letter-levels-dark.png).
-
-<!-- Still to add:
-     - The Ontario Statement of Claim walkthrough video. OPEN before it can go in a public
-       README: (a) is the link public or does it need a Swans login, (b) does the sample
-       document contain a real party name, file number or anything identifiable, (c) do you
-       want it embedded at all. Note the sample is Ontario while the four clients were US, so
-       the entry has to say so.
-     - A flow screenshot showing the Level 4 classify-then-route node, client identifiers
-       removed.
-     Check every image for: firm name, party names, file or claim numbers, dollar figures tied
-     to a real matter, dates of loss, PHI, and vendor branding in screenshots. -->
 
 </details>

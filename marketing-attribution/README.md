@@ -12,7 +12,7 @@
 
 | | |
 |---|---|
-| **Client** | US law firm, criminal defense and personal injury, single office <!-- OPEN: headcount? I only know ~6 people by role (owner, ops/marketing manager, intake specialist, Clio admin, accountant). Small enough that the owner sees every invoice. --> |
+| **Client** | US law firm, criminal defense and personal injury, single office|
 | **Domain** | Marketing operations and intake attribution |
 | **My role** | Sole engineer. The client asked for the work, and I owned it from scoping through to handover |
 | **Timeline** | ~3 months, roughly one month each on attribution, cost mapping, and dashboard design |
@@ -35,10 +35,7 @@ work happens and where a case's real value is eventually recorded.
 
 The firm buys most of its new business. Paid search, local service ads, social, printed ads,
 streaming ads, a marketing agency on retainer, and a lead vendor that sells personal injury
-cases **already signed** at roughly $3,000 each. <!-- OPEN: confirm the ~$30k/month lead
-vendor figure and the ~$20k/month PPC budget cap. Both are from the walkthrough call and I
-want them confirmed before they sit in a public repo. -->
-
+cases **already signed** at roughly $3,000 each.
 ## 2. Diagnosis: how I knew this was the problem to solve
 
 The firm named the symptom itself and asked for help with it. It was spending heavily across a
@@ -140,10 +137,6 @@ into grouped sources, deduplicated paid search, retired the stale entries, and a
 sources the firm was actually using but had never set up. Roll campaigns up and there is a
 true per-channel figure. Drill into a source and campaigns inside it compare on like-for-like
 terms.
-
-<!-- OPEN: what did the ~50 collapse into? "About 50 flat entries became N sources and M
-campaigns" is the single most persuasive line available for this section, and I do not have N
-or M. -->
 
 ### 2. Route both capture channels into it
 
@@ -454,12 +447,6 @@ including the interviews that established how each source is actually paid for. 
 and hygiene jobs. The replication connector, the warehouse and the Power BI dashboard. The
 client relationship, weekly updates, and the handover.
 
-<!-- OPEN: the Figma claim. It came from the client walkthrough PDF read on 2026-08-14, as
-"each workstream was designed in Figma and walked through with the client before being built",
-and that PDF is not recoverable. Lara has confirmed the dashboard was not designed in Figma, so
-the claim is narrowed here to the taxonomy rework. Confirm Figma was used for that, or delete
-this paragraph. -->
-
 **How the design work was communicated.** The source taxonomy rework was mapped in Figma and
 walked through with the client before it was built, which for a non-technical audience is the
 difference between approving a change and approving a description of a change. Fifty flat
@@ -506,24 +493,6 @@ in front of the owner that he could not previously have asked:
 - **Around one lead in ten is invalid**, spam, a wrong number or an internal test. Worth
   knowing before quoting a cost per lead to anyone.
 
-<!-- OPEN: the three findings above are read off the dashboard, not off a decision. If any of
-them actually changed the spend, that is the sentence this section wants. -->
-
-<!-- OPEN: the firm's absolute financials (total case value, open matter counts, lead volumes)
-are all on the dashboard and I have deliberately kept them out, using ratios instead. Say if
-you are comfortable publishing any of the absolutes and I will put the strongest ones back. -->
-
-<!-- OPEN: the table above is a capability change, which is real and defensible. What would
-make this section land is a business outcome on top of it:
-  - Did it change a spend decision? A campaign or ad group cut or scaled on these numbers, the
-    lead vendor evaluated at month six or nine, the agency contract not renewed. One decision
-    made on this data beats any percentage.
-  - Conversion rate before vs after the hygiene jobs, if both are visible.
-  - Lead-dispute recovery: did the seven-day task automation actually save chargebacks, and
-    roughly how much? At $3,000 a lead that could be the single best number in the study.
-  - Dashboard adoption: who opens it, how often.
-If none of it was measured, say so and I will write one honest qualitative line instead. -->
-
 ## 8. What I'd do differently
 
 - **Put Lawmatics' own forms on the firm's website, and set the UTM parameters on the landing
@@ -549,15 +518,6 @@ operations layers and the data work both of them need underneath.
 
 <details>
 <summary>Evidence</summary>
-
-<!-- Candidates, all needing a redaction pass:
-     - The source mapping sheet, old taxonomy to new (redact referral partner names)
-     - The Make scenario canvas showing the campaign routers (redact campaign names, which
-       contain the practice area and the state)
-     - The monthly cost sheet (redact vendor names, or redact spend, not neither)
-     Dashboard screenshots live in ../dashboards/marketing-roi-dashboard.md.
-     Check every image for: firm name, staff names, vendor names, campaign names containing
-     the city or state, tracking phone numbers, real spend figures, client names. -->
 
 Not yet added.
 

@@ -17,9 +17,6 @@
 | **Stack** | Power BI on both, over Azure SQL or BigQuery, fed by Skyvia or a custom connector, off Clio Manage, Clio Grow and Lawmatics |
 | **Status** | Both in production |
 
-<!-- OPEN: this page is written as a framework, so it departs from the eight-section template the
-case studies follow, the same way document automation does. -->
-
 ---
 
 ## 1. Two layers, answering to different people
@@ -164,10 +161,6 @@ assistant he could ask for trends and recommendations, and it was deferred on th
 model has nothing to flag until the targets exist, since without them it can only report that a
 number moved.
 
-<!-- OPEN: the firm operating dashboards page carries an open question on who first framed the
-data-before-AI argument, you or the client. Same question applies to this paragraph, since it is
-stated here as the position I take going in. -->
-
 ## 5. What the numbers have to mean
 
 A report over a CRM inherits the CRM's definitions unless someone decides otherwise, and those
@@ -214,11 +207,6 @@ every week.
 **Licence cost per viewer is a launch conversation.** Power BI Pro is charged per person who
 opens the report, which for a firm of this size is a real line item, so it gets said before
 launch rather than after.
-
-<!-- OPEN: worth your ruling on whether this belongs here as method. The single best idea in the
-firm operating dashboards build, ranking partners by hired, came from the client reacting to a
-chart rather than from the design. Same question is open on that page: is the lesson that the
-first build should ship deliberately incomplete so the client fills the gaps? -->
 
 ## 7. The two builds
 

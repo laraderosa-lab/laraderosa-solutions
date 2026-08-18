@@ -14,7 +14,7 @@
 | **My role** | Co-owned the idea and the diagnosis. Sole engineer on the implementation, end to end. Change management was the client's, by agreement |
 | **Timeline** | 6 weeks, first client conversation to rollout, alongside nine other solutions from the same audit |
 | **Stack** | React/TypeScript Code App on Microsoft Power Platform, Dataverse, Power Automate, Azure Functions, Azure Maps, Retell AI (voice), Copilot Studio, Outlook, Teams |
-| **Status** | Completed and rolled out <!-- OPEN: in production since when, and how many coordinators use it? --> |
+| **Status** | Completed and rolled out|
 
 ---
 
@@ -77,9 +77,6 @@ writing, it usually carries the client's previous records as attachments, and th
 the coordinator follows up on weeks later. So the call settles availability, and the system writes
 the email itself.
 
-<!-- Asked Lara 2026-08-13 for other alternatives evaluated and rejected; nothing further to add
-for now. Leave this as-is rather than padding it with plausible-sounding options. -->
-
 ## 3. Problem
 
 Choosing a provider meant scrolling a specialty slice of an 18,000-row directory with Google Maps
@@ -106,11 +103,6 @@ is booked. Against the team's ~2,600 weekly hours of capacity, provider selectio
 to 17% of the department**, or nine to eleven people doing nothing but scrolling a directory,
 pasting addresses into Google Maps, working phone trees and sitting on hold. None of it required
 clinical or legal judgment, and every figure above is the low end of what shadowing showed.
-
-<!-- Units confirmed with Lara 2026-08-13, do not re-derive: ~6 selections per case, ~2 calls
-per selection, ~30 emails per case, ~15 min per search. Estimates, not stopwatch figures.
-OPEN: ~100-125 new cases/week is the claims department's measured intake, reused on Lara's
-confirmed assumption that treaters see the same cases. Every weekly figure scales off it. -->
 
 ## 4. Solution
 
@@ -276,9 +268,6 @@ provider has coordinates:
 Six weeks from the first client conversation to rollout, running alongside the nine other
 solutions the same audit produced.
 
-<!-- OPEN: did you write the three handover docs this was drawn from (user guide, maintenance
-runbook, architecture)? Worth claiming above if so. Not asserted because I do not know. -->
-
 ## 7. Impact
 
 **The before state, from the shadowing sessions:**
@@ -315,9 +304,6 @@ same way, because the old field was never ignored for lack of a better field.
   lands in the case management system and everything else reads it from there. This one's API is
   limited enough that writing back was not on the table. On a case management system that
   accepts writes I would build it two-way from the start.
-
-<!-- OPEN: Lara gave the write-back item on 2026-08-16 and said she was not sure what else.
-More may come. Do not add any without her. -->
 
 ---
 
@@ -392,40 +378,5 @@ on this thread, which is what the coordinator will be following up on weeks late
 and send it.
 
 ![An Outlook draft, marked "[Draft] This message hasn't been sent", with the subject "Appointment Request - Client" followed by the client name and the procedure. The body asks the office to contact the client and book an Open MRI on Friday, June 26 at 9:00 AM and to notify the firm once it is confirmed, then lists the client's name, date of loss, date of birth, address, phone and a boxed-out email. A closing line asks that referrals, pending attorney liens, reports and bills come back on the same thread](./assets/09-booking-draft-in-outlook.png)
-
-<!-- OPEN: seven things on this evidence section.
-  1. Order. These run in the order the app is used, search through to draft. The numbering you put
-     on the files did not survive either upload, since filenames are stripped, and both batches
-     arrived in the reverse of this order. Say the word if the numbers meant something else and I
-     will reorder. Easiest next time is to say the order in the message.
-  2. Confirm the test record on the last four screens, because the page now says so publicly. The
-     tells are a 01/01/2000 date of birth, a client phone number that is also a clinic's number
-     elsewhere in the app, and the email address I boxed out, which was not a person's. If any of
-     it is a real matter, those four come straight back out.
-  3. The search address on screens 2 and 3. A street address was sitting in the client address box,
-     so it is boxed out on both, and on the street-level map its pin is boxed too, because a pin at
-     that zoom gives the block. If it was a demo address, say so and the boxes come off, which
-     makes both screens better. If it was a real client's, tell me and I will crop the map out of
-     that screen instead of leaving the origin readable to a few blocks.
-  4. The case management vendor's name is in the matter ID helper text on the booking modal, and I
-     boxed it, because this entry says "the case management system" throughout. Naming software
-     vendors is fine by the standing decision, so the box can come off, but then the prose should
-     name it too rather than the screenshot doing it alone. Your call, and the same call applies to
-     the FNOL entry.
-  5. Provider names. Around fifteen real clinics are legible across the nine images. No client is
-     named by any of them, but together they place the firm in one state, which no other part of
-     this entry does. An earlier note on this section called real clinic names the specific risk
-     here. Leave them, or blank them and lose some of what makes the screens read as a working
-     system.
-  6. The notification agent is now in section 4 steps 3 and 4 and in the architecture diagram, on
-     your correction that the Copilot agent does the notifying and Teams is only where it lands.
-     Check the diagram: both the ranked availability result and the booking draft now go through
-     the agent to the coordinator, and the Outlook draft still goes straight to them. Section 6
-     does not claim the agent, because I do not know whether you built it. If it is yours it
-     belongs in that list beside the two flows and the Retell agent.
-  7. One more thing the screenshots show that the entry does not. A booked request keeps the other
-     offices' results under "Also confirmed availability with", so the next person can see who was
-     tried. Worth a line if you want it. Still missing: a do-not-use provider sitting at the bottom
-     of a result list in black, which is the payoff of the fix in section 4. -->
 
 </details>

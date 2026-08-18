@@ -13,7 +13,7 @@ One of the two builds behind [how I decide what goes on a dashboard](./README.md
 | **Client** | Plaintiff-side personal injury firm, US, ~$50M annual revenue and under 400 people |
 | **Domain** | Legal operations and firm-wide business intelligence |
 | **My role** | Built the dashboards and the underlying model. Co-built the Clio-to-warehouse connector. The diagnosis was the client's own, see section 2 |
-| **Timeline** | <!-- OPEN: how long from kickoff to the intake pilot review, and how long to the full five reports? --> |
+| **Timeline** ||
 | **Stack** | Clio Manage, Clio Grow, Skyvia, Azure SQL Database, Power BI, Excel (goal input) |
 | **Status** | In production. Started as a pilot engagement |
 
@@ -49,10 +49,6 @@ evaluated until the firm could see its own numbers, and that if a dashboard is e
 the call, the AI is not needed. That is the reasoning that shaped the engagement, and the
 client came to the same conclusion looking at the first build.
 
-<!-- OPEN: confirm who framed the "understand the data before buying AI" argument. Reading the
-transcript it looks like it came from your side and the client agreed, but it could be read
-either way, and it matters for how this section is written. -->
-
 So the scope was deliberately narrow first. Intake and marketing only, off Clio Grow, because
 it was the smallest complete slice that could prove the pipeline worked and be useful on its
 own. The Clio Manage reports covering teams, caseload, aging and finance came after that
@@ -87,10 +83,6 @@ that had to be asked weekly simply stopped being asked. Leadership managed a mul
 practice on recollection and spreadsheets. Teams could not see their own progress toward the
 bonus they were working for. Marketing spend and referral relationships were maintained
 without any measure of which ones produced signed cases.
-
-<!-- OPEN: the cost of leaving it alone is the missing quantification here. Any of these
-would land: hours per month spent building manual reports, how often leadership asked for a
-number and waited days, marketing spend on sources that never converted. -->
 
 ## 4. Solution
 
@@ -237,10 +229,6 @@ was in arguing for the data layer before any AI work, in scoping the pilot down 
 there was something real to react to early, and in the modelling decisions in section 5 that
 the client never sees and would have felt within a quarter if they were wrong.
 
-<!-- OPEN: worth adding if you have it. Who chose Skyvia and Azure, you or the client's side?
-Who ran the KPI definition conversations with the partners? How were the teams brought onto
-their own dashboards, and who owns the thing now? -->
-
 ## 7. Impact
 
 No before-and-after metrics were captured on this engagement, so the honest version is
@@ -298,21 +286,7 @@ And on the question the engagement started from:
 > "If you can look at the dashboard and you can already make the determination, you don't even
 > need the AI. I don't even need it."
 
-<!-- OPEN: anything measured would still carry this section harder than quotes do. Weekly
-active users across the five reports, whether marketing spend moved off a source the
-conversion view exposed, whether the aging-case count fell after the flag shipped. -->
-
 ## 8. What I'd do differently
-
-<!-- OPEN: needs your own reflections, this section is empty without them. Candidates from
-the build, to confirm, replace or delete: the goals spreadsheet is an unvalidated input
-feeding numbers that decide bonuses; the aging threshold and alert floors were fixed at build
-time rather than configurable from the start; five reports may be one more than the firm
-needed. -->
-
-<!-- OPEN: one more worth capturing. The single best idea in the project, ranking partners by
-hired, came from the client looking at a chart, not from the design. Is the lesson that the
-first build should ship deliberately incomplete so the client fills the gaps? -->
 
 ---
 
@@ -366,21 +340,5 @@ not yet paid, and total outstanding accrued balance, each with gross and net on 
 and a toggle between gross only, net only and both.
 
 ![Financial report: monthly cash received from case distributions, monthly accrued revenue on unpaid cases, and total outstanding accrued balance, each plotted gross and net together with a view toggle](./assets/firm-ops-04-financial-report.png)
-
-<!-- OPEN: the referral partner names on the intake page. The lists mix placeholders that follow
-the same pattern as the rest of the set (Bravo, Charlie, Delta, plus Roe/Boe/Coe surnames) with
-around eleven entries that read as real firms rather than substitutes: BC Legal Group, The Aspen
-Law Firm, Ridge Law Firm, "Foster Law, APC - Main office.", Coe Cardinal Inc., CEDAR LAW FIRM PC,
-AB Injury Law Group, ANDERS LAW FIRM APC, Alta Awan Law P C, Ace Auto, and "Law offices of Hale"
-in the matter list. The APC and PC suffixes and the inconsistent casing are what user-entered
-picklist data looks like, so the whole name column is boxed in all three visuals. Say they are
-substitutes and the boxes come off. -->
-
-<!-- OPEN: the five declination reasons named in section 4 (declined on criteria, lost contact,
-retained other counsel, pending evaluation, co-counsel pending) are not the labels on the
-committed intake page, which breaks did-not-hire into rejected client, non-responsive, hired
-other attorney, referred out pending engagement, referred out fee agreement completed, settled
-and other. Either the export is a later state than the source the section was written from, or
-the section has the wrong labels. Confirm which and section 4 gets corrected. -->
 
 </details>

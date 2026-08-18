@@ -13,7 +13,7 @@
 |---|---|
 | **Client** | Plaintiff-side personal injury firm, ~400 staff (US, California auto caseload) |
 | **Domain** | Claims operations, disputing liability with carriers |
-| **My role** | Sole delivery. I built the knowledge base and the agent <!-- OPEN: confirm this covers the whole build, see §6 --> |
+| **My role** | Sole delivery. I built the knowledge base and the agent|
 | **Timeline** | 6 weeks from the first client conversation to rollout, alongside nine other solutions from the same firm-wide audit |
 | **Stack** | Microsoft Copilot Studio (generative agent), Claude Opus 4.1, SharePoint knowledge set, Power Automate, Microsoft Graph, MCP mail action, Teams / M365 Copilot, Dataverse (usage reporting only) |
 | **Status** | Completed and rolled out |
@@ -91,12 +91,6 @@ needed it.
 
 The result is a **knowledge-retention** system that happens to draft emails. Once the playbooks
 exist and are maintained, the firm keeps the expertise whether or not the expert stays.
-
-<!-- OPEN: §2 needs "what I ruled out" to match the template. You said come
-     back to it. Candidates to react to: an enterprise ChatGPT/Copilot licence with no
-     grounding (solves confidentiality, not provenance or accuracy); a written manual or
-     wiki nobody opens; a template library in the document-generation solution; training
-     juniors harder; a review app in front of the draft. -->
 
 ## 3. Problem
 
@@ -297,13 +291,6 @@ On the build I owned the agent's instructions and hard rules, the tools it calls
 and mailbox integrations, and the usage reporting that lets the firm see whether anyone is
 using it.
 
-<!-- OPEN: a few things I've left out rather than assume.
-  - Does "all of it" also cover the handover docs for this solution? They're good and worth
-    claiming if they're yours.
-  - Training and rollout, especially getting people off the public AI tools. Any resistance
-    worth describing? That's a good forward-deployed detail.
-  - Is it handed to the client's IT now, or still yours? -->
-
 ## 7. Impact
 
 **The outcome this was built for is not a time saving.** It is how often the firm gets liability
@@ -329,13 +316,6 @@ separates **engaged** sessions, meaning a real back-and-forth that produced work
 opened and abandoned. Only engaged sessions count toward value. That feeds the firm-wide
 operations console alongside every other solution in the program.
 
-<!-- OPEN: if any of these exist, they'd go here and would be worth a lot:
-  - engaged sessions to date, over what period
-  - adoption: how many of the claims team use it, is it the default path now
-  - did the public-AI usage actually stop
-  - any outcome signal at all, a carrier reversing or reducing a fault allocation
-Otherwise the section stands as written, which is honest. -->
-
 ## 8. What I'd do differently
 
 - **I'd put a regression set behind the playbooks.** Behaviour lives in documents on purpose, so
@@ -350,9 +330,7 @@ Otherwise the section stands as written, which is honest. -->
   accepted, reduced, or held its allocation of fault, which takes a field to hold it and a
   follow-up step to fill it in. That gives the firm the acceptance rate itself rather than a
   proxy for it.
-- <!-- OPEN: yours. What actually frustrated you here? The knowledge consolidation, the
-  platform, getting people to switch off the public tools, model behaviour? -->
-
+-
 ---
 
 <details>
@@ -426,26 +404,5 @@ headlights allegation the carrier opened with is answered from the report rather
 against in the abstract.
 
 ![An Outlook draft window with the Send button untouched. A header block lists claim number, client, defendant and date of loss. The body disputes a 50/50 determination and lists supporting bullets: the collision report assigning the primary collision factor to the insured for a left turn yield violation they were cited for, the insured turning left across the client's path while the client proceeded straight on a green light, the collision coded as a broadside, the officer's coding confirming who was turning, the client's statement that his headlights were on until after the impact, handheld cell phone use by the insured, and documented lighting and weather conditions](./assets/outlook-draft-unsent.png)
-
-<!-- OPEN: four things on this evidence section.
-  1. Is this a real matter or a test record? It reads real: a matter number that resolves in
-     the case management system, a client name, a date of loss, the accident's cross streets
-     and a named carrier were all legible before the pass. The one contrary signal is
-     "Cc: DEMO ACCOUNT" on the email and the fact that you are playing the adjuster yourself.
-     If it is a real matter I would rather have this run again on a test record than rely on
-     covered boxes, because a box is only as good as my having spotted what was under it.
-  2. You said to stop covering things, so tell me which of these to take back off and I will
-     re-cut them from the originals in one pass: the accident's street names, the carrier's
-     name, the matter number, and the two internal Teams group names in the Outlook sidebar.
-     The client's name and the date of loss I have left covered pending your word, since this
-     repo is public and they belong to a third party.
-  3. The screenshots name the case management system and the entry says "the case management
-     system" throughout. Naming vendors is fine by the standing decision, so this is only a
-     consistency question: name it in the prose too, or cover it in the images?
-  4. The ordering here is mine, read off what each screenshot shows, because the numbers in
-     your filenames did not survive the upload. Check it against your numbering.
-  5. The diagnostics are tiered on screen and the entry does not say so. §4 step 4 describes
-     the agent asking only for what it cannot get on its own, which is the last tier. Is the
-     tiering worth writing into step 4 properly, and what are tiers 1 and 2 called? -->
 
 </details>

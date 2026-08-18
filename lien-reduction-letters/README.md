@@ -11,7 +11,7 @@
 |---|---|
 | **Client** | Plaintiff-side personal injury firm, Missouri (US) |
 | **Domain** | Settlement disbursement, medical provider liens |
-| **My role** | Co-built. A colleague wrote the first version; the reworked system described here is mine <!-- OPEN: worth one line if you can give it. Which parts did the rework touch? The calculation, the per-lienholder fan-out, the template handling, the delivery, the client documentation? Naming even two turns "reworked substantially" into something a reader can picture. --> |
+| **My role** | Co-built. A colleague wrote the first version; the reworked system described here is mine|
 | **Timeline** | ~2 weeks |
 | **Stack** | Fillout (forms), Make (orchestration), Microsoft 365 Word document merge, OneDrive, Outlook |
 | **Status** | Completed and delivered |
@@ -228,14 +228,6 @@ link somebody has to remember to post. The system's API could not support either
 
 <details>
 <summary>Evidence</summary>
-
-<!-- Candidates, all needing a redaction pass:
-     - The Fillout form, with the repeating lienholder block visible (no real case data)
-     - A generated letter with every identifying field replaced by the illustrative figures
-       in §1: no provider names, no firm letterhead, no client name, no real amounts
-     - The Make scenario canvas, which shows the fan-out shape well and carries no data
-     Check every image for: firm name, provider names, client name, claim numbers, real
-     dollar figures, dates of treatment, PHI. A lien letter is dense with all of these. -->
 
 Not yet added.
 

@@ -292,17 +292,6 @@ calls. The wall clock becomes the length of the *longest* call rather than the *
 and the staff member isn't on any of them. Per-case human involvement drops from ~90 minutes
 of talking to a few minutes of reviewing.
 
-<!-- OPEN: this section deliberately stops at "mechanically" because I only have the
-before-state numbers. To make it land I need whatever was actually measured after
-deployment:
-  - claims opened through the agent (count, over what period)
-  - measured hours saved / change in time on desk, if tracked
-  - how often the agent successfully opened the claim (success rate)
-  - how often the accuracy check caught a real error, even "we found N in M calls"
-  - adoption: how many staff use it, is it the default path now
-If none of it was measured, say so and I'll write it as an honest qualitative outcome. An
-unverifiable percentage in a public portfolio is worse than no percentage. -->
-
 ## 8. What I'd do differently
 
 - **Re-evaluate the voice platform.** Retell was a good choice at the time. Voice AI is moving
@@ -321,15 +310,6 @@ unverifiable percentage in a public portfolio is worse than no percentage. -->
   enough that writing back was not on the table. Given one that accepts writes, I would let a
   reviewer add the carrier where they are already working and push it back, which keeps the
   source of truth intact without sending someone into another system first.
-
-<!-- OPEN: this item says the integration only runs one way and that the API is too limited
-for write-back, but the post-call step does write the claim number and adjuster into the case
-management system through an API call. So writes work for some things and not others. How
-should this read? Options as I see them: the API accepts updates to an existing case record
-but not the creation of new related records like a carrier; or the endpoints that exist cover
-the claim fields only. Tell me which and I'll rewrite the sentence. Leaving it as-is because
-it's your section. -->
-
 
 ---
 
@@ -392,34 +372,5 @@ This one is a live matter rather than the test record, so the matter and claim n
 claim-type option value and two staff first names are boxed out.
 
 ![The call results view. A header strip shows claim opened, human reached, call initiated and IVR passed, followed by the call summary, next steps, call duration and attempt count. Below, a red banner reads "Transcript accuracy: 96%" and flags the date of loss as a key field, showing the record's June date against the April date the agent said. A field-by-field comparison grid follows, with counts of 27 correct, 1 incorrect, 18 not disclosed by the voice agent and 23 not provided by the user, then individual fields for the claim, the parties and the incident](./assets/07-accuracy-check.png)
-
-<!-- OPEN: two things on this evidence section.
-  1. I have written the first four app screens up as a test record, on the basis that two of the carriers
-     are named "Test Insurance Company" and the number dialled in the Teams card is not the
-     carrier's number shown in the app. Confirm that, because the page now says so publicly.
-  2. The carriers screenshot has an "+ Add involved party" button in it, and §5 says carriers
-     can only be added in the case management system, never in the app. A reader who looks at
-     both will ask. Which is it: a party can be added in the app but never a carrier, or does
-     that button also predate the rule?
-
-  On the two front screens, for the record: you removed the client's logo and name from the
-  extension shot yourself, and it holds at 5x with the contrast pushed 4x, with only two
-  illegible wisps left. I cropped the browser toolbar band off it as well, since the profile
-  avatar carried an initial, and boxed the matter number on the intake card. The launcher runs
-  on the same test record as the app screens; the intake card is a different matter, which is
-  why its number is boxed.
-
-  DECIDED, do not reopen: the accuracy-check screenshot is a live matter and Lara ruled on
-  2026-08-18 that it ships. Her reasoning is that no field in it identifies the person or the
-  accident, since anyone could share a date of birth or a street. What was boxed before it went
-  up, none of which she asked for and none of which touches the panel's meaning: the matter
-  number, the claim number, the claim-type option-set integer (banned outright by CLAUDE.md),
-  a carrier claims rep's first name, and a case rep's first name, the last of which is a person
-  at the client firm. What is still exposed and was left deliberately, per her ruling: the
-  client's date of birth, the real date of loss, the street and city of the accident, the facts
-  of loss narrative, and both carriers by name.
-  One loose end for Lara: the counterparty policy number is partly legible, and policy numbers
-  are on the never-commit checklist in CLAUDE.md's conventions. I could not box it because the
-  sandbox blocked further edits to the image. Say the word and it goes. -->
 
 </details>

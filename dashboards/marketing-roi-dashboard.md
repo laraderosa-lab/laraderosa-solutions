@@ -65,11 +65,6 @@ only, net only and both, and between practice areas. Total and average estimated
 total and average actual value as headline cards. And at the bottom, average settlement by lead
 source, ranked, which is the chart the whole project was built to make possible.
 
-<!-- OPEN: mostly resolved by the exports of 2026-08-18. Source performance and intake detail
-are sections of the Lawmatics: Intake Overview tab, not tabs, and the Task Tracker tab is pending
-tasks by assignee with due-date status. Still unseen: Lawmatics Monthly. Say what that one
-carries and it gets a paragraph of its own. -->
-
 ## How the pages relate
 
 One lead record carries the whole chain, and that is the point of the rebuild rather than a
@@ -187,29 +182,6 @@ the real data for a while and could set ones that meant something.
   recommendations. It was deferred on the grounds that an AI has nothing to flag until the
   targets exist, since without them it can only report that a number moved.
 
-<!-- OPEN: still needed for this page.
-  - Three labels in the committed export place the firm in one state, which nothing else in the
-    repo does: a state bar association named as a referral partner, a state transport department
-    as a matter type, and two municipal courts named in task descriptions. They read as survivors
-    of the substitution pass rather than deliberate choices, since every name and number around
-    them was replaced. Say the word and they get boxed out.
-  - How ROI is defined when a PI case settles months or years after the spend that bought it.
-  - Whether the default view opens at source or at campaign level.
-  - The refresh cadence the client sees, and whether that is a Skyvia scheduling constraint.
-  - The Clio half: custom connector too, or does Skyvia ship one for Clio?
-  - The marketing dashboard you had already built natively in Lawmatics and shown the team.
-    Did this replace it outright, or do both still run? -->
-
-<!-- OPEN: the Clio pages. The V1 walkthrough covered the CRM pages and the financials, and Clio
-was still hypothetical at that point ("same thing if we ever did a dashboard for Clio"). Were
-the two Clio-fed pages yours, or did they land after the account moved to a colleague? §6 of the
-main case study currently claims the whole dashboard. -->
-
-<!-- OPEN: sourced from the V1 walkthrough call of 2026-03-23 (Fireflies), verified against the
-transcript rather than the AI summary, plus the five dashboard screenshots Lara supplied on
-2026-08-16. Nothing here comes from the later biweeklies, which a colleague ran after the
-account transitioned. -->
-
 ## Evidence
 
 Four of the five tabs, exported with every value substituted at source. Lead and client names,
@@ -248,4 +220,3 @@ $4.8K at the top.
 and the task description each one carries.
 
 ![Task tracker tab: pending task detail by assignee with created and due dates, due-date status and task descriptions, plus overdue, due-today and all-pending counts](./assets/marketing-roi-04-task-tracker.png)
-
