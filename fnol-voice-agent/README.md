@@ -334,39 +334,40 @@ it's your section. -->
 ---
 
 <details>
-<summary>Evidence: five screenshots of the working system</summary>
+<summary>Evidence: walking one case through the system</summary>
 
-The first four are the deployed system running on a **test record**. The parties, policy numbers
-and incident details in them are fabricated, which is why two of the four carriers on the case
-are called "Test Insurance Company". The last one is a live matter with its record identifiers
-and staff names removed.
+These follow the path a staff member actually takes, from picking FNOL on the case file to
+reading the accuracy result afterwards. They come from more than one run. Most sit on a
+fabricated **test record**, which is why two of the four carriers on the case are called "Test
+Insurance Company", and the last one is a live matter with its record identifiers and staff names
+removed.
 
-**One card per party per carrier.** The case here has three parties and four carriers between
-them. The client's own carrier is open, showing the three fields the call needs, and each
-defendant collapses to its own carrier count.
+**The details the system pulled off the case, for checking.** Every carrier on the case gets
+asked the same questions about the accident, so facts of loss, location, weather and police
+details are one form rather than four. The reviewer corrects anything wrong here before any
+call goes out. The footer counts what will be called, what will be skipped, and what is still
+missing.
 
-![The review app's carrier section. The client's first-party carrier is expanded with carrier name, phone number and policy number filled in. Below it, two defendants are collapsed, one listing two carriers and one listing a single carrier](./assets/review-app-carriers.png)
+![The Incident and case details form, headed "The same across every carrier call. Verify and edit once here; changes apply to all calls in the batch". Date of loss, time, a paragraph of facts of loss, cross street, city, weather and police agency are pre-filled and editable. The footer reads "0 selected, 4 will be skipped, 1 required field missing"](./assets/03-incident-details.png)
 
-**Incident data is checked once for the whole batch.** Every carrier on the case gets asked the
-same questions about the accident, so facts of loss, location, weather and police details are
-one form rather than four. The footer counts what will be called, what will be skipped, and
-what is still missing.
+**Then the carriers, one card per party per carrier.** The case here has three parties and four
+carriers between them. The client's own carrier is open, showing the three fields the call needs,
+and each defendant collapses to its own carrier count. The reviewer ticks the ones to call.
 
-![The Incident and case details form, headed "The same across every carrier call. Verify and edit once here; changes apply to all calls in the batch". Date of loss, time, a paragraph of facts of loss, cross street, city, weather and police agency are pre-filled and editable. The footer reads "0 selected, 4 will be skipped, 1 required field missing"](./assets/review-app-incident-fields.png)
+![The review app's carrier section. The client's first-party carrier is expanded with carrier name, phone number and policy number filled in. Below it, two defendants are collapsed, one listing two carriers and one listing a single carrier](./assets/04-carriers-per-party.png)
 
-**Nothing dials until someone confirms it.** The reviewer picks carriers, and the confirmation
-lists both what will be called and what will not, because a carrier left unticked is a claim
-that does not get opened.
+**Nothing dials until they confirm it.** The confirmation lists both what will be called and what
+will not, because a carrier left unticked is a claim that does not get opened.
 
-![A modal titled "Confirm before opening claims", reading "Only the selected carriers will be called. The rest are skipped and won't trigger a call". One carrier is listed under "Will be called" and three under "Will be skipped". The action button reads "Call 1 carrier"](./assets/review-app-confirm-calls.png)
+![A modal titled "Confirm before opening claims", reading "Only the selected carriers will be called. The rest are skipped and won't trigger a call". One carrier is listed under "Will be called" and three under "Will be skipped". The action button reads "Call 1 carrier"](./assets/05-confirm-before-calling.png)
 
-**The outcome arrives in Teams.** The card carries whether the claim was opened, how long the
-call ran, how it ended and a summary of what happened on the line, so staff can see how a call
-went without opening the transcript.
+**When the call is done, the outcome comes back in Teams.** The card carries whether the claim
+was opened, how long the call ran, how it ended and a summary of what happened on the line, so
+staff can see how a call went without opening the transcript.
 
-![A Teams card from the FNOL Agent bot titled "FNOL Call Summary". A call information table lists client, claim type, defendant, carrier called, number called and matter ID. A second block reports the claim was filed successfully, caller sentiment, duration of 309 seconds and how the call ended, followed by a paragraph summarising the call, including several transfers before reaching a person](./assets/teams-call-summary.png)
+![A Teams card from the FNOL Agent bot titled "FNOL Call Summary". A call information table lists client, claim type, defendant, carrier called, number called and matter ID. A second block reports the claim was filed successfully, caller sentiment, duration of 309 seconds and how the call ended, followed by a paragraph summarising the call, including several transfers before reaching a person](./assets/06-teams-call-summary.png)
 
-**The accuracy check, field by field.** The evaluator compares what the agent said on the call
+**Last, the accuracy check in the app, field by field.** The evaluator compares what the agent said on the call
 against what the reviewer approved, and scores this one at 96%: 27 fields right, one wrong. The
 one it caught is a key field, a date of loss the agent gave the carrier as April 6th when the
 record says June 23rd, which is the kind of mismatch that raises an urgent alert instead of
@@ -377,9 +378,18 @@ since a plaintiff firm does not volunteer everything to a defendant's carrier.
 This one is a live matter rather than the test record, so the matter and claim numbers, the
 claim-type option value and two staff first names are boxed out.
 
-![The call results view. A header strip shows claim opened, human reached, call initiated and IVR passed, followed by the call summary, next steps, call duration and attempt count. Below, a red banner reads "Transcript accuracy: 96%" and flags the date of loss as a key field, showing the record's June date against the April date the agent said. A field-by-field comparison grid follows, with counts of 27 correct, 1 incorrect, 18 not disclosed by the voice agent and 23 not provided by the user, then individual fields for the claim, the parties and the incident](./assets/review-app-accuracy-check.png)
+![The call results view. A header strip shows claim opened, human reached, call initiated and IVR passed, followed by the call summary, next steps, call duration and attempt count. Below, a red banner reads "Transcript accuracy: 96%" and flags the date of loss as a key field, showing the record's June date against the April date the agent said. A field-by-field comparison grid follows, with counts of 27 correct, 1 incorrect, 18 not disclosed by the voice agent and 23 not provided by the user, then individual fields for the claim, the parties and the incident](./assets/07-accuracy-check.png)
 
-<!-- OPEN: two things on this evidence section.
+<!-- OPEN: three things on this evidence section.
+  0. Two steps are missing from the front of the walkthrough and the asset numbering leaves
+     01 and 02 free for them: the browser extension's agent list with FNOL among the seven
+     agents on the current case, and the Copilot agent's "CRM Review Intake" card in Teams
+     that tells the reviewer a case is ready. You sent both on 2026-08-18 but they did not
+     reach the session's filesystem, only the chat, so there was nothing to commit. Send them
+     again as file attachments. On the intake card I will box the matter number, since it is a
+     record identifier on a matter I cannot confirm is a test one, and nothing else in that
+     card needs touching. On the extension shot I will crop the browser chrome, because the
+     profile avatar carries an initial.
   1. I have written the first four up as a test record, on the basis that two of the carriers
      are named "Test Insurance Company" and the number dialled in the Teams card is not the
      carrier's number shown in the app. Confirm that, because the page now says so publicly.

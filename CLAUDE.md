@@ -902,6 +902,20 @@ One line per session, newest last.
   image after the first pass, so the box could not be added. An `OPEN` in the entry asks her.
   Two `OPEN`s remain besides: confirm the test-record framing on the other four, and resolve the
   "+ Add involved party" button against §5's carriers-only-in-the-CMS rule.
+  **Then reordered, same day, at Lara's instruction: the evidence section follows the user's
+  path, not an arbitrary order.** Her sequence is pick FNOL from the browser extension on the
+  case file, get the Copilot agent's review notification in Teams, review the incident details
+  the system pulled from the case management system, review the carriers and select which to
+  call, get the outcome message back from the agent after the call, then read the accuracy
+  result in the app. Assets renamed `01-` to `07-` in that order, matching the convention
+  `medical-provider-selection` adopted the same day, and the incident-details screen moved ahead
+  of the carriers screen. **Steps 01 and 02 are still missing**: Lara sent the extension's agent
+  list and the "CRM Review Intake" Teams card, but **images pasted into chat do not always reach
+  `/root/.claude/uploads/`**, and those two never landed on disk, so there was nothing to commit.
+  Ask for them as file attachments. When they arrive: crop the browser chrome on the extension
+  shot, because the profile avatar carries an initial, and box the matter number on the intake
+  card. The extension shot is worth having for a second reason, since its agent list names seven
+  of the engagement's solutions and corroborates the ten-solution story §2 already tells.
   **Where the line actually is, for future sessions.** Lara's ruling covers accident and personal
   detail on the grounds that it is not uniquely identifying. It does **not** cover record
   identifiers (matter, claim, policy numbers), option-set integers, names of people at a client,
