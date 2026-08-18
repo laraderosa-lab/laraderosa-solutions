@@ -258,9 +258,12 @@ footer { margin-top: 24px; color: var(--text-3); font-size: 12.5px; max-width: 8
     </div>
     <div>
       <h3>Billing ledger</h3>
-      <div class="src" data-src="s.ledger"><span class="used">used</span><code>ledger.charges</code><span class="v">Four providers, eleven months, itemized charges with dates</span></div>
-      <div class="src" data-src="s.wage"><span class="used">used</span><code>employment.wage_statement</code><span class="v">Employer statement, eleven weeks off work</span></div>
-      <div class="src" data-src="s.oop"><span class="used">used</span><code>ledger.out_of_pocket</code><span class="v">Claimant receipts</span></div>
+      <div class="src" data-src="s.led.ed"><span class="used">used</span><code>ledger.charges[1]</code><span class="v">Emergency department, 4 Mar 2026, $4,180.00</span></div>
+      <div class="src" data-src="s.led.ortho"><span class="used">used</span><code>ledger.charges[2]</code><span class="v">Orthopedic clinic, Mar to Jul 2026, $9,640.00</span></div>
+      <div class="src" data-src="s.led.pt"><span class="used">used</span><code>ledger.charges[3]</code><span class="v">Physical therapy, Apr to Nov 2026, $11,275.00</span></div>
+      <div class="src" data-src="s.led.img"><span class="used">used</span><code>ledger.charges[4]</code><span class="v">Diagnostic imaging, Mar and Jun 2026, $3,410.00</span></div>
+      <div class="src" data-src="s.wage"><span class="used">used</span><code>employment.wage_statement</code><span class="v">Eleven weeks off work, $9,240.00</span></div>
+      <div class="src" data-src="s.oop"><span class="used">used</span><code>ledger.out_of_pocket</code><span class="v">Claimant receipts, $612.00</span></div>
     </div>
     <div>
       <h3>Case documents</h3>
@@ -270,10 +273,11 @@ footer { margin-top: 24px; color: var(--text-3); font-size: 12.5px; max-width: 8
       <div class="src" data-src="s.quest"><span class="used">used</span><code>docs.claimant_questionnaire</code><span class="v">Occupation, activities, sleep, daily impact</span></div>
     </div>
     <div>
-      <h3>Written by the firm</h3>
+      <h3>Template, library and settings</h3>
       <div class="src" data-src="s.template"><span class="used">used</span><code>template.fixed_text</code><span class="v">Letterhead, notice, settlement recital, closing, signature block</span></div>
       <div class="src" data-src="s.liabilitylib"><span class="used">used</span><code>library.liability_paragraphs</code><span class="v">Nine paragraphs, each written by an attorney</span></div>
       <div class="src" data-src="s.window"><span class="used">used</span><code>firm.response_window</code><span class="v">Thirty days</span></div>
+      <div class="src" data-src="s.rundate"><span class="used">used</span><code>system.generated_date</code><span class="v">The date the flow runs, 16 December 2026</span></div>
     </div>
   </div>
 </section>
@@ -466,10 +470,10 @@ const ITEMS = {
     reads: ["s.template"] },
 
   "f.letterdate": { lvl: 2, t: "Letter date", what: "Merge field",
-    fills: "The date the letter is generated.",
-    why: "A value, not a decision.",
+    fills: "The date the flow runs, stamped at generation.",
+    why: "A value, not a decision. It is also what the response deadline is counted from.",
     risk: "None from a model.",
-    reads: [] },
+    reads: ["s.rundate"] },
   "f.adjuster": { lvl: 2, t: "Adjuster name", what: "Merge field, filling two places",
     fills: "One field, mapped into the address block and the salutation.",
     why: "The case management system holds it. Mapping it once fills both places for every letter after.",
@@ -509,7 +513,7 @@ const ITEMS = {
     fills: "The letter date plus the firm's standard response window.",
     why: "Arithmetic. Nothing to decide.",
     risk: "None from a model.",
-    reads: ["s.window"] },
+    reads: ["s.rundate", "s.window"] },
   "b.address": { lvl: 2, t: "Address block", what: "Merge fields",
     fills: "Adjuster, department and carrier.",
     why: "All stored.",
@@ -528,18 +532,18 @@ const ITEMS = {
   "b.treatment": { lvl: 2, t: "Treatment and provider summary", what: "A table generated from the ledger",
     fills: "Provider, course of treatment and billed amount, grouped from the billing ledger.",
     why: "This is the block clients most often assume needs AI. It does not. Provider, date range and amount are rows in a ledger, and a model summarizing them can only introduce an error the ledger does not have.",
-    risk: "None from a model. The figures are the ledger's.",
-    reads: ["s.ledger", "s.records"] },
+    risk: "None from a model. Every figure in the table is a ledger row, unchanged.",
+    reads: ["s.led.ed", "s.led.ortho", "s.led.pt", "s.led.img", "s.records"] },
   "b.specials": { lvl: 2, t: "Special damages", what: "Arithmetic over the ledger",
-    fills: "Medical charges, lost earnings and out of pocket, totalled.",
+    fills: "The four ledger charges summed to $28,505.00, plus lost earnings and out of pocket, totalled to $38,357.00.",
     why: "Computed, not written. A model doing this arithmetic would be slower, more expensive and occasionally wrong.",
-    risk: "None from a model.",
-    reads: ["s.ledger", "s.wage", "s.oop"] },
+    risk: "None from a model. Both the inputs and the sum come from the case management system.",
+    reads: ["s.led.ed", "s.led.ortho", "s.led.pt", "s.led.img", "s.wage", "s.oop"] },
   "b.demand": { lvl: 2, t: "Demand and deadline", what: "Computed values in fixed language",
-    fills: "The limit as the demand figure, and the letter date plus the response window.",
+    fills: "The policy limit as the demand figure, and the letter date plus the response window as the deadline.",
     why: "Both derived, and the sentence around them never changes.",
     risk: "None from a model.",
-    reads: ["s.limits", "s.window"] },
+    reads: ["s.limits", "s.rundate", "s.window"] },
 
   "c.representation": { lvl: 3, t: "Representation paragraph", what: "Pre-written language selected by a rule",
     fills: "A rule reading two fields: the pronoun, and whether a spouse brings a derivative claim.",
